@@ -5,6 +5,7 @@ entries:
     appVersion: "1.0.1"
     created: "2025-07-30T13:10:00Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
+    digest: sha256:f3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b866
     name: askme
     type: application
     urls:
@@ -23,6 +24,7 @@ entries:
     appVersion: "1.0.0"
     created: "2025-07-30T13:05:00Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
+    digest: sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     name: askme
     type: application
     urls:
