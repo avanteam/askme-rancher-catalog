@@ -1,0 +1,82 @@
+name: Deploy Helm Repository to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: '3.12.0'
+
+      - name: Build Helm Repository
+        run: |
+          mkdir -p public
+          
+          # Copier les charts releases existants
+          if [ -f index.yaml ]; then
+            cp index.yaml public/
+          fi
+          
+          # Générer l'index complet avec les releases GitHub
+          cd public
+          helm repo index . --url https://avanteam.github.io/askme-rancher-catalog/
+          
+          # Créer page d'accueil
+          cat > index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>AskMe Helm Repository</title>
+          </head>
+          <body>
+              <h1>🚀 AskMe Helm Repository</h1>
+              <p>Repository Helm pour AskMe Assistant IA</p>
+              <ul>
+                  <li><a href="index.yaml">index.yaml</a> - Index Helm</li>
+              </ul>
+              <h2>📦 Installation</h2>
+              <pre>
+          helm repo add askme https://avanteam.github.io/askme-rancher-catalog/
+          helm repo update
+          helm search repo askme
+          helm install my-askme askme/askme
+              </pre>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
