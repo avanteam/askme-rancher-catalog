@@ -1,0 +1,23 @@
+apiVersion: v1
+entries:
+  askme:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-07-30T12:00:00Z"
+    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
+    digest: sha256:placeholder
+    name: askme
+    type: application
+    urls:
+    - https://github.com/avanteam/askme-rancher-catalog/releases/download/v1.0.0/askme-1.0.0.tgz
+    version: 1.0.0
+    keywords:
+    - ai
+    - chatbot
+    - llm
+    - avanteam
+    - qualitysaas
+    maintainers:
+    - name: Avanteam DevOps
+      email: devops@avanteam.com
+generated: "2025-07-30T12:00:00Z"

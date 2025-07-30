@@ -1,0 +1,349 @@
+# Valeurs par défaut pour AskMe Rancher Catalog
+# Ces valeurs peuvent être surchargées via l'interface Rancher
+
+# ===== CONFIGURATION CLIENT =====
+client:
+  name: "askme"
+  namespace: "askme-app"
+  domain: "askme.example.com"
+
+# ===== INTERFACE UTILISATEUR =====
+ui:
+  title: "Avanteam AskMe"
+  description: "Cet assistant Quality SaaS est configuré pour répondre à vos questions sur la documentation Avanteam"
+  logo: "https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoavanteamai.png"
+  chatLogo: "https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoBot.gif"
+  chatTitle: "Commencer une discussion"
+  favicon: ""
+  showShareButton: false
+  showExportButton: true
+
+# ===== CONFIGURATION IMAGE =====
+image:
+  repository: "7wpjr0wh.c1.gra9.container-registry.ovh.net/library/askme-app"
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+# ===== FOURNISSEURS LLM =====
+llm:
+  defaultProvider: "CLAUDE"
+  availableProviders: "AZURE_OPENAI,CLAUDE,OPENAI_DIRECT,MISTRAL,GEMINI"
+
+# ===== AZURE OPENAI =====
+azure:
+  openai:
+    enabled: true
+    resource: ""
+    endpoint: ""
+    key: ""
+    model: "gpt-4o"
+    modelName: "gpt-4o"
+    temperature: "0.7"
+    topP: "0.95"
+    stream: "true"
+    systemMessage: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS."
+    responseVeryShortMaxTokens: "1000"
+    responseNormalMaxTokens: "6000"
+    responseComprehensiveMaxTokens: "16000"
+    previewApiVersion: "2024-05-01-preview"
+    embeddingName: "text-embedding-ada-002"
+    embeddingEndpoint: ""
+    embeddingKey: ""
+
+  # ===== AZURE SEARCH =====
+  search:
+    service: ""
+    index: ""
+    key: ""
+    semanticSearchConfig: ""
+    indexIsPrechunked: "false"
+    topK: "10"
+    enableInDomain: "true"
+    contentColumns: "chunk,fieldMetadata"
+    filenameColumn: "metadata_storage_name"
+    titleColumn: "titreDocument"
+    urlColumn: "metadata_storage_path"
+    vectorColumns: "text_vector"
+    queryType: "vector_semantic_hybrid"
+    permittedGroupsColumn: ""
+    strictness: "4"
+    useSemanticSearch: "true"
+
+  # ===== AZURE COSMOSDB =====
+  cosmosdb:
+    account: ""
+    database: "db_conversation_history"
+    conversationsContainer: "conversations"
+    key: ""
+    enableFeedback: "true"
+
+  # ===== AZURE SPEECH =====
+  speech:
+    enabled: true
+    key: ""
+    region: "francecentral"
+    voiceFr: "fr-FR-HenriNeural"
+    voiceEn: "en-US-GuyNeural"
+
+# ===== CLAUDE AI =====
+claude:
+  enabled: true
+  apiKey: ""
+  model: "claude-sonnet-4-20250514"
+  temperature: "0"
+  topP: "1.0"
+  systemMessage: "Tu es AskMe (CLAUDE), l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS."
+  responseVeryShortMaxTokens: "2000"
+  responseNormalMaxTokens: "10000"
+  responseComprehensiveMaxTokens: "40000"
+
+# ===== OPENAI DIRECT =====
+openai:
+  enabled: false
+  apiKey: ""
+  model: "gpt-4o"
+  temperature: "0.2"
+  topP: "1.0"
+  baseUrl: "https://api.openai.com/v1"
+  systemMessage: "Tu es AskMe (OpenAI), l'assistant virtuel d'Avanteam."
+  responseVeryShortMaxTokens: "1500"
+  responseNormalMaxTokens: "8000"
+  responseComprehensiveMaxTokens: "16000"
+
+# ===== MISTRAL AI =====
+mistral:
+  enabled: false
+  apiKey: ""
+  model: "mistral-large-latest"
+  temperature: "0.7"
+  topP: "1.0"
+  systemMessage: "Tu es AskMe (Mistral), l'assistant virtuel d'Avanteam."
+  responseVeryShortMaxTokens: "1500"
+  responseNormalMaxTokens: "8000"
+  responseComprehensiveMaxTokens: "30000"
+
+# ===== GEMINI AI =====
+gemini:
+  enabled: false
+  apiKey: ""
+  model: "gemini-1.5-flash"
+  temperature: "0.7"
+  topP: "1.0"
+  systemMessage: "Tu es AskMe (Gemini), l'assistant virtuel d'Avanteam."
+  responseVeryShortMaxTokens: "1500"
+  responseNormalMaxTokens: "8000"
+  responseComprehensiveMaxTokens: "30000"
+
+# ===== FONCTIONNALITÉS VOCALES =====
+voice:
+  inputEnabled: true
+  wakeWordEnabled: true
+  wakeWords: "Sarah,Richard,Patrick,Mérade"
+  wakeWordVariants: "mérade|merad|merrad|meraad|mehraad|mehrad,richard|richart|richar|rishar,patrick|patrick|patrik"
+
+# ===== CONFIGURATION GÉNÉRALE =====
+config:
+  debug: false
+  datasourceType: "AzureCognitiveSearch"
+  searchTopK: "10"
+  searchStrictness: "3"
+  searchEnableInDomain: "true"
+  imageMaxSizeMb: "12.0"
+  citationContentMaxLength: "2000"
+  defaultLanguage: "en"
+  azureUseAuthentication: "false"
+  chatHistoryEnabled: "true"
+  orchestrationStrategy: "openai_functions"
+
+# ===== AVANTEAM CUSTOM =====
+avanteam:
+  urlBase: "https://apprec.quality-saas.com/QMDOC/"
+  authToken: ""
+  licenceHubHandlerUrl: "https://aimanager-dev2.avanteam-online.com/APP/Custom/AI/AskMeV2_Monitoring/AskMeMonitoring.ashx"
+  licenceHubKey: "AVANTEAM-QUALITYSAAS-DEV"
+  authEnabled: false
+
+# ===== RESSOURCES =====
+replicaCount: 2
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "250m"
+  limits:
+    memory: "1Gi"
+    cpu: "500m"
+
+# ===== INGRESS =====
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-cache: "off"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  tls:
+    enabled: true
+
+# ===== SERVICE =====
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+
+# ===== PROBES =====
+probes:
+  liveness:
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readiness:
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+# ===== SECRETS =====
+imagePullSecrets: []
+
+# ===== RANCHER INTEGRATION =====
+rancher:
+  enabled: false
+  clusterName: "avanteam-mks-cluster"
+  managementNamespace: "cattle-system"
+  projectName: ""
+  
+  # Quotas de ressources par projet Rancher
+  resourceQuota:
+    cpu: "2000m"
+    memory: "4Gi"
+    storage: "10Gi"
+  
+  # Configuration RBAC Rancher
+  rbac:
+    enabled: true
+    annotations: {}
+    additionalUsers: []
+  
+  # Configuration monitoring Rancher
+  monitoring:
+    enabled: false
+    projectId: ""
+  
+  # Configuration alerting Rancher  
+  alerting:
+    enabled: false
+    recipients: []
+
+# ===== MS DEFENDER =====
+msDefender:
+  enabled: false
+  endpoint: ""
+  key: ""
+
+# ===== AUTRES DATASOURCES (pour éviter erreurs de validation) =====
+datasources:
+  # Azure CosmosDB Mongo vCore
+  cosmosdbMongo:
+    connectionString: ""
+    database: ""
+    container: ""
+    index: ""
+    topK: ""
+    strictness: ""
+    enableInDomain: ""
+    contentColumns: "merged_content"
+    filenameColumn: "metadata_storage_name"
+    titleColumn: "metadata_title"
+    urlColumn: "metadata_storage_path"
+    vectorColumns: ""
+
+  # Elasticsearch
+  elasticsearch:
+    endpoint: ""
+    encodedApiKey: ""
+    index: ""
+    queryType: ""
+    topK: ""
+    enableInDomain: ""
+    contentColumns: ""
+    filenameColumn: ""
+    titleColumn: ""
+    urlColumn: ""
+    vectorColumns: ""
+    strictness: ""
+    embeddingModelId: ""
+
+  # Pinecone
+  pinecone:
+    environment: ""
+    apiKey: ""
+    indexName: ""
+    topK: ""
+    strictness: ""
+    enableInDomain: ""
+    contentColumns: ""
+    filenameColumn: ""
+    titleColumn: ""
+    urlColumn: ""
+    vectorColumns: ""
+
+  # Azure ML Index
+  azureML:
+    indexName: ""
+    indexVersion: ""
+    projectResourceId: ""
+    topK: ""
+    strictness: ""
+    enableInDomain: ""
+    contentColumns: ""
+    filenameColumn: ""
+    titleColumn: ""
+    urlColumn: ""
+    vectorColumns: ""
+    queryType: ""
+
+  # Promptflow
+  promptflow:
+    enabled: false
+    endpoint: ""
+    apiKey: ""
+    responseTimeout: "120"
+    requestFieldName: "query"
+    responseFieldName: "reply"
+    citationsFieldName: "documents"
+
+  # MongoDB
+  mongodb:
+    endpoint: ""
+    username: ""
+    password: ""
+    databaseName: ""
+    collectionName: ""
+    appName: ""
+    indexName: ""
+    topK: ""
+    strictness: ""
+    enableInDomain: ""
+    contentColumns: ""
+    filenameColumn: ""
+    titleColumn: ""
+    urlColumn: ""
+    vectorColumns: ""

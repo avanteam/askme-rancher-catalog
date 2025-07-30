@@ -1,0 +1,332 @@
+categories:
+- AI/ML
+- Chat
+- Assistant
+
+questions:
+# ===== CONFIGURATION CLIENT =====
+- variable: client.name
+  default: "askme"
+  description: "Nom du client (utilisé pour les ressources Kubernetes)"
+  type: string
+  required: true
+  group: "Configuration Client"
+  label: "Nom du Client"
+
+- variable: client.domain
+  default: "askme.example.com"
+  description: "Domaine public du client (ex: askme.avanteam-online.com)"
+  type: string
+  required: true
+  group: "Configuration Client"
+  label: "Domaine Client"
+
+- variable: client.namespace
+  default: "askme-app"
+  description: "Namespace Kubernetes pour l'isolation"
+  type: string
+  required: true
+  group: "Configuration Client"
+  label: "Namespace"
+
+# ===== INTERFACE UTILISATEUR =====
+- variable: ui.title
+  default: "Avanteam AskMe"
+  description: "Titre affiché dans l'interface"
+  type: string
+  required: true
+  group: "Interface Utilisateur"
+  label: "Titre de l'Application"
+
+- variable: ui.description
+  default: "Cet assistant Quality SaaS est configuré pour répondre à vos questions sur la documentation Avanteam"
+  description: "Description affichée dans l'interface"
+  type: string
+  required: true
+  group: "Interface Utilisateur"
+  label: "Description"
+
+- variable: ui.logo
+  default: "https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoavanteamai.png"
+  description: "URL du logo principal"
+  type: string
+  group: "Interface Utilisateur"
+  label: "Logo Principal"
+
+- variable: ui.chatLogo
+  default: "https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoBot.gif"
+  description: "URL du logo de chat"
+  type: string
+  group: "Interface Utilisateur"
+  label: "Logo Chat"
+
+# ===== FOURNISSEURS LLM =====
+- variable: llm.defaultProvider
+  default: "CLAUDE"
+  description: "Fournisseur LLM par défaut"
+  type: enum
+  options:
+    - "AZURE_OPENAI"
+    - "CLAUDE"
+    - "OPENAI_DIRECT"
+    - "MISTRAL"
+    - "GEMINI"
+  required: true
+  group: "Configuration LLM"
+  label: "Fournisseur LLM Par Défaut"
+
+- variable: llm.availableProviders
+  default: "AZURE_OPENAI,CLAUDE,OPENAI_DIRECT,MISTRAL,GEMINI"
+  description: "Liste des fournisseurs disponibles (séparés par virgule)"
+  type: string
+  required: true
+  group: "Configuration LLM"
+  label: "Fournisseurs Disponibles"
+
+# ===== AZURE OPENAI =====
+- variable: azure.openai.enabled
+  default: true
+  description: "Activer Azure OpenAI"
+  type: boolean
+  group: "Azure OpenAI"
+  label: "Activer Azure OpenAI"
+  show_if: "llm.availableProviders=AZURE_OPENAI||llm.availableProviders=~AZURE_OPENAI"
+
+- variable: azure.openai.endpoint
+  default: ""
+  description: "Endpoint Azure OpenAI (ex: https://votre-resource.openai.azure.com/)"
+  type: string
+  required: true
+  group: "Azure OpenAI"
+  label: "Endpoint"
+  show_if: "azure.openai.enabled=true"
+
+- variable: azure.openai.key
+  default: ""
+  description: "Clé API Azure OpenAI"
+  type: password
+  required: true
+  group: "Azure OpenAI"
+  label: "API Key"
+  show_if: "azure.openai.enabled=true"
+
+- variable: azure.openai.model
+  default: "gpt-4o"
+  description: "Nom du modèle déployé"
+  type: string
+  required: true
+  group: "Azure OpenAI"
+  label: "Modèle"
+  show_if: "azure.openai.enabled=true"
+
+# ===== CLAUDE AI =====
+- variable: claude.enabled
+  default: true
+  description: "Activer Claude AI"
+  type: boolean
+  group: "Claude AI"
+  label: "Activer Claude"
+  show_if: "llm.availableProviders=CLAUDE||llm.availableProviders=~CLAUDE"
+
+- variable: claude.apiKey
+  default: ""
+  description: "Clé API Claude (sk-ant-...)"
+  type: password
+  required: true
+  group: "Claude AI"
+  label: "API Key"
+  show_if: "claude.enabled=true"
+
+- variable: claude.model
+  default: "claude-sonnet-4-20250514"
+  description: "Modèle Claude à utiliser"
+  type: enum
+  options:
+    - "claude-sonnet-4-20250514"
+    - "claude-3-opus-20240229"
+    - "claude-3-sonnet-20240229"
+    - "claude-3-haiku-20240307"
+  group: "Claude AI"
+  label: "Modèle Claude"
+  show_if: "claude.enabled=true"
+
+# ===== OPENAI DIRECT =====
+- variable: openai.enabled
+  default: false
+  description: "Activer OpenAI Direct"
+  type: boolean
+  group: "OpenAI Direct"
+  label: "Activer OpenAI Direct"
+  show_if: "llm.availableProviders=OPENAI_DIRECT||llm.availableProviders=~OPENAI_DIRECT"
+
+- variable: openai.apiKey
+  default: ""
+  description: "Clé API OpenAI (sk-proj-...)"
+  type: password
+  group: "OpenAI Direct"
+  label: "API Key"
+  show_if: "openai.enabled=true"
+
+# ===== AZURE SEARCH =====
+- variable: azure.search.service
+  default: ""
+  description: "Nom du service Azure Search"
+  type: string
+  required: true
+  group: "Azure Search"
+  label: "Service Search"
+
+- variable: azure.search.index
+  default: ""
+  description: "Nom de l'index Azure Search"
+  type: string
+  required: true
+  group: "Azure Search"
+  label: "Index"
+
+- variable: azure.search.key
+  default: ""
+  description: "Clé API Azure Search"
+  type: password
+  required: true
+  group: "Azure Search"
+  label: "API Key"
+
+# ===== AZURE COSMOSDB =====
+- variable: azure.cosmosdb.account
+  default: ""
+  description: "Nom du compte CosmosDB"
+  type: string
+  required: true
+  group: "Azure CosmosDB"
+  label: "Compte CosmosDB"
+
+- variable: azure.cosmosdb.database
+  default: "db_conversation_history"
+  description: "Nom de la base de données"
+  type: string
+  required: true
+  group: "Azure CosmosDB"
+  label: "Base de Données"
+
+- variable: azure.cosmosdb.key
+  default: ""
+  description: "Clé primaire CosmosDB"
+  type: password
+  required: true
+  group: "Azure CosmosDB"
+  label: "Clé Primaire"
+
+# ===== AZURE SPEECH =====
+- variable: azure.speech.enabled
+  default: true
+  description: "Activer les services vocaux Azure"
+  type: boolean
+  group: "Services Vocaux"
+  label: "Activer Azure Speech"
+
+- variable: azure.speech.key
+  default: ""
+  description: "Clé API Azure Speech"
+  type: password
+  group: "Services Vocaux"
+  label: "Clé Azure Speech"
+  show_if: "azure.speech.enabled=true"
+
+- variable: azure.speech.region
+  default: "francecentral"
+  description: "Région Azure Speech"
+  type: enum
+  options:
+    - "francecentral"
+    - "westeurope"
+    - "eastus"
+    - "westus2"
+  group: "Services Vocaux"
+  label: "Région"
+  show_if: "azure.speech.enabled=true"
+
+# ===== FONCTIONNALITÉS VOCALES =====
+- variable: voice.wakeWordEnabled
+  default: true
+  description: "Activer la détection de mots-clés"
+  type: boolean
+  group: "Fonctionnalités Vocales"
+  label: "Mots-clés Vocaux"
+
+- variable: voice.wakeWords
+  default: "Sarah,Richard,Patrick,Mérade"
+  description: "Mots-clés de réveil (séparés par virgule)"
+  type: string
+  group: "Fonctionnalités Vocales"
+  label: "Mots-clés"
+  show_if: "voice.wakeWordEnabled=true"
+
+# ===== RESSOURCES =====
+- variable: resources.requests.cpu
+  default: "250m"
+  description: "CPU demandé par pod"
+  type: string
+  group: "Ressources"
+  label: "CPU Demandé"
+
+- variable: resources.requests.memory
+  default: "512Mi"
+  description: "Mémoire demandée par pod"
+  type: string
+  group: "Ressources"
+  label: "Mémoire Demandée"
+
+- variable: resources.limits.cpu
+  default: "500m"
+  description: "Limite CPU par pod"
+  type: string
+  group: "Ressources"
+  label: "Limite CPU"
+
+- variable: resources.limits.memory
+  default: "1Gi"
+  description: "Limite mémoire par pod"
+  type: string
+  group: "Ressources"
+  label: "Limite Mémoire"
+
+- variable: replicaCount
+  default: 2
+  description: "Nombre de répliques"
+  type: int
+  min: 1
+  max: 10
+  group: "Ressources"
+  label: "Nombre de Pods"
+
+# ===== RANCHER INTEGRATION =====
+- variable: rancher.enabled
+  default: true
+  description: "Activer l'intégration Rancher (RBAC, Projets)"
+  type: boolean
+  group: "Intégration Rancher"
+  label: "Activer Rancher"
+
+- variable: rancher.projectName
+  default: ""
+  description: "Nom du projet Rancher (optionnel)"
+  type: string
+  group: "Intégration Rancher"
+  label: "Projet Rancher"
+  show_if: "rancher.enabled=true"
+
+# ===== AVANCÉ =====
+- variable: image.tag
+  default: "latest"
+  description: "Tag de l'image Docker"
+  type: string
+  group: "Configuration Avancée"
+  label: "Version Image"
+
+- variable: debug.enabled
+  default: false
+  description: "Activer le mode debug"
+  type: boolean
+  group: "Configuration Avancée"
+  label: "Mode Debug"

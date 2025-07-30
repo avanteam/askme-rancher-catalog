@@ -1,0 +1,149 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "askme.fullname" . }}-config
+  namespace: {{ .Values.client.namespace }}
+  labels:
+    {{- include "askme.labels" . | nindent 4 }}
+  annotations:
+    askme.avanteam.com/client: {{ .Values.client.name }}
+    askme.avanteam.com/version: {{ .Chart.AppVersion }}
+data:
+  # Configuration générale
+  DEBUG: {{ .Values.config.debug | quote }}
+  
+  # Interface utilisateur
+  UI_TITLE: {{ .Values.ui.title | quote }}
+  UI_LOGO: {{ .Values.ui.logo | quote }}
+  UI_CHAT_LOGO: {{ .Values.ui.chatLogo | quote }}
+  UI_CHAT_TITLE: {{ .Values.ui.chatTitle | quote }}
+  UI_CHAT_DESCRIPTION: {{ .Values.ui.description | quote }}
+  UI_FAVICON: {{ .Values.ui.favicon | quote }}
+  UI_SHOW_SHARE_BUTTON: {{ .Values.ui.showShareButton | quote }}
+  UI_SHOW_EXPORT_BUTTON: {{ .Values.ui.showExportButton | quote }}
+
+  # Configuration LLM
+  LLM_PROVIDER: {{ .Values.llm.defaultProvider | quote }}
+  AVAILABLE_LLM_PROVIDERS: {{ .Values.llm.availableProviders | quote }}
+
+  # Configuration des sources de données
+  DATASOURCE_TYPE: {{ .Values.config.datasourceType | quote }}
+  SEARCH_TOP_K: {{ .Values.config.searchTopK | quote }}
+  SEARCH_STRICTNESS: {{ .Values.config.searchStrictness | quote }}
+  SEARCH_ENABLE_IN_DOMAIN: {{ .Values.config.searchEnableInDomain | quote }}
+  
+  # Services vocaux
+  VOICE_INPUT_ENABLED: {{ .Values.voice.inputEnabled | quote }}
+  WAKE_WORD_ENABLED: {{ .Values.voice.wakeWordEnabled | quote }}
+  WAKE_WORD_PHRASES: {{ printf "[%s]" (replace "," "\", \"" .Values.voice.wakeWords) | quote }}
+  WAKE_WORD_VARIANTS: {{ .Values.voice.wakeWordVariants | quote }}
+  
+  # Azure Speech
+  AZURE_SPEECH_ENABLED: {{ .Values.azure.speech.enabled | quote }}
+  AZURE_SPEECH_VOICE_FR: {{ .Values.azure.speech.voiceFr | quote }}
+  AZURE_SPEECH_VOICE_EN: {{ .Values.azure.speech.voiceEn | quote }}
+  
+  # Configuration générale
+  IMAGE_MAX_SIZE_MB: {{ .Values.config.imageMaxSizeMb | quote }}
+  CITATION_CONTENT_MAX_LENGTH: {{ .Values.config.citationContentMaxLength | quote }}
+  DEFAULT_LANGUAGE: {{ .Values.config.defaultLanguage | quote }}
+  AZURE_USE_AUTHENTICATION: {{ .Values.config.azureUseAuthentication | quote }}
+  CHAT_HISTORY_ENABLED: {{ .Values.config.chatHistoryEnabled | quote }}
+  ORCHESTRATION_STRATEGY: {{ .Values.config.orchestrationStrategy | quote }}
+  
+  # Azure Search
+  AZURE_SEARCH_USE_SEMANTIC_SEARCH: {{ .Values.azure.search.useSemanticSearch | quote }}
+  AZURE_SEARCH_SEMANTIC_SEARCH_CONFIG: {{ .Values.azure.search.semanticSearchConfig | quote }}
+  AZURE_SEARCH_INDEX_IS_PRECHUNKED: {{ .Values.azure.search.indexIsPrechunked | quote }}
+  AZURE_SEARCH_TOP_K: {{ .Values.azure.search.topK | quote }}
+  AZURE_SEARCH_ENABLE_IN_DOMAIN: {{ .Values.azure.search.enableInDomain | quote }}
+  AZURE_SEARCH_CONTENT_COLUMNS: {{ .Values.azure.search.contentColumns | quote }}
+  AZURE_SEARCH_FILENAME_COLUMN: {{ .Values.azure.search.filenameColumn | quote }}
+  AZURE_SEARCH_TITLE_COLUMN: {{ .Values.azure.search.titleColumn | quote }}
+  AZURE_SEARCH_URL_COLUMN: {{ .Values.azure.search.urlColumn | quote }}
+  AZURE_SEARCH_VECTOR_COLUMNS: {{ .Values.azure.search.vectorColumns | quote }}
+  AZURE_SEARCH_QUERY_TYPE: {{ .Values.azure.search.queryType | quote }}
+  AZURE_SEARCH_PERMITTED_GROUPS_COLUMN: {{ .Values.azure.search.permittedGroupsColumn | quote }}
+  AZURE_SEARCH_STRICTNESS: {{ .Values.azure.search.strictness | quote }}
+  
+  # Avanteam Custom
+  AVANTEAM_URL_BASE: {{ .Values.avanteam.urlBase | quote }}
+  AUTH_ENABLED: {{ .Values.avanteam.authEnabled | quote }}
+  SCM_DO_BUILD_DURING_DEPLOYMENT: "true"
+  
+  # Autres datasources (vides mais présentes pour éviter les erreurs)
+  AZURE_COSMOSDB_MONGO_VCORE_CONNECTION_STRING: {{ .Values.datasources.cosmosdbMongo.connectionString | quote }}
+  AZURE_COSMOSDB_MONGO_VCORE_DATABASE: {{ .Values.datasources.cosmosdbMongo.database | quote }}
+  AZURE_COSMOSDB_MONGO_VCORE_CONTAINER: {{ .Values.datasources.cosmosdbMongo.container | quote }}
+  AZURE_COSMOSDB_MONGO_VCORE_INDEX: {{ .Values.datasources.cosmosdbMongo.index | quote }}
+  AZURE_COSMOSDB_MONGO_VCORE_TOP_K: {{ .Values.datasources.cosmosdbMongo.topK | quote }}
+  AZURE_COSMOSDB_MONGO_VCORE_STRICTNESS: {{ .Values.datasources.cosmosdbMongo.strictness | quote }}
+  AZURE_COSMOSDB_MONGO_VCORE_ENABLE_IN_DOMAIN: {{ .Values.datasources.cosmosdbMongo.enableInDomain | quote }}
+  AZURE_COSMOSDB_MONGO_VCORE_CONTENT_COLUMNS: {{ .Values.datasources.cosmosdbMongo.contentColumns | quote }}
+  AZURE_COSMOSDB_MONGO_VCORE_FILENAME_COLUMN: {{ .Values.datasources.cosmosdbMongo.filenameColumn | quote }}
+  AZURE_COSMOSDB_MONGO_VCORE_TITLE_COLUMN: {{ .Values.datasources.cosmosdbMongo.titleColumn | quote }}
+  AZURE_COSMOSDB_MONGO_VCORE_URL_COLUMN: {{ .Values.datasources.cosmosdbMongo.urlColumn | quote }}
+  AZURE_COSMOSDB_MONGO_VCORE_VECTOR_COLUMNS: {{ .Values.datasources.cosmosdbMongo.vectorColumns | quote }}
+  
+  ELASTICSEARCH_ENDPOINT: {{ .Values.datasources.elasticsearch.endpoint | quote }}
+  ELASTICSEARCH_ENCODED_API_KEY: {{ .Values.datasources.elasticsearch.encodedApiKey | quote }}
+  ELASTICSEARCH_INDEX: {{ .Values.datasources.elasticsearch.index | quote }}
+  ELASTICSEARCH_QUERY_TYPE: {{ .Values.datasources.elasticsearch.queryType | quote }}
+  ELASTICSEARCH_TOP_K: {{ .Values.datasources.elasticsearch.topK | quote }}
+  ELASTICSEARCH_ENABLE_IN_DOMAIN: {{ .Values.datasources.elasticsearch.enableInDomain | quote }}
+  ELASTICSEARCH_CONTENT_COLUMNS: {{ .Values.datasources.elasticsearch.contentColumns | quote }}
+  ELASTICSEARCH_FILENAME_COLUMN: {{ .Values.datasources.elasticsearch.filenameColumn | quote }}
+  ELASTICSEARCH_TITLE_COLUMN: {{ .Values.datasources.elasticsearch.titleColumn | quote }}
+  ELASTICSEARCH_URL_COLUMN: {{ .Values.datasources.elasticsearch.urlColumn | quote }}
+  ELASTICSEARCH_VECTOR_COLUMNS: {{ .Values.datasources.elasticsearch.vectorColumns | quote }}
+  ELASTICSEARCH_STRICTNESS: {{ .Values.datasources.elasticsearch.strictness | quote }}
+  ELASTICSEARCH_EMBEDDING_MODEL_ID: {{ .Values.datasources.elasticsearch.embeddingModelId | quote }}
+  
+  PINECONE_ENVIRONMENT: {{ .Values.datasources.pinecone.environment | quote }}
+  PINECONE_API_KEY: {{ .Values.datasources.pinecone.apiKey | quote }}
+  PINECONE_INDEX_NAME: {{ .Values.datasources.pinecone.indexName | quote }}
+  PINECONE_TOP_K: {{ .Values.datasources.pinecone.topK | quote }}
+  PINECONE_STRICTNESS: {{ .Values.datasources.pinecone.strictness | quote }}
+  PINECONE_ENABLE_IN_DOMAIN: {{ .Values.datasources.pinecone.enableInDomain | quote }}
+  PINECONE_CONTENT_COLUMNS: {{ .Values.datasources.pinecone.contentColumns | quote }}
+  PINECONE_FILENAME_COLUMN: {{ .Values.datasources.pinecone.filenameColumn | quote }}
+  PINECONE_TITLE_COLUMN: {{ .Values.datasources.pinecone.titleColumn | quote }}
+  PINECONE_URL_COLUMN: {{ .Values.datasources.pinecone.urlColumn | quote }}
+  PINECONE_VECTOR_COLUMNS: {{ .Values.datasources.pinecone.vectorColumns | quote }}
+  
+  AZURE_MLINDEX_NAME: {{ .Values.datasources.azureML.indexName | quote }}
+  AZURE_MLINDEX_VERSION: {{ .Values.datasources.azureML.indexVersion | quote }}
+  AZURE_ML_PROJECT_RESOURCE_ID: {{ .Values.datasources.azureML.projectResourceId | quote }}
+  AZURE_MLINDEX_TOP_K: {{ .Values.datasources.azureML.topK | quote }}
+  AZURE_MLINDEX_STRICTNESS: {{ .Values.datasources.azureML.strictness | quote }}
+  AZURE_MLINDEX_ENABLE_IN_DOMAIN: {{ .Values.datasources.azureML.enableInDomain | quote }}
+  AZURE_MLINDEX_CONTENT_COLUMNS: {{ .Values.datasources.azureML.contentColumns | quote }}
+  AZURE_MLINDEX_FILENAME_COLUMN: {{ .Values.datasources.azureML.filenameColumn | quote }}
+  AZURE_MLINDEX_TITLE_COLUMN: {{ .Values.datasources.azureML.titleColumn | quote }}
+  AZURE_MLINDEX_URL_COLUMN: {{ .Values.datasources.azureML.urlColumn | quote }}
+  AZURE_MLINDEX_VECTOR_COLUMNS: {{ .Values.datasources.azureML.vectorColumns | quote }}
+  AZURE_MLINDEX_QUERY_TYPE: {{ .Values.datasources.azureML.queryType | quote }}
+  
+  USE_PROMPTFLOW: {{ .Values.datasources.promptflow.enabled | quote }}
+  PROMPTFLOW_ENDPOINT: {{ .Values.datasources.promptflow.endpoint | quote }}
+  PROMPTFLOW_API_KEY: {{ .Values.datasources.promptflow.apiKey | quote }}
+  PROMPTFLOW_RESPONSE_TIMEOUT: {{ .Values.datasources.promptflow.responseTimeout | quote }}
+  PROMPTFLOW_REQUEST_FIELD_NAME: {{ .Values.datasources.promptflow.requestFieldName | quote }}
+  PROMPTFLOW_RESPONSE_FIELD_NAME: {{ .Values.datasources.promptflow.responseFieldName | quote }}
+  PROMPTFLOW_CITATIONS_FIELD_NAME: {{ .Values.datasources.promptflow.citationsFieldName | quote }}
+  
+  MONGODB_ENDPOINT: {{ .Values.datasources.mongodb.endpoint | quote }}
+  MONGODB_USERNAME: {{ .Values.datasources.mongodb.username | quote }}
+  MONGODB_PASSWORD: {{ .Values.datasources.mongodb.password | quote }}
+  MONGODB_DATABASE_NAME: {{ .Values.datasources.mongodb.databaseName | quote }}
+  MONGODB_COLLECTION_NAME: {{ .Values.datasources.mongodb.collectionName | quote }}
+  MONGODB_APP_NAME: {{ .Values.datasources.mongodb.appName | quote }}
+  MONGODB_INDEX_NAME: {{ .Values.datasources.mongodb.indexName | quote }}
+  MONGODB_TOP_K: {{ .Values.datasources.mongodb.topK | quote }}
+  MONGODB_STRICTNESS: {{ .Values.datasources.mongodb.strictness | quote }}
+  MONGODB_ENABLE_IN_DOMAIN: {{ .Values.datasources.mongodb.enableInDomain | quote }}
+  MONGODB_CONTENT_COLUMNS: {{ .Values.datasources.mongodb.contentColumns | quote }}
+  MONGODB_FILENAME_COLUMN: {{ .Values.datasources.mongodb.filenameColumn | quote }}
+  MONGODB_TITLE_COLUMN: {{ .Values.datasources.mongodb.titleColumn | quote }}
+  MONGODB_URL_COLUMN: {{ .Values.datasources.mongodb.urlColumn | quote }}
+  MONGODB_VECTOR_COLUMNS: {{ .Values.datasources.mongodb.vectorColumns | quote }}

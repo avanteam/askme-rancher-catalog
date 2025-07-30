@@ -1,0 +1,265 @@
+name: AskMe Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+
+env:
+  HARBOR_REGISTRY: "7wpjr0wh.c1.gra9.container-registry.ovh.net"
+  HARBOR_PROJECT: "library"
+  IMAGE_NAME: "askme-app"
+
+jobs:
+  # ===== TESTS =====
+  test:
+    name: 🧪 Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Python Dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Run Python Tests
+        run: pytest --cov=backend --cov-report=xml
+
+      - name: Run Frontend Tests
+        run: |
+          cd frontend
+          npm run test
+
+      - name: Lint Code
+        run: |
+          cd frontend
+          npm run lint
+
+  # ===== BUILD & PUSH DOCKER =====
+  build:
+    name: 🐳 Build & Push Docker
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push'
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Extract Version
+        id: version
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "is-release=true" >> $GITHUB_OUTPUT
+          else
+            VERSION=${GITHUB_SHA::8}
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "is-release=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Login to Harbor
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.HARBOR_REGISTRY }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+      - name: Extract Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.HARBOR_REGISTRY }}/${{ env.HARBOR_PROJECT }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix={{branch}}-
+
+      - name: Build and Push Docker Image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./WebApp.Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ===== PACKAGE HELM =====
+  package:
+    name: 📦 Package Helm Chart
+    runs-on: ubuntu-latest
+    needs: [test, build]
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: '3.12.0'
+
+      - name: Extract Version
+        id: version
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "is-release=true" >> $GITHUB_OUTPUT
+          else
+            VERSION="0.0.0-${GITHUB_SHA::8}"
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "is-release=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update Chart Version
+        run: |
+          sed -i "s/^version:.*/version: ${{ steps.version.outputs.version }}/" charts/askme/Chart.yaml
+          sed -i "s/^appVersion:.*/appVersion: \"${{ steps.version.outputs.version }}\"/" charts/askme/Chart.yaml
+
+      - name: Update Chart Values
+        run: |
+          # Mettre à jour le tag de l'image avec la version construite
+          sed -i "s|tag: \".*\"|tag: \"${{ steps.version.outputs.version }}\"|" charts/askme/values.yaml
+
+      - name: Package Helm Chart
+        run: |
+          helm package charts/askme --destination ./packages/
+
+      - name: Generate Chart Index
+        run: |
+          helm repo index ./packages/ --url https://github.com/${{ github.repository }}/releases/download
+
+      - name: Upload Chart Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: helm-charts
+          path: |
+            ./packages/*.tgz
+            ./packages/index.yaml
+
+  # ===== RELEASE =====
+  release:
+    name: 🚀 Create Release
+    runs-on: ubuntu-latest
+    needs: [test, build, package]
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download Chart Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: helm-charts
+          path: ./packages/
+
+      - name: Extract Version
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Generate Release Notes
+        id: release-notes
+        run: |
+          cat > release-notes.md << 'EOF'
+          ## AskMe v${{ steps.version.outputs.version }}
+          
+          ### 🚀 Fonctionnalités
+          - Support multi-LLM (Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini)
+          - Interface vocale avec wake words configurables
+          - Déploiement multi-client avec isolation namespace
+          - Intégration Rancher RBAC et projets
+          - Configuration complète via interface Rancher
+          
+          ### 🐳 Image Docker
+          \`${{ env.HARBOR_REGISTRY }}/${{ env.HARBOR_PROJECT }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}\`
+          
+          ### 📦 Installation
+          
+          #### Via Rancher UI
+          1. Ajouter le catalog : \`https://github.com/${{ github.repository }}\`
+          2. Apps & Marketplace → Charts → AskMe
+          3. Sélectionner version \`${{ steps.version.outputs.version }}\`
+          4. Configurer les variables client
+          5. Install
+          
+          #### Via Helm CLI
+          \`\`\`bash
+          helm repo add askme https://github.com/${{ github.repository }}/releases/download/v${{ steps.version.outputs.version }}/
+          helm repo update
+          helm install my-askme askme/askme --version ${{ steps.version.outputs.version }}
+          \`\`\`
+          
+          ### 🔧 Configuration
+          Voir [questions.yaml](charts/askme/questions.yaml) pour toutes les options disponibles.
+          EOF
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./packages/*.tgz
+            ./packages/index.yaml
+          body_path: release-notes.md
+          generate_release_notes: true
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ===== NOTIFICATION =====
+  notify:
+    name: 📢 Notification
+    runs-on: ubuntu-latest
+    needs: [test, build, package]
+    if: always()
+    steps:
+      - name: Success Notification
+        if: needs.test.result == 'success' && needs.build.result == 'success' && needs.package.result == 'success'
+        run: |
+          echo "✅ Pipeline réussie pour AskMe ${{ github.ref_name }}"
+          echo "🐳 Image: ${{ env.HARBOR_REGISTRY }}/${{ env.HARBOR_PROJECT }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}"
+          echo "📦 Chart Helm packagé avec succès"
+
+      - name: Failure Notification
+        if: needs.test.result == 'failure' || needs.build.result == 'failure' || needs.package.result == 'failure'
+        run: |
+          echo "❌ Pipeline échouée pour AskMe ${{ github.ref_name }}"
+          echo "Tests: ${{ needs.test.result }}"
+          echo "Build: ${{ needs.build.result }}"
+          echo "Package: ${{ needs.package.result }}"
