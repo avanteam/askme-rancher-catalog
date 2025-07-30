@@ -2,8 +2,8 @@ apiVersion: v2
 name: askme
 description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
 type: application
-version: 1.0.0
-appVersion: "1.0.0"
+version: 1.0.1
+appVersion: "1.0.1"
 
 # Métadonnées pour Rancher
 keywords:
@@ -22,10 +22,8 @@ maintainers:
 # Annotations pour Rancher UI
 annotations:
   catalog.cattle.io/certified: "avanteam"
-  catalog.cattle.io/namespace: "askme-system"
+  catalog.cattle.io/namespace: "askme-system" 
   catalog.cattle.io/release-name: "askme"
-  catalog.cattle.io/auto-install: "askme-crd=match"
-  catalog.cattle.io/provides-gvr: "askme.avanteam.com/v1, Kind=AskMeApp"
   catalog.cattle.io/rancher-version: ">= 2.6.0-0"
   
   # Questions UI
