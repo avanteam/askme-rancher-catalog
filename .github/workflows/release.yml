@@ -170,6 +170,20 @@ jobs:
             ./packages/*.tgz
             ./packages/index.yaml
 
+      - name: Update Repository Index
+        if: steps.version.outputs.is-release == 'true'
+        run: |
+          # Copier le nouvel index vers la racine
+          cp ./packages/index.yaml catalog/index.yaml
+          
+          # Committer et pousser l'index mis à jour
+          cd catalog
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add index.yaml
+          git commit -m "chore: Update index.yaml with version ${{ steps.version.outputs.version }}" || true
+          git push origin main || true
+
   # ===== RELEASE =====
   release:
     name: 🚀 Create Release
