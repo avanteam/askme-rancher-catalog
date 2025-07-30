@@ -39,12 +39,10 @@ jobs:
         run: |
           mkdir -p public
           
-          # Copier les charts releases existants
-          if [ -f index.yaml ]; then
-            cp index.yaml public/
-          fi
+          # Packager le chart local
+          helm package charts/askme --destination public/
           
-          # Générer l'index complet avec les releases GitHub
+          # Générer l'index avec le chart local
           cd public
           helm repo index . --url https://avanteam.github.io/askme-rancher-catalog/
           
