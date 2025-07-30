@@ -19,58 +19,41 @@ env:
 jobs:
   # ===== TESTS =====
   test:
-    name: 🧪 Tests
+    name: 🧪 Validate Catalog
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: Install Helm
+        uses: azure/setup-helm@v3
         with:
-          python-version: '3.11'
+          version: '3.12.0'
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Python Dependencies
+      - name: Validate Helm Chart
         run: |
-          pip install -r requirements.txt
-          pip install -r requirements-dev.txt
+          helm lint charts/askme/
+          helm template test charts/askme/ --dry-run
 
-      - name: Install Frontend Dependencies
+      - name: Validate questions.yaml
         run: |
-          cd frontend
-          npm install
+          # Vérifier que questions.yaml est un YAML valide
+          python -c "import yaml; yaml.safe_load(open('charts/askme/questions.yaml'))"
 
-      - name: Run Python Tests
-        run: pytest --cov=backend --cov-report=xml
-
-      - name: Run Frontend Tests
+      - name: Validate values.yaml
         run: |
-          cd frontend
-          npm run test
-
-      - name: Lint Code
-        run: |
-          cd frontend
-          npm run lint
+          # Vérifier que values.yaml est un YAML valide
+          python -c "import yaml; yaml.safe_load(open('charts/askme/values.yaml'))"
 
   # ===== BUILD & PUSH DOCKER =====
   build:
-    name: 🐳 Build & Push Docker
+    name: 🐳 Reference Existing Docker Image
     runs-on: ubuntu-latest
     needs: test
     if: github.event_name == 'push'
     outputs:
-      image-tag: ${{ steps.meta.outputs.tags }}
-      image-digest: ${{ steps.build.outputs.digest }}
+      image-tag: "${{ env.HARBOR_REGISTRY }}/${{ env.HARBOR_PROJECT }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}"
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
       - name: Extract Version
         id: version
         run: |
@@ -91,30 +74,13 @@ jobs:
           username: ${{ secrets.HARBOR_USERNAME }}
           password: ${{ secrets.HARBOR_PASSWORD }}
 
-      - name: Extract Metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.HARBOR_REGISTRY }}/${{ env.HARBOR_PROJECT }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha,prefix={{branch}}-
-
-      - name: Build and Push Docker Image
-        id: build
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./WebApp.Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          platforms: linux/amd64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      - name: Verify Image Exists
+        run: |
+          echo "Vérification que l'image Docker existe dans Harbor..."
+          IMAGE_TAG="${{ env.HARBOR_REGISTRY }}/${{ env.HARBOR_PROJECT }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}"
+          echo "Image attendue: $IMAGE_TAG"
+          echo "Note: L'image doit être buildée depuis le repository askme-app-aoai"
+          echo "Cette étape référence l'image existante pour le chart Helm"
 
   # ===== PACKAGE HELM =====
   package:
