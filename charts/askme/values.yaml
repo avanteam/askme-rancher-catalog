@@ -1,11 +1,16 @@
 # Valeurs par défaut pour AskMe Rancher Catalog
 # Ces valeurs peuvent être surchargées via l'interface Rancher
+#
+# REMARQUE IMPORTANTE SUR LES CLÉS API:
+# Les clés API ci-dessous sont des placeholders. Pour la sécurité:
+# - Laissez ces champs vides pour utiliser le secret global 'askme-global-api-keys' (recommandé)
+# - Ou remplissez avec vos propres clés pour des configurations spécifiques au client
 
 # ===== CONFIGURATION CLIENT =====
 client:
-  name: "askme"
-  namespace: "askme-app"
-  domain: "askme.example.com"
+  name: ""
+  namespace: ""
+  domain: "avanteam-saas.com"
 
 # ===== INTERFACE UTILISATEUR =====
 ui:
@@ -36,7 +41,7 @@ azure:
     enabled: true
     resource: "askmeopenai"
     endpoint: "https://askmeopenai.openai.azure.com/"
-    key: ""
+    key: "your-azure-openai-key-here"  # Laissez vide pour utiliser le secret global
     model: "Avanteam-QualitySaaS"
     modelName: "gpt-4o"
     temperature: "0.7"
@@ -64,7 +69,7 @@ azure:
   search:
     service: "askmesearchprod"
     index: "idx-v-avanteam-qualitysaas-dev"
-    key: ""
+    key: "your-azure-search-key-here"  # Laissez vide pour utiliser le secret global
     semanticSearchConfig: "idx-v-avanteam-qualitysaas-dev-semantic-configuration"
     indexIsPrechunked: "false"
     topK: "10"
@@ -84,13 +89,13 @@ azure:
     account: "db-askme-avanteam-qualitysaas-dev-historique"
     database: "db_conversation_history"
     conversationsContainer: "conversations"
-    key: ""
+    key: "your-cosmosdb-key-here"  # Laissez vide pour utiliser le secret global
     enableFeedback: "true"
 
   # ===== AZURE SPEECH =====
   speech:
     enabled: true
-    key: ""
+    key: "your-azure-speech-key-here"  # Laissez vide pour utiliser le secret global
     region: "francecentral"
     voiceFr: "fr-FR-HenriNeural"
     voiceEn: "en-US-GuyNeural"
@@ -98,7 +103,7 @@ azure:
 # ===== CLAUDE AI =====
 claude:
   enabled: true
-  apiKey: ""
+  apiKey: "your-claude-api-key-here"  # Laissez vide pour utiliser le secret global
   model: "claude-sonnet-4-20250514"
   temperature: "0"
   topP: "1.0"
@@ -110,7 +115,7 @@ claude:
 # ===== OPENAI DIRECT =====
 openai:
   enabled: false
-  apiKey: ""
+  apiKey: "your-openai-api-key-here"  # Laissez vide pour utiliser le secret global
   model: "gpt-4o"
   temperature: "0.1"
   topP: "1.0"
@@ -124,7 +129,7 @@ openai:
 # ===== MISTRAL AI =====
 mistral:
   enabled: false
-  apiKey: ""
+  apiKey: "your-mistral-api-key-here"  # Laissez vide pour utiliser le secret global
   model: "mistral-large-latest"
   temperature: "0.7"
   topP: "1.0"
@@ -136,7 +141,7 @@ mistral:
 # ===== GEMINI AI =====
 gemini:
   enabled: false
-  apiKey: ""
+  apiKey: "your-gemini-api-key-here"  # Laissez vide pour utiliser le secret global
   model: "gemini-1.5-flash"
   temperature: "0.7"
   topP: "1.0"
@@ -171,7 +176,7 @@ config:
 # ===== AVANTEAM CUSTOM =====
 avanteam:
   urlBase: "https://apprec.quality-saas.com/QMDOC/"
-  authToken: ""
+  authToken: "@v@nt€m-Q@litYs@AS-d€v31"
   licenceHubHandlerUrl: "https://aimanager-dev2.avanteam-online.com/APP/Custom/AI/AskMeV2_Monitoring/AskMeMonitoring.ashx"
   licenceHubKey: "AVANTEAM-QUALITYSAAS-DEV"
   authEnabled: false
@@ -183,9 +188,9 @@ dns:
     zone: "avanteam-saas.com"  # Zone DNS OVH à gérer
     targetIP: "auto"  # IP cible ("auto" pour récupération automatique depuis l'ingress)
     ttl: 300  # TTL en secondes pour les enregistrements DNS
-    appKey: "667723080ddee6c8"  # OVH Application Key
-    appSecret: "27b34f18a775f69c848bc4aabd80601d"  # OVH Application Secret
-    consumerKey: "d11d6ae732fa19235cf8aec58414eebd"  # OVH Consumer Key
+    appKey: "your-ovh-app-key-here"  # OVH Application Key
+    appSecret: "your-ovh-app-secret-here"  # OVH Application Secret
+    consumerKey: "your-ovh-consumer-key-here"  # OVH Consumer Key
     endpoint: "ovh-eu"  # Endpoint API OVH (ovh-eu, ovh-ca, ovh-us)
 
 # ===== RESSOURCES =====

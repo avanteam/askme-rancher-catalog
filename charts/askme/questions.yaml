@@ -3,6 +3,12 @@ categories:
 - Chat
 - Assistant
 
+# REMARQUE IMPORTANTE SUR LES CLÉS API:
+# Les valeurs par défaut ci-dessous sont des placeholders de sécurité.
+# Pour une utilisation en production:
+# - Laissez ces champs vides pour utiliser le secret global 'askme-global-api-keys' (recommandé)
+# - Ou remplissez avec vos propres clés pour des configurations spécifiques au client
+
 questions:
 # ===== CONFIGURATION CLIENT =====
 - variable: client.name
@@ -14,7 +20,7 @@ questions:
   label: "Nom du Client"
 
 - variable: client.domain
-  default: "askme.example.com"
+  default: "avanteam-saas.com"
   description: "Domaine public du client (ex: askme.avanteam-online.com)"
   type: string
   required: true
@@ -93,7 +99,7 @@ questions:
   show_if: "llm.availableProviders=AZURE_OPENAI||llm.availableProviders=~AZURE_OPENAI"
 
 - variable: azure.openai.endpoint
-  default: ""
+  default: "https://askmeopenai.openai.azure.com/"
   description: "Endpoint Azure OpenAI (ex: https://votre-resource.openai.azure.com/)"
   type: string
   required: true
@@ -102,7 +108,7 @@ questions:
   show_if: "azure.openai.enabled=true"
 
 - variable: azure.openai.key
-  default: ""
+  default: "your-azure-openai-key-here"
   description: "Clé API Azure OpenAI"
   type: password
   required: true
@@ -111,7 +117,7 @@ questions:
   show_if: "azure.openai.enabled=true"
 
 - variable: azure.openai.model
-  default: "gpt-4o"
+  default: "Avanteam-QualitySaaS"
   description: "Nom du modèle déployé"
   type: string
   required: true
@@ -129,7 +135,7 @@ questions:
   show_if: "llm.availableProviders=CLAUDE||llm.availableProviders=~CLAUDE"
 
 - variable: claude.apiKey
-  default: ""
+  default: "your-claude-api-key-here"
   description: "Clé API Claude (sk-ant-...)"
   type: password
   required: true
@@ -160,16 +166,50 @@ questions:
   show_if: "llm.availableProviders=OPENAI_DIRECT||llm.availableProviders=~OPENAI_DIRECT"
 
 - variable: openai.apiKey
-  default: ""
+  default: "your-openai-api-key-here"
   description: "Clé API OpenAI (sk-proj-...)"
   type: password
   group: "OpenAI Direct"
   label: "API Key"
   show_if: "openai.enabled=true"
 
+# ===== MISTRAL AI =====
+- variable: mistral.enabled
+  default: false
+  description: "Activer Mistral AI"
+  type: boolean
+  group: "Mistral AI"
+  label: "Activer Mistral"
+  show_if: "llm.availableProviders=MISTRAL||llm.availableProviders=~MISTRAL"
+
+- variable: mistral.apiKey
+  default: "your-mistral-api-key-here"
+  description: "Clé API Mistral"
+  type: password
+  group: "Mistral AI"
+  label: "API Key"
+  show_if: "mistral.enabled=true"
+
+# ===== GEMINI AI =====
+- variable: gemini.enabled
+  default: false
+  description: "Activer Gemini AI"
+  type: boolean
+  group: "Gemini AI"
+  label: "Activer Gemini"
+  show_if: "llm.availableProviders=GEMINI||llm.availableProviders=~GEMINI"
+
+- variable: gemini.apiKey
+  default: "your-gemini-api-key-here"
+  description: "Clé API Gemini"
+  type: password
+  group: "Gemini AI"
+  label: "API Key"
+  show_if: "gemini.enabled=true"
+
 # ===== AZURE SEARCH =====
 - variable: azure.search.service
-  default: ""
+  default: "askmesearchprod"
   description: "Nom du service Azure Search"
   type: string
   required: true
@@ -177,7 +217,7 @@ questions:
   label: "Service Search"
 
 - variable: azure.search.index
-  default: ""
+  default: "idx-v-avanteam-qualitysaas-dev"
   description: "Nom de l'index Azure Search"
   type: string
   required: true
@@ -185,7 +225,7 @@ questions:
   label: "Index"
 
 - variable: azure.search.key
-  default: ""
+  default: "your-azure-search-key-here"
   description: "Clé API Azure Search"
   type: password
   required: true
@@ -194,7 +234,7 @@ questions:
 
 # ===== AZURE COSMOSDB =====
 - variable: azure.cosmosdb.account
-  default: ""
+  default: "db-askme-avanteam-qualitysaas-dev-historique"
   description: "Nom du compte CosmosDB"
   type: string
   required: true
@@ -210,7 +250,7 @@ questions:
   label: "Base de Données"
 
 - variable: azure.cosmosdb.key
-  default: ""
+  default: "your-cosmosdb-key-here"
   description: "Clé primaire CosmosDB"
   type: password
   required: true
@@ -226,7 +266,7 @@ questions:
   label: "Activer Azure Speech"
 
 - variable: azure.speech.key
-  default: ""
+  default: "your-azure-speech-key-here"
   description: "Clé API Azure Speech"
   type: password
   group: "Services Vocaux"
@@ -331,28 +371,6 @@ questions:
   group: "Configuration Avancée"
   label: "Mode Debug"
 
-# ===== AZURE SPEECH SERVICES =====
-- variable: azure.speech.key
-  default: ""
-  description: "Clé API Azure Speech Services pour la synthèse vocale"
-  type: password
-  required: false
-  group: "Services Vocaux"
-  label: "Clé Azure Speech"
-
-- variable: azure.speech.region
-  default: "francecentral"
-  description: "Région Azure Speech Services"
-  type: string
-  group: "Services Vocaux"
-  label: "Région Azure Speech"
-
-- variable: voice.wakeWords
-  default: "Sarah,Richard,Patrick,Mérade"
-  description: "Mots de réveil pour l'activation vocale (séparés par des virgules)"
-  type: string
-  group: "Services Vocaux"
-  label: "Mots de Réveil"
 
 # ===== CONFIGURATION DATASOURCES =====
 - variable: config.datasourceType
@@ -390,8 +408,16 @@ questions:
   label: "Longueur Max Citations"
 
 # ===== AVANTEAM CUSTOM =====
+- variable: avanteam.urlBase
+  default: "https://apprec.quality-saas.com/QMDOC/"
+  description: "URL de base Avanteam pour l'accès aux documents"
+  type: string
+  required: false
+  group: "Avanteam Custom"
+  label: "URL Base Avanteam"
+
 - variable: avanteam.authToken
-  default: ""
+  default: "@v@nt€m-Q@litYs@AS-d€v31"
   description: "Token d'authentification Avanteam"
   type: password
   required: false
@@ -439,7 +465,7 @@ questions:
   show_if: "dns.ovh.enabled=true"
 
 - variable: dns.ovh.appKey
-  default: "667723080ddee6c8"
+  default: "your-ovh-app-key-here"
   description: "OVH Application Key pour l'API"
   type: string
   group: "Gestion DNS" 
@@ -447,7 +473,7 @@ questions:
   show_if: "dns.ovh.enabled=true"
 
 - variable: dns.ovh.appSecret
-  default: "27b34f18a775f69c848bc4aabd80601d"
+  default: "your-ovh-app-secret-here"
   description: "OVH Application Secret pour l'API"
   type: password
   group: "Gestion DNS"
@@ -455,7 +481,7 @@ questions:
   show_if: "dns.ovh.enabled=true"
 
 - variable: dns.ovh.consumerKey
-  default: "d11d6ae732fa19235cf8aec58414eebd"
+  default: "your-ovh-consumer-key-here"
   description: "OVH Consumer Key pour l'API"
   type: password
   group: "Gestion DNS"
