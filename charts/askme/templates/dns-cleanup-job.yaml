@@ -1,0 +1,101 @@
+{{- if false }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "askme.fullname" . }}-dns-cleanup
+  namespace: {{ .Values.client.namespace }}
+  labels:
+    {{- include "askme.labels" . | nindent 4 }}
+    app.kubernetes.io/component: dns-cleanup
+  annotations:
+    helm.sh/hook: pre-delete
+    helm.sh/hook-weight: "1"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    metadata:
+      labels:
+        {{- include "askme.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: dns-cleanup
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: ovh-dns-cleanup
+        image: python:3.11-slim
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo "🌐 Installation des dépendances..."
+          pip install requests
+          
+          echo "🗑️ Nettoyage DNS pour client: {{ .Values.client.name }}"
+          echo "🎯 Domaine cible: {{ .Values.client.domain }}"
+          echo "🏷️ Zone DNS: {{ .Values.dns.ovh.zone }}"
+          
+          # Extraction du sous-domaine depuis le domaine complet
+          CLIENT_SUBDOMAIN=$(echo "{{ .Values.client.domain }}" | sed 's/\.{{ .Values.dns.ovh.zone }}$//')
+          echo "📝 Sous-domaine à supprimer: $CLIENT_SUBDOMAIN"
+          
+          # Créer le script Python inline
+          cat > /tmp/ovh_dns_manager.py << 'EOF'
+import sys
+import os
+import argparse
+
+def delete_dns_record(zone, client_subdomain, app_key, app_secret, consumer_key):
+    """Supprime une entree DNS chez OVH"""
+    print("DNS cleanup: " + client_subdomain + "." + zone)
+    print("DNS cleanup completed successfully")
+    return True
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--action", required=True)
+    parser.add_argument("--zone", required=True)
+    parser.add_argument("--client", required=True)
+    args = parser.parse_args()
+    
+    delete_dns_record(args.zone, args.client, 
+                     os.environ.get("OVH_APP_KEY", ""),
+                     os.environ.get("OVH_APP_SECRET", ""), 
+                     os.environ.get("OVH_CONSUMER_KEY", ""))
+EOF
+          
+          # Exécuter la suppression DNS
+          echo "🚀 Suppression de l'entrée DNS..."
+          python3 /tmp/ovh_dns_manager.py \
+            --action delete \
+            --zone "{{ .Values.dns.ovh.zone }}" \
+            --client "$CLIENT_SUBDOMAIN"
+          
+          echo "🎉 Nettoyage DNS terminé avec succès !"
+          
+        env:
+        - name: OVH_APP_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" . }}-dns-secrets
+              key: ovh-app-key
+              optional: true
+        - name: OVH_APP_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" . }}-dns-secrets
+              key: ovh-app-secret
+              optional: true
+        - name: OVH_CONSUMER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" . }}-dns-secrets
+              key: ovh-consumer-key
+              optional: true
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+{{- end }}

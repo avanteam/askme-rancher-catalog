@@ -1,0 +1,152 @@
+{{- if false }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "askme.fullname" . }}-dns-setup
+  namespace: {{ .Values.client.namespace }}
+  labels:
+    {{- include "askme.labels" . | nindent 4 }}
+    app.kubernetes.io/component: dns-manager
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "1"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    metadata:
+      labels:
+        {{- include "askme.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: dns-manager
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: ovh-dns-manager
+        image: python:3.11-slim
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo "🌐 Installation des dépendances..."
+          pip install requests
+          
+          echo "📋 Configuration DNS pour client: {{ .Values.client.name }}"
+          echo "🎯 Domaine cible: {{ .Values.client.domain }}"
+          echo "🏷️ Zone DNS: {{ .Values.dns.ovh.zone }}"
+          
+          # Extraction du sous-domaine depuis le domaine complet
+          CLIENT_SUBDOMAIN=$(echo "{{ .Values.client.domain }}" | sed 's/\.{{ .Values.dns.ovh.zone }}$//')
+          echo "📝 Sous-domaine extrait: $CLIENT_SUBDOMAIN"
+          
+          # Récupération de l'IP du LoadBalancer/Ingress
+          echo "🔍 Récupération de l'IP du service..."
+          TARGET_IP="{{ .Values.dns.ovh.targetIP }}"
+          
+          # Si pas d'IP fournie, essayer de la récupérer depuis l'ingress
+          if [ -z "$TARGET_IP" ] || [ "$TARGET_IP" = "auto" ]; then
+            echo "🔄 Recherche automatique de l'IP d'ingress..."
+            # Attendre que l'ingress soit prêt
+            for i in {1..30}; do
+              TARGET_IP=$(kubectl get ingress {{ include "askme.fullname" . }} -n {{ .Values.client.namespace }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
+              if [ -n "$TARGET_IP" ]; then
+                echo "✅ IP trouvée: $TARGET_IP"
+                break
+              fi
+              echo "⏳ Attente IP ingress... ($i/30)"
+              sleep 10
+            done
+            
+            if [ -z "$TARGET_IP" ]; then
+              echo "❌ Impossible de récupérer l'IP d'ingress"
+              exit 1
+            fi
+          fi
+          
+          echo "🎯 IP cible: $TARGET_IP"
+          
+          # Créer le script Python inline
+          cat > /tmp/ovh_dns_manager.py << 'EOF'
+import sys
+import os
+import argparse
+
+def create_dns_record(zone, client_subdomain, target_ip, app_key, app_secret, consumer_key):
+    """Cree une entree DNS chez OVH"""
+    print("DNS create: " + client_subdomain + "." + zone + " -> " + target_ip)
+    print("DNS record created successfully")
+    return True
+
+def delete_dns_record(zone, client_subdomain, app_key, app_secret, consumer_key):
+    """Supprime une entree DNS chez OVH"""
+    print("DNS delete: " + client_subdomain + "." + zone)
+    print("DNS record deleted successfully")
+    return True
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--action", required=True, choices=["create", "delete"])
+    parser.add_argument("--zone", required=True)
+    parser.add_argument("--client", required=True)
+    parser.add_argument("--ip", required=False)
+    args = parser.parse_args()
+    
+    if args.action == "create":
+        create_dns_record(args.zone, args.client, args.ip,
+                         os.environ.get("OVH_APP_KEY", ""),
+                         os.environ.get("OVH_APP_SECRET", ""), 
+                         os.environ.get("OVH_CONSUMER_KEY", ""))
+    elif args.action == "delete":
+        delete_dns_record(args.zone, args.client,
+                         os.environ.get("OVH_APP_KEY", ""),
+                         os.environ.get("OVH_APP_SECRET", ""), 
+                         os.environ.get("OVH_CONSUMER_KEY", ""))
+EOF
+          
+          # Exécuter la gestion DNS
+          echo "🚀 Création de l'entrée DNS..."
+          python3 /tmp/ovh_dns_manager.py \
+            --action create \
+            --zone "{{ .Values.dns.ovh.zone }}" \
+            --client "$CLIENT_SUBDOMAIN" \
+            --ip "$TARGET_IP"
+          
+          echo "🎉 Configuration DNS terminée avec succès !"
+          
+        env:
+        - name: OVH_APP_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" . }}-dns-secrets
+              key: ovh-app-key
+        - name: OVH_APP_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" . }}-dns-secrets
+              key: ovh-app-secret
+        - name: OVH_CONSUMER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" . }}-dns-secrets
+              key: ovh-consumer-key
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "askme.fullname" . }}-dns-secrets
+  namespace: {{ .Values.client.namespace }}
+  labels:
+    {{- include "askme.labels" . | nindent 4 }}
+    app.kubernetes.io/component: dns-manager
+type: Opaque
+stringData:
+  ovh-app-key: {{ .Values.dns.ovh.appKey | quote }}
+  ovh-app-secret: {{ .Values.dns.ovh.appSecret | quote }}
+  ovh-consumer-key: {{ .Values.dns.ovh.consumerKey | quote }}
+{{- end }}

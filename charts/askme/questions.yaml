@@ -330,3 +330,146 @@ questions:
   type: boolean
   group: "Configuration Avancée"
   label: "Mode Debug"
+
+# ===== AZURE SPEECH SERVICES =====
+- variable: azure.speech.key
+  default: ""
+  description: "Clé API Azure Speech Services pour la synthèse vocale"
+  type: password
+  required: false
+  group: "Services Vocaux"
+  label: "Clé Azure Speech"
+
+- variable: azure.speech.region
+  default: "francecentral"
+  description: "Région Azure Speech Services"
+  type: string
+  group: "Services Vocaux"
+  label: "Région Azure Speech"
+
+- variable: voice.wakeWords
+  default: "Sarah,Richard,Patrick,Mérade"
+  description: "Mots de réveil pour l'activation vocale (séparés par des virgules)"
+  type: string
+  group: "Services Vocaux"
+  label: "Mots de Réveil"
+
+# ===== CONFIGURATION DATASOURCES =====
+- variable: config.datasourceType
+  default: "AzureCognitiveSearch"
+  description: "Type de source de données"
+  type: enum
+  options:
+    - "AzureCognitiveSearch"
+    - "AzureCosmosDB"
+    - "Elasticsearch"
+    - "Pinecone"
+    - "MongoDB"
+  group: "Sources de Données"
+  label: "Type de Source"
+
+- variable: config.searchTopK
+  default: "10"
+  description: "Nombre maximum de documents à récupérer"
+  type: string
+  group: "Sources de Données"
+  label: "Nombre de Documents"
+
+- variable: config.imageMaxSizeMb
+  default: "12.0"
+  description: "Taille maximum des images uploadées (MB)"
+  type: string
+  group: "Configuration Générale"
+  label: "Taille Max Images"
+
+- variable: config.citationContentMaxLength
+  default: "2000"
+  description: "Longueur maximum du contenu des citations"
+  type: string
+  group: "Configuration Générale"
+  label: "Longueur Max Citations"
+
+# ===== AVANTEAM CUSTOM =====
+- variable: avanteam.authToken
+  default: ""
+  description: "Token d'authentification Avanteam"
+  type: password
+  required: false
+  group: "Avanteam Custom"
+  label: "Token Auth Avanteam"
+
+- variable: avanteam.licenceHubKey
+  default: "AVANTEAM-QUALITYSAAS-DEV"
+  description: "Clé de licence Hub Avanteam"
+  type: string
+  group: "Avanteam Custom"
+  label: "Clé Licence Hub"
+
+# ===== GESTION DNS AUTOMATIQUE =====
+- variable: dns.ovh.enabled
+  default: true
+  description: "Activer la création automatique des entrées DNS OVH"
+  type: boolean
+  group: "Gestion DNS"
+  label: "DNS Automatique OVH"
+
+- variable: dns.ovh.zone
+  default: "avanteam-saas.com"
+  description: "Zone DNS OVH à gérer"
+  type: string
+  required: true
+  group: "Gestion DNS"
+  label: "Zone DNS"
+  show_if: "dns.ovh.enabled=true"
+
+- variable: dns.ovh.targetIP
+  default: "auto"
+  description: "IP cible pour l'entrée DNS ('auto' pour récupération automatique)"
+  type: string
+  group: "Gestion DNS"
+  label: "IP Cible"
+  show_if: "dns.ovh.enabled=true"
+
+- variable: dns.ovh.ttl
+  default: "300"
+  description: "TTL en secondes pour les enregistrements DNS"
+  type: string
+  group: "Gestion DNS"
+  label: "TTL DNS"
+  show_if: "dns.ovh.enabled=true"
+
+- variable: dns.ovh.appKey
+  default: "667723080ddee6c8"
+  description: "OVH Application Key pour l'API"
+  type: string
+  group: "Gestion DNS" 
+  label: "OVH App Key"
+  show_if: "dns.ovh.enabled=true"
+
+- variable: dns.ovh.appSecret
+  default: "27b34f18a775f69c848bc4aabd80601d"
+  description: "OVH Application Secret pour l'API"
+  type: password
+  group: "Gestion DNS"
+  label: "OVH App Secret"
+  show_if: "dns.ovh.enabled=true"
+
+- variable: dns.ovh.consumerKey
+  default: "d11d6ae732fa19235cf8aec58414eebd"
+  description: "OVH Consumer Key pour l'API"
+  type: password
+  group: "Gestion DNS"
+  label: "OVH Consumer Key"
+  show_if: "dns.ovh.enabled=true"
+
+- variable: dns.ovh.endpoint
+  default: "ovh-eu"
+  description: "Endpoint API OVH selon la région"
+  type: enum
+  options:
+    - "ovh-eu"
+    - "ovh-ca"
+    - "ovh-us"
+  group: "Gestion DNS"
+  label: "Endpoint OVH"
+  show_if: "dns.ovh.enabled=true"

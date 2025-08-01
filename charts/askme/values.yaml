@@ -16,6 +16,7 @@ ui:
   chatTitle: "Commencer une discussion"
   favicon: ""
   showShareButton: false
+  showChatHistoryButton: true
   showExportButton: true
 
 # ===== CONFIGURATION IMAGE =====
@@ -33,15 +34,24 @@ llm:
 azure:
   openai:
     enabled: true
-    resource: ""
-    endpoint: ""
+    resource: "askmeopenai"
+    endpoint: "https://askmeopenai.openai.azure.com/"
     key: ""
-    model: "gpt-4o"
+    model: "Avanteam-QualitySaaS"
     modelName: "gpt-4o"
     temperature: "0.7"
     topP: "0.95"
+    stopSequence: ""
+    seed: ""
+    choicesCount: "1"
+    presencePenalty: "0.0"
+    frequencyPenalty: "0.0"
+    logitBias: ""
+    user: ""
+    tools: ""
+    toolChoice: ""
     stream: "true"
-    systemMessage: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS."
+    systemMessage: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable. Parfois, tu verras des chaines sous la forme [iddoc|ID_DU_DOC|DESCRIPTION] qui correspondent à des références de document pour créer des liens. Tu dois les retranscrire telles quelles lorsque c'est pertinent, mais ne les modifie pas, et n'en invente surtout pas si tu n'en a pas. Si l'utilisateur évoque un incident (non-conformité, réclamation, panne, etc.), génère une chaîne avec ce format : [createRecord|Titre du lien|Description] Titre du lien : incite clairement l'utilisateur à créer l'enregistrement dans QualitySaaS. Description : retranscris fidèlement l'incident exposé par l'UTILISATEUR, avec précision et clarté. Ne modifie jamais les symboles [|] ni la chaîne createRecord. Tu construira ta réponse en te basant sur toutes les citations que tu recois en contexte, sans exception tu n'en oubliera aucune. J'insite, mets autant de référence que possible."
     responseVeryShortMaxTokens: "1000"
     responseNormalMaxTokens: "6000"
     responseComprehensiveMaxTokens: "16000"
@@ -52,10 +62,10 @@ azure:
 
   # ===== AZURE SEARCH =====
   search:
-    service: ""
-    index: ""
+    service: "askmesearchprod"
+    index: "idx-v-avanteam-qualitysaas-dev"
     key: ""
-    semanticSearchConfig: ""
+    semanticSearchConfig: "idx-v-avanteam-qualitysaas-dev-semantic-configuration"
     indexIsPrechunked: "false"
     topK: "10"
     enableInDomain: "true"
@@ -71,7 +81,7 @@ azure:
 
   # ===== AZURE COSMOSDB =====
   cosmosdb:
-    account: ""
+    account: "db-askme-avanteam-qualitysaas-dev-historique"
     database: "db_conversation_history"
     conversationsContainer: "conversations"
     key: ""
@@ -92,7 +102,7 @@ claude:
   model: "claude-sonnet-4-20250514"
   temperature: "0"
   topP: "1.0"
-  systemMessage: "Tu es AskMe (CLAUDE), l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS."
+  systemMessage: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable. Utilise EXCLUSIVEMENT les informations fournies dans les documents suivants pour répondre aux questions. Si l'information n'est pas disponible dans ces documents, indique clairement que tu ne peux pas répondre à partir des sources disponibles. Quand tu cites une information, utilise le format [doc1], [doc2], etc. pour référencer les documents. Si l'utilisateur évoque un incident (non-conformité, réclamation, panne, etc.), génère une chaîne avec ce format : [createRecord|Titre du lien|Description] où : - Titre du lien : incite clairement l'utilisateur à créer l'enregistrement dans QualitySaaS - Description : retranscris fidèlement l'incident exposé par l'UTILISATEUR, avec précision et clarté. Tu peux également voir des chaines sous la forme [iddoc|ID_DU_DOC|DESCRIPTION] qui correspondent à des références de document pour créer des liens. Tu dois les retranscrire telles quelles lorsque c'est pertinent, mais ne les modifie pas, et n'en invente surtout pas si tu n'en a pas."
   responseVeryShortMaxTokens: "2000"
   responseNormalMaxTokens: "10000"
   responseComprehensiveMaxTokens: "40000"
@@ -102,10 +112,11 @@ openai:
   enabled: false
   apiKey: ""
   model: "gpt-4o"
-  temperature: "0.2"
+  temperature: "0.1"
   topP: "1.0"
+  stopSequence: ""
   baseUrl: "https://api.openai.com/v1"
-  systemMessage: "Tu es AskMe (OpenAI), l'assistant virtuel d'Avanteam."
+  systemMessage: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable. Utilise EXCLUSIVEMENT les informations fournies dans les documents suivants pour répondre aux questions. Si l'information n'est pas disponible dans ces documents, indique clairement que tu ne peux pas répondre à partir des sources disponibles. Quand tu cites une information, utilise le format [doc1], [doc2], etc. pour référencer les documents. Si l'utilisateur évoque un incident (non-conformité, réclamation, panne, etc.), génère une chaîne avec ce format : [createRecord|Titre du lien|Description] où : - Titre du lien : incite clairement l'utilisateur à créer l'enregistrement dans QualitySaaS - Description : retranscris fidèlement l'incident exposé par l'UTILISATEUR, avec précision et clarté. Tu peux également voir des chaines sous la forme [iddoc|ID_DU_DOC|DESCRIPTION] qui correspondent à des références de document pour créer des liens. Tu dois les retranscrire telles quelles lorsque c'est pertinent, mais ne les modifie pas, et n'en invente surtout pas si tu n'en a pas."
   responseVeryShortMaxTokens: "1500"
   responseNormalMaxTokens: "8000"
   responseComprehensiveMaxTokens: "16000"
@@ -117,7 +128,7 @@ mistral:
   model: "mistral-large-latest"
   temperature: "0.7"
   topP: "1.0"
-  systemMessage: "Tu es AskMe (Mistral), l'assistant virtuel d'Avanteam."
+  systemMessage: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable. Utilise EXCLUSIVEMENT les informations fournies dans les documents suivants pour répondre aux questions. Si l'information n'est pas disponible dans ces documents, indique clairement que tu ne peux pas répondre à partir des sources disponibles. Quand tu cites une information, utilise le format [doc1], [doc2], etc. pour référencer les documents. Si l'utilisateur évoque un incident (non-conformité, réclamation, panne, etc.), génère une chaîne avec ce format : [createRecord|Titre du lien|Description] où : - Titre du lien : incite clairement l'utilisateur à créer l'enregistrement dans QualitySaaS - Description : retranscris fidèlement l'incident exposé par l'UTILISATEUR, avec précision et clarté. Tu peux également voir des chaines sous la forme [iddoc|ID_DU_DOC|DESCRIPTION] qui correspondent à des références de document pour créer des liens. Tu dois les retranscrire telles quelles lorsque c'est pertinent, mais ne les modifie pas, et n'en invente surtout pas si tu n'en a pas."
   responseVeryShortMaxTokens: "1500"
   responseNormalMaxTokens: "8000"
   responseComprehensiveMaxTokens: "30000"
@@ -129,7 +140,7 @@ gemini:
   model: "gemini-1.5-flash"
   temperature: "0.7"
   topP: "1.0"
-  systemMessage: "Tu es AskMe (Gemini), l'assistant virtuel d'Avanteam."
+  systemMessage: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable. Utilise EXCLUSIVEMENT les informations fournies dans les documents suivants pour répondre aux questions. Si l'information n'est pas disponible dans ces documents, indique clairement que tu ne peux pas répondre à partir des sources disponibles. Quand tu cites une information, utilise le format [doc1], [doc2], etc. pour référencer les documents. Si l'utilisateur évoque un incident (non-conformité, réclamation, panne, etc.), génère une chaîne avec ce format : [createRecord|Titre du lien|Description] où : - Titre du lien : incite clairement l'utilisateur à créer l'enregistrement dans QualitySaaS - Description : retranscris fidèlement l'incident exposé par l'UTILISATEUR, avec précision et clarté. Tu peux également voir des chaines sous la forme [iddoc|ID_DU_DOC|DESCRIPTION] qui correspondent à des références de document pour créer des liens. Tu dois les retranscrire telles quelles lorsque c'est pertinent, mais ne les modifie pas, et n'en invente surtout pas si tu n'en a pas."
   responseVeryShortMaxTokens: "1500"
   responseNormalMaxTokens: "8000"
   responseComprehensiveMaxTokens: "30000"
@@ -154,6 +165,8 @@ config:
   azureUseAuthentication: "false"
   chatHistoryEnabled: "true"
   orchestrationStrategy: "openai_functions"
+  scmDoBuildDuringDeployment: "true"
+  azureSearchUseSemanticSearch: "true"
 
 # ===== AVANTEAM CUSTOM =====
 avanteam:
@@ -162,6 +175,18 @@ avanteam:
   licenceHubHandlerUrl: "https://aimanager-dev2.avanteam-online.com/APP/Custom/AI/AskMeV2_Monitoring/AskMeMonitoring.ashx"
   licenceHubKey: "AVANTEAM-QUALITYSAAS-DEV"
   authEnabled: false
+
+# ===== GESTION DNS AUTOMATIQUE =====
+dns:
+  ovh:
+    enabled: true  # Activer pour créer automatiquement les entrées DNS
+    zone: "avanteam-saas.com"  # Zone DNS OVH à gérer
+    targetIP: "auto"  # IP cible ("auto" pour récupération automatique depuis l'ingress)
+    ttl: 300  # TTL en secondes pour les enregistrements DNS
+    appKey: "667723080ddee6c8"  # OVH Application Key
+    appSecret: "27b34f18a775f69c848bc4aabd80601d"  # OVH Application Secret
+    consumerKey: "d11d6ae732fa19235cf8aec58414eebd"  # OVH Consumer Key
+    endpoint: "ovh-eu"  # Endpoint API OVH (ovh-eu, ovh-ca, ovh-us)
 
 # ===== RESSOURCES =====
 replicaCount: 2

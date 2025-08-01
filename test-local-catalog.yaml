@@ -1,7 +1,0 @@
-apiVersion: catalog.cattle.io/v1
-kind: ClusterRepo
-metadata:
-  name: askme-local-catalog
-spec:
-  gitRepo: https://github.com/avanteam/askme-rancher-catalog
-  gitBranch: main

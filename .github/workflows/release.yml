@@ -60,11 +60,26 @@ jobs:
         with:
           path: catalog
 
+      - name: Extract Source Version
+        id: source-version
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            # Pour les tags, utiliser le même tag dans askme-app-aoai
+            SOURCE_REF=${GITHUB_REF#refs/tags/}
+            echo "source-ref=$SOURCE_REF" >> $GITHUB_OUTPUT
+            echo "📌 Using tagged version: $SOURCE_REF from askme-app-aoai"
+          else
+            # Pour les branches, utiliser main
+            SOURCE_REF="main"
+            echo "source-ref=$SOURCE_REF" >> $GITHUB_OUTPUT
+            echo "📌 Using branch: $SOURCE_REF from askme-app-aoai"
+          fi
+
       - name: Checkout AskMe App Source
         uses: actions/checkout@v4
         with:
           repository: avanteam/askme-app-aoai
-          ref: main
+          ref: ${{ steps.source-version.outputs.source-ref }}
           path: app-source
           token: ${{ secrets.APP_REPO_TOKEN || secrets.GITHUB_TOKEN }}
 
