@@ -17,8 +17,45 @@ entries:
       catalog.cattle.io/release-name: askme
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
+    appVersion: 1.0.1
+    created: "2025-09-01T16:08:33.247246582Z"
+    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
+    digest: 9e18d9a2acdf8cbe47fa1cc516525d32bbf0fe43e25b9604e1023e696e9a7fc8
+    home: https://github.com/avanteam/askme-rancher-catalog
+    keywords:
+    - ai
+    - chatbot
+    - llm
+    - avanteam
+    - qualitysaas
+    maintainers:
+    - email: devops@avanteam.com
+      name: Avanteam DevOps
+    name: askme
+    sources:
+    - https://github.com/avanteam/askme-app
+    type: application
+    urls:
+    - https://github.com/avanteam/askme-rancher-catalog/askme-1.0.1.tgz
+    version: 1.0.1
+  - annotations:
+      catalog.cattle.io/certified: avanteam
+      catalog.cattle.io/changes: |-
+        - Version initiale
+        - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
+        - Interface vocale avec wake words
+        - Multi-client avec isolation namespace
+        - Intégration Rancher RBAC
+      catalog.cattle.io/display-name: AskMe Assistant IA
+      catalog.cattle.io/kube-version: '>= 1.21.0-0'
+      catalog.cattle.io/namespace: askme-system
+      catalog.cattle.io/questions-path: questions.yaml
+      catalog.cattle.io/rancher-version: '>= 2.6.0-0'
+      catalog.cattle.io/release-name: askme
+      catalog.cattle.io/upstream-version: 1.0.0
+    apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-09-01T15:50:50.879191583Z"
+    created: "2025-09-01T16:08:33.245498507Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
     digest: df0d9c50eb379e159b053f22852c607b6ce2ee7a425afd594f01848bd2195cc0
     home: https://github.com/avanteam/askme-rancher-catalog
@@ -38,4 +75,4 @@ entries:
     urls:
     - https://github.com/avanteam/askme-rancher-catalog/askme-1.0.0.tgz
     version: 1.0.0
-generated: "2025-09-01T15:50:50.877448561Z"
+generated: "2025-09-01T16:08:33.24372891Z"
