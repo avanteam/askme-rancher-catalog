@@ -9,8 +9,8 @@ entries:
     type: application
     urls:
     - https://github.com/avanteam/askme-rancher-catalog/releases/download/v1.0.0/askme-1.0.0.tgz
-    created: "2025-08-01T14:02:45Z"
+    created: "2025-09-01T14:51:06Z"
     maintainers:
     - name: Avanteam DevOps
       email: devops@avanteam.com
-generated: "2025-08-01T14:02:45Z"
+generated: "2025-09-01T14:51:06Z"
