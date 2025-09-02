@@ -272,16 +272,162 @@ spec:
               name: {{ include "askme.fullname" $ }}-config
               key: SCM_DO_BUILD_DURING_DEPLOYMENT
         
-        # Secrets
-        {{- range $key, $value := .Values.secrets }}
-        {{- if $value }}
-        - name: {{ $key }}
+        # Secrets - All LLM Provider APIs and Azure Services
+        # Azure OpenAI
+        - name: AZURE_OPENAI_RESOURCE
           valueFrom:
             secretKeyRef:
-              name: {{ include "askme.fullname" $ }}-secrets
-              key: {{ $key }}
-        {{- end }}
-        {{- end }}
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_RESOURCE
+        - name: AZURE_OPENAI_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_ENDPOINT
+        - name: AZURE_OPENAI_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_KEY
+        - name: AZURE_OPENAI_MODEL
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_MODEL
+        - name: AZURE_OPENAI_MODEL_NAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_MODEL_NAME
+        - name: AZURE_OPENAI_TEMPERATURE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_TEMPERATURE
+        - name: AZURE_OPENAI_TOP_P
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_TOP_P
+        - name: AZURE_OPENAI_STREAM
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_STREAM
+        - name: AZURE_OPENAI_SYSTEM_MESSAGE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_SYSTEM_MESSAGE
+        - name: AZURE_OPENAI_RESPONSE_VERY_SHORT_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_RESPONSE_VERY_SHORT_MAX_TOKENS
+        - name: AZURE_OPENAI_RESPONSE_NORMAL_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_RESPONSE_NORMAL_MAX_TOKENS
+        - name: AZURE_OPENAI_RESPONSE_COMPREHENSIVE_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_RESPONSE_COMPREHENSIVE_MAX_TOKENS
+        
+        # Claude AI
+        - name: CLAUDE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: CLAUDE_API_KEY
+        - name: CLAUDE_MODEL
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: CLAUDE_MODEL
+        - name: CLAUDE_TEMPERATURE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: CLAUDE_TEMPERATURE
+        - name: CLAUDE_TOP_P
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: CLAUDE_TOP_P
+        - name: CLAUDE_SYSTEM_MESSAGE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: CLAUDE_SYSTEM_MESSAGE
+        - name: CLAUDE_RESPONSE_VERY_SHORT_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: CLAUDE_RESPONSE_VERY_SHORT_MAX_TOKENS
+        - name: CLAUDE_RESPONSE_NORMAL_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: CLAUDE_RESPONSE_NORMAL_MAX_TOKENS
+        - name: CLAUDE_RESPONSE_COMPREHENSIVE_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: CLAUDE_RESPONSE_COMPREHENSIVE_MAX_TOKENS
+        
+        # Azure Services
+        - name: AZURE_SEARCH_SERVICE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_SEARCH_SERVICE
+        - name: AZURE_SEARCH_INDEX
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_SEARCH_INDEX
+        - name: AZURE_SEARCH_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_SEARCH_KEY
+        - name: AZURE_SPEECH_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_SPEECH_KEY
+        - name: AZURE_SPEECH_REGION
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_SPEECH_REGION
+        - name: AZURE_COSMOSDB_ACCOUNT
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_COSMOSDB_ACCOUNT
+        - name: AZURE_COSMOSDB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_COSMOSDB_DATABASE
+        - name: AZURE_COSMOSDB_CONVERSATIONS_CONTAINER
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_COSMOSDB_CONVERSATIONS_CONTAINER
+        - name: AZURE_COSMOSDB_ACCOUNT_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_COSMOSDB_ACCOUNT_KEY
+        - name: AZURE_COSMOSDB_ENABLE_FEEDBACK
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_COSMOSDB_ENABLE_FEEDBACK
         
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
