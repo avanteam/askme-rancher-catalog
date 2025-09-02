@@ -52,7 +52,7 @@ data:
   ORCHESTRATION_STRATEGY: {{ .Values.config.orchestrationStrategy | quote }}
   
   # Azure Search
-  AZURE_SEARCH_USE_SEMANTIC_SEARCH: {{ .Values.azure.search.useSemanticSearch | quote }}
+  AZURE_SEARCH_USE_SEMANTIC_SEARCH: {{ .Values.config.azureSearchUseSemanticSearch | quote }}
   AZURE_SEARCH_SEMANTIC_SEARCH_CONFIG: {{ .Values.azure.search.semanticSearchConfig | quote }}
   AZURE_SEARCH_INDEX_IS_PRECHUNKED: {{ .Values.azure.search.indexIsPrechunked | quote }}
   AZURE_SEARCH_TOP_K: {{ .Values.azure.search.topK | quote }}

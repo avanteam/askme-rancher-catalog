@@ -36,11 +36,19 @@ spec:
         env:
         # Configuration from ConfigMap
         {{- range $key, $value := .Values.config }}
+        {{- if eq $key "azureSearchUseSemanticSearch" }}
+        - name: {{ $key }}
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SEARCH_USE_SEMANTIC_SEARCH
+        {{- else }}
         - name: {{ $key }}
           valueFrom:
             configMapKeyRef:
               name: {{ include "askme.fullname" $ }}-config
               key: {{ $key }}
+        {{- end }}
         {{- end }}
         
         # Secrets
