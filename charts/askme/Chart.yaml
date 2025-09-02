@@ -22,7 +22,7 @@ maintainers:
 # Annotations pour Rancher UI
 annotations:
   catalog.cattle.io/certified: "avanteam"
-  # catalog.cattle.io/namespace: "askme-system" # Supprimé - utilise le namespace dynamique 
+  catalog.cattle.io/namespace: "askme-platform"  # Namespace fixe et obligatoire
   catalog.cattle.io/release-name: "askme"
   catalog.cattle.io/rancher-version: ">= 2.6.0-0"
   

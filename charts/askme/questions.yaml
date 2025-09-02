@@ -10,14 +10,24 @@ categories:
 # - Ou remplissez avec vos propres clés pour des configurations spécifiques au client
 
 questions:
+# ===== CONFIGURATION DÉPLOIEMENT =====
+- variable: nameOverride
+  default: ""
+  description: "Nom unique du déploiement AskMe (ex: rh, finance, it). Laissez vide pour utiliser le nom par défaut."
+  type: string
+  required: false
+  group: "Configuration Déploiement"
+  label: "Nom Personnalisé (optionnel)"
+
 # ===== CONFIGURATION CLIENT =====
 - variable: client.name
   default: "askme-client-1"
-  description: "Nom unique du déploiement (ex: askme-client-rh, askme-client-finance)"
+  description: "Nom technique du client (utilisé en interne)"
   type: string
   required: true
   group: "Configuration Client"
-  label: "Nom du Déploiement AskMe"
+  label: "Nom Technique Client"
+  show_if: false
 
 - variable: client.domain
   default: "avanteam-saas.com"

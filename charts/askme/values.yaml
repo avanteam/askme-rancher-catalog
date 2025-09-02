@@ -6,6 +6,10 @@
 # - Laissez ces champs vides pour utiliser le secret global 'askme-global-api-keys' (recommandé)
 # - Ou remplissez avec vos propres clés pour des configurations spécifiques au client
 
+# ===== CONFIGURATION DÉPLOIEMENT =====
+nameOverride: ""
+fullnameOverride: ""
+
 # ===== CONFIGURATION CLIENT =====
 client:
   name: "askme-client"
