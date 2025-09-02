@@ -29,6 +29,14 @@ questions:
   label: "Nom Technique Client"
   show_if: false
 
+- variable: client.namespace
+  default: "askme-platform"
+  description: "Namespace Kubernetes pour toutes les applications AskMe (recommandé: askme-platform)"
+  type: string
+  required: true
+  group: "Configuration Client"
+  label: "Namespace"
+
 - variable: client.domain
   default: "avanteam-saas.com"
   description: "Domaine public du client (ex: askme.avanteam-online.com)"
