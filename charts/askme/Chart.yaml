@@ -23,7 +23,7 @@ maintainers:
 annotations:
   catalog.cattle.io/certified: "avanteam"
   # catalog.cattle.io/namespace: "askme-platform"  # Supprimé - cause des problèmes UI
-  catalog.cattle.io/release-name: "askme"
+  # catalog.cattle.io/release-name: "askme"  # Supprimé pour permettre des noms uniques
   catalog.cattle.io/rancher-version: ">= 2.6.0-0"
   
   # Questions UI

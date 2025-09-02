@@ -5,6 +5,9 @@ metadata:
   namespace: {{ .Values.client.namespace }}
   labels:
     {{- include "askme.labels" . | nindent 4 }}
+    askme.avanteam.com/client-name: {{ .Values.client.name | quote }}
+  annotations:
+    askme.avanteam.com/display-name: {{ .Values.client.name | quote }}
 spec:
   type: {{ .Values.service.type }}
   ports:

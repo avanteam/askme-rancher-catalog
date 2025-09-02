@@ -3,6 +3,10 @@ categories:
 - Chat
 - Assistant
 
+# INSTRUCTIONS DE DÉPLOIEMENT:
+# Note: Le Release Name est auto-généré par Rancher (ex: askme-abc123)
+# Seul le 'Nom du Déploiement' ci-dessous définit le nom des ressources Kubernetes
+
 # REMARQUE IMPORTANTE SUR LES CLÉS API:
 # Les valeurs par défaut ci-dessous sont des placeholders de sécurité.
 # Pour une utilisation en production:
@@ -13,7 +17,7 @@ questions:
 # ===== CONFIGURATION CLIENT =====
 - variable: client.name
   default: "askme-client"
-  description: "Nom unique du déploiement AskMe (ex: askme-rh, askme-finance, askme-it)"
+  description: "Nom unique du déploiement AskMe (ex: askme-rh, askme-finance, askme-it). IMPORTANT: Utilisez ce même nom comme 'Release Name' en page 1."
   type: string
   required: true
   group: "Configuration Client"
