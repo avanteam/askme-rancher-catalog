@@ -27,7 +27,7 @@ questions:
   required: true
   group: "Configuration Client"
   label: "Nom Technique Client"
-  show_if: false
+  show_if: "false"
 
 - variable: client.namespace
   default: "askme-platform"
