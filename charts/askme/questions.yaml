@@ -12,12 +12,12 @@ categories:
 questions:
 # ===== CONFIGURATION CLIENT =====
 - variable: client.name
-  default: "askme"
-  description: "Nom du client (utilisé pour les ressources Kubernetes)"
+  default: "askme-client-1"
+  description: "Nom unique du déploiement (ex: askme-client-rh, askme-client-finance)"
   type: string
   required: true
   group: "Configuration Client"
-  label: "Nom du Client"
+  label: "Nom du Déploiement AskMe"
 
 - variable: client.domain
   default: "avanteam-saas.com"
@@ -26,14 +26,6 @@ questions:
   required: true
   group: "Configuration Client"
   label: "Domaine Client"
-
-- variable: client.namespace
-  default: "askme-app"
-  description: "Namespace Kubernetes pour l'isolation"
-  type: string
-  required: true
-  group: "Configuration Client"
-  label: "Namespace"
 
 # ===== INTERFACE UTILISATEUR =====
 - variable: ui.title

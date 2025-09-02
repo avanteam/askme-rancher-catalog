@@ -9,7 +9,7 @@
 # ===== CONFIGURATION CLIENT =====
 client:
   name: "askme-client"
-  namespace: "askme-app"  # Namespace par défaut, cohérent avec questions.yaml
+  namespace: "askme-platform"  # Namespace fixe pour toutes les applications
   domain: "avanteam-saas.com"
 
 # ===== INTERFACE UTILISATEUR =====
