@@ -11,16 +11,15 @@ entries:
         - Intégration Rancher RBAC
       catalog.cattle.io/display-name: AskMe Assistant IA
       catalog.cattle.io/kube-version: '>= 1.21.0-0'
-      # catalog.cattle.io/namespace: askme-system # Supprimé - utilise le namespace dynamique
       catalog.cattle.io/questions-path: questions.yaml
       catalog.cattle.io/rancher-version: '>= 2.6.0-0'
       catalog.cattle.io/release-name: askme
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-09-02T08:20:28.906745049Z"
+    created: "2025-09-02T08:55:07.165389553Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: 18fafba6a5bcc75d847fb2205a586a2951abc01d82e04f7b2ff63254c2c2ef3a
+    digest: 30aa2cfc95381f9b8efab9b8962d380bce136ebcab1a40ff588229927f781d44
     home: https://github.com/avanteam/askme-rancher-catalog
     keywords:
     - ai
@@ -38,4 +37,4 @@ entries:
     urls:
     - https://github.com/avanteam/askme-rancher-catalog/askme-1.0.0.tgz
     version: 1.0.0
-generated: "2025-09-02T08:20:28.90489806Z"
+generated: "2025-09-02T08:55:07.163629342Z"
