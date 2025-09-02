@@ -7,7 +7,6 @@
 # - Ou remplissez avec vos propres clés pour des configurations spécifiques au client
 
 # ===== CONFIGURATION DÉPLOIEMENT =====
-nameOverride: ""
 fullnameOverride: ""
 
 # ===== CONFIGURATION CLIENT =====

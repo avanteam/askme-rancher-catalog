@@ -14,9 +14,7 @@ If release name contains chart name it will be used as a full name.
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- $clientName := .Values.client.name | default "default" }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- printf "%s-%s" $clientName $name | trunc 63 | trimSuffix "-" }}
+{{- .Values.client.name | default "askme" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}
 
