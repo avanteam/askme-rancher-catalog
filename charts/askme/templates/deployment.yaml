@@ -34,22 +34,243 @@ spec:
         - containerPort: {{ .Values.service.targetPort }}
           protocol: TCP
         env:
-        # Configuration from ConfigMap
-        {{- range $key, $value := .Values.config }}
-        {{- if eq $key "azureSearchUseSemanticSearch" }}
-        - name: {{ $key }}
+        # Configuration from ConfigMap - ALL variables mapped
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: DEBUG
+        
+        # UI Configuration
+        - name: UI_TITLE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: UI_TITLE
+        - name: UI_LOGO
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: UI_LOGO
+        - name: UI_CHAT_LOGO
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: UI_CHAT_LOGO
+        - name: UI_CHAT_TITLE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: UI_CHAT_TITLE
+        - name: UI_CHAT_DESCRIPTION
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: UI_CHAT_DESCRIPTION
+        - name: UI_FAVICON
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: UI_FAVICON
+        - name: UI_SHOW_SHARE_BUTTON
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: UI_SHOW_SHARE_BUTTON
+        - name: UI_SHOW_EXPORT_BUTTON
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: UI_SHOW_EXPORT_BUTTON
+
+        # LLM Configuration
+        - name: LLM_PROVIDER
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: LLM_PROVIDER
+        - name: AVAILABLE_LLM_PROVIDERS
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AVAILABLE_LLM_PROVIDERS
+
+        # Data Source Configuration
+        - name: DATASOURCE_TYPE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: DATASOURCE_TYPE
+        - name: SEARCH_TOP_K
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: SEARCH_TOP_K
+        - name: SEARCH_STRICTNESS
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: SEARCH_STRICTNESS
+        - name: SEARCH_ENABLE_IN_DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: SEARCH_ENABLE_IN_DOMAIN
+        
+        # Voice Configuration
+        - name: VOICE_INPUT_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: VOICE_INPUT_ENABLED
+        - name: WAKE_WORD_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: WAKE_WORD_ENABLED
+        - name: WAKE_WORD_PHRASES
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: WAKE_WORD_PHRASES
+        - name: WAKE_WORD_VARIANTS
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: WAKE_WORD_VARIANTS
+        
+        # Azure Speech
+        - name: AZURE_SPEECH_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SPEECH_ENABLED
+        - name: AZURE_SPEECH_VOICE_FR
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SPEECH_VOICE_FR
+        - name: AZURE_SPEECH_VOICE_EN
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SPEECH_VOICE_EN
+        
+        # General Configuration
+        - name: IMAGE_MAX_SIZE_MB
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: IMAGE_MAX_SIZE_MB
+        - name: CITATION_CONTENT_MAX_LENGTH
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: CITATION_CONTENT_MAX_LENGTH
+        - name: DEFAULT_LANGUAGE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: DEFAULT_LANGUAGE
+        - name: AZURE_USE_AUTHENTICATION
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_USE_AUTHENTICATION
+        - name: CHAT_HISTORY_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: CHAT_HISTORY_ENABLED
+        - name: ORCHESTRATION_STRATEGY
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: ORCHESTRATION_STRATEGY
+        
+        # Azure Search Configuration
+        - name: AZURE_SEARCH_USE_SEMANTIC_SEARCH
           valueFrom:
             configMapKeyRef:
               name: {{ include "askme.fullname" $ }}-config
               key: AZURE_SEARCH_USE_SEMANTIC_SEARCH
-        {{- else }}
-        - name: {{ $key }}
+        - name: AZURE_SEARCH_SEMANTIC_SEARCH_CONFIG
           valueFrom:
             configMapKeyRef:
               name: {{ include "askme.fullname" $ }}-config
-              key: {{ $key }}
-        {{- end }}
-        {{- end }}
+              key: AZURE_SEARCH_SEMANTIC_SEARCH_CONFIG
+        - name: AZURE_SEARCH_INDEX_IS_PRECHUNKED
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SEARCH_INDEX_IS_PRECHUNKED
+        - name: AZURE_SEARCH_TOP_K
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SEARCH_TOP_K
+        - name: AZURE_SEARCH_ENABLE_IN_DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SEARCH_ENABLE_IN_DOMAIN
+        - name: AZURE_SEARCH_CONTENT_COLUMNS
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SEARCH_CONTENT_COLUMNS
+        - name: AZURE_SEARCH_FILENAME_COLUMN
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SEARCH_FILENAME_COLUMN
+        - name: AZURE_SEARCH_TITLE_COLUMN
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SEARCH_TITLE_COLUMN
+        - name: AZURE_SEARCH_URL_COLUMN
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SEARCH_URL_COLUMN
+        - name: AZURE_SEARCH_VECTOR_COLUMNS
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SEARCH_VECTOR_COLUMNS
+        - name: AZURE_SEARCH_QUERY_TYPE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SEARCH_QUERY_TYPE
+        - name: AZURE_SEARCH_PERMITTED_GROUPS_COLUMN
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SEARCH_PERMITTED_GROUPS_COLUMN
+        - name: AZURE_SEARCH_STRICTNESS
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AZURE_SEARCH_STRICTNESS
+        
+        # Avanteam Custom
+        - name: AVANTEAM_URL_BASE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AVANTEAM_URL_BASE
+        - name: AUTH_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: AUTH_ENABLED
+        - name: SCM_DO_BUILD_DURING_DEPLOYMENT
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "askme.fullname" $ }}-config
+              key: SCM_DO_BUILD_DURING_DEPLOYMENT
         
         # Secrets
         {{- range $key, $value := .Values.secrets }}
