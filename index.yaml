@@ -11,7 +11,7 @@ entries:
         - Intégration Rancher RBAC
       catalog.cattle.io/display-name: AskMe Assistant IA
       catalog.cattle.io/kube-version: '>= 1.21.0-0'
-      catalog.cattle.io/namespace: askme-system
+      # catalog.cattle.io/namespace: askme-system # Supprimé - utilise le namespace dynamique
       catalog.cattle.io/questions-path: questions.yaml
       catalog.cattle.io/rancher-version: '>= 2.6.0-0'
       catalog.cattle.io/release-name: askme
