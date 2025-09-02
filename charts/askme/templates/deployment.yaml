@@ -334,6 +334,71 @@ spec:
             secretKeyRef:
               name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
               key: AZURE_OPENAI_RESPONSE_COMPREHENSIVE_MAX_TOKENS
+        - name: AZURE_OPENAI_STOP_SEQUENCE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_STOP_SEQUENCE
+        - name: AZURE_OPENAI_SEED
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_SEED
+        - name: AZURE_OPENAI_CHOICES_COUNT
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_CHOICES_COUNT
+        - name: AZURE_OPENAI_PRESENCE_PENALTY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_PRESENCE_PENALTY
+        - name: AZURE_OPENAI_FREQUENCY_PENALTY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_FREQUENCY_PENALTY
+        - name: AZURE_OPENAI_LOGIT_BIAS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_LOGIT_BIAS
+        - name: AZURE_OPENAI_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_USER
+        - name: AZURE_OPENAI_TOOLS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_TOOLS
+        - name: AZURE_OPENAI_TOOL_CHOICE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_TOOL_CHOICE
+        - name: AZURE_OPENAI_PREVIEW_API_VERSION
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_PREVIEW_API_VERSION
+        - name: AZURE_OPENAI_EMBEDDING_NAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_EMBEDDING_NAME
+        - name: AZURE_OPENAI_EMBEDDING_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_EMBEDDING_ENDPOINT
+        - name: AZURE_OPENAI_EMBEDDING_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AZURE_OPENAI_EMBEDDING_KEY
         
         # Claude AI
         - name: CLAUDE_API_KEY
@@ -376,6 +441,181 @@ spec:
             secretKeyRef:
               name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
               key: CLAUDE_RESPONSE_COMPREHENSIVE_MAX_TOKENS
+        
+        # OpenAI Direct
+        - name: OPENAI_DIRECT_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: OPENAI_DIRECT_API_KEY
+        - name: OPENAI_DIRECT_MODEL
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: OPENAI_DIRECT_MODEL
+        - name: OPENAI_DIRECT_TEMPERATURE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: OPENAI_DIRECT_TEMPERATURE
+        - name: OPENAI_DIRECT_TOP_P
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: OPENAI_DIRECT_TOP_P
+        - name: OPENAI_DIRECT_STOP_SEQUENCE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: OPENAI_DIRECT_STOP_SEQUENCE
+        - name: OPENAI_DIRECT_BASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: OPENAI_DIRECT_BASE_URL
+        - name: OPENAI_DIRECT_SYSTEM_MESSAGE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: OPENAI_DIRECT_SYSTEM_MESSAGE
+        - name: OPENAI_DIRECT_RESPONSE_VERY_SHORT_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: OPENAI_DIRECT_RESPONSE_VERY_SHORT_MAX_TOKENS
+        - name: OPENAI_DIRECT_RESPONSE_NORMAL_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: OPENAI_DIRECT_RESPONSE_NORMAL_MAX_TOKENS
+        - name: OPENAI_DIRECT_RESPONSE_COMPREHENSIVE_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: OPENAI_DIRECT_RESPONSE_COMPREHENSIVE_MAX_TOKENS
+        
+        # Mistral AI
+        - name: MISTRAL_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: MISTRAL_API_KEY
+        - name: MISTRAL_MODEL
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: MISTRAL_MODEL
+        - name: MISTRAL_TEMPERATURE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: MISTRAL_TEMPERATURE
+        - name: MISTRAL_TOP_P
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: MISTRAL_TOP_P
+        - name: MISTRAL_SYSTEM_MESSAGE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: MISTRAL_SYSTEM_MESSAGE
+        - name: MISTRAL_RESPONSE_VERY_SHORT_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: MISTRAL_RESPONSE_VERY_SHORT_MAX_TOKENS
+        - name: MISTRAL_RESPONSE_NORMAL_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: MISTRAL_RESPONSE_NORMAL_MAX_TOKENS
+        - name: MISTRAL_RESPONSE_COMPREHENSIVE_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: MISTRAL_RESPONSE_COMPREHENSIVE_MAX_TOKENS
+        
+        # Gemini AI
+        - name: GEMINI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: GEMINI_API_KEY
+        - name: GEMINI_MODEL
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: GEMINI_MODEL
+        - name: GEMINI_TEMPERATURE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: GEMINI_TEMPERATURE
+        - name: GEMINI_TOP_P
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: GEMINI_TOP_P
+        - name: GEMINI_SYSTEM_MESSAGE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: GEMINI_SYSTEM_MESSAGE
+        - name: GEMINI_RESPONSE_VERY_SHORT_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: GEMINI_RESPONSE_VERY_SHORT_MAX_TOKENS
+        - name: GEMINI_RESPONSE_NORMAL_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: GEMINI_RESPONSE_NORMAL_MAX_TOKENS
+        - name: GEMINI_RESPONSE_COMPREHENSIVE_MAX_TOKENS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: GEMINI_RESPONSE_COMPREHENSIVE_MAX_TOKENS
+        
+        # Avanteam Custom
+        - name: AVANTEAM_URL_BASE
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AVANTEAM_URL_BASE
+        - name: AVANTEAM_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AVANTEAM_AUTH_TOKEN
+        - name: AVANTEAM_LICENCEHUB_HANDLERURL
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AVANTEAM_LICENCEHUB_HANDLERURL
+        - name: AVANTEAM_LICENCEHUB_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: AVANTEAM_LICENCEHUB_KEY
+        
+        # MS Defender
+        - name: MS_DEFENDER_ENABLED
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: MS_DEFENDER_ENABLED
+        - name: MS_DEFENDER_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: MS_DEFENDER_ENDPOINT
+        - name: MS_DEFENDER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "askme.fullname" $ }}-secrets-{{ now | date "20060102-150405" }}
+              key: MS_DEFENDER_KEY
         
         # Azure Services
         - name: AZURE_SEARCH_SERVICE
