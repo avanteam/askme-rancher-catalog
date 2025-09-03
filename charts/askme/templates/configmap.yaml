@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "askme.labels" . | nindent 4 }}
   annotations:
-    askme.avanteam.com/client: {{ .Values.client.name }}
+    askme.avanteam.com/client: {{ .Release.Name }}
     askme.avanteam.com/version: {{ .Chart.AppVersion }}
 data:
   # Configuration générale

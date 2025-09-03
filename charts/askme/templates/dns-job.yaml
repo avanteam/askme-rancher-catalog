@@ -31,7 +31,7 @@ spec:
           echo "🌐 Installation des dépendances OVH API..."
           pip install --no-cache-dir requests
           
-          echo "📋 Configuration DNS pour client: {{ .Values.client.name }}"
+          echo "📋 Configuration DNS pour client: {{ .Release.Name }}"
           echo "🎯 Domaine cible: {{ .Values.client.domain }}"
           echo "🏷️ Zone DNS: {{ .Values.dns.ovh.zone }}"
           

@@ -5,8 +5,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "askme.labels" . | nindent 4 }}
-    askme.avanteam.com/client-name: {{ .Values.client.name | quote }}
-    askme.avanteam.com/display-name: {{ .Values.client.name | quote }}
+    askme.avanteam.com/client-name: {{ .Release.Name | quote }}
+    askme.avanteam.com/display-name: {{ .Release.Name | quote }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -16,13 +16,13 @@ spec:
     metadata:
       labels:
         {{- include "askme.selectorLabels" . | nindent 8 }}
-        client: {{ .Values.client.name }}
+        client: {{ .Release.Name }}
       annotations:
         # Force redeploy si config change
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        askme.avanteam.com/client: {{ .Values.client.name }}
+        askme.avanteam.com/client: {{ .Release.Name }}
         askme.avanteam.com/version: {{ .Values.image.tag }}
-        askme.avanteam.com/display-name: {{ .Values.client.name | quote }}
+        askme.avanteam.com/display-name: {{ .Release.Name | quote }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

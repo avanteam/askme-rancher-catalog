@@ -14,7 +14,7 @@ If release name contains chart name it will be used as a full name.
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- .Values.client.name | default "askme" | trunc 63 | trimSuffix "-" }}
+{{- .Release.Name | default "askme" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}
 
@@ -35,7 +35,7 @@ helm.sh/chart: {{ include "askme.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-client: {{ .Values.client.name }}
+client: {{ .Release.Name }}
 {{- end }}
 
 {{/*

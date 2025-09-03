@@ -15,14 +15,6 @@ categories:
 
 questions:
 # ===== CONFIGURATION CLIENT =====
-- variable: client.name
-  default: "askme-client"
-  description: "Nom unique du déploiement AskMe (ex: askme-rh, askme-finance, askme-it). IMPORTANT: Utilisez ce même nom comme 'Release Name' en page 1."
-  type: string
-  required: true
-  group: "Configuration Client"
-  label: "Nom du Déploiement"
-
 - variable: client.domain
   default: "avanteam-saas.com"
   description: "Domaine public du client (ex: askme.avanteam-online.com)"

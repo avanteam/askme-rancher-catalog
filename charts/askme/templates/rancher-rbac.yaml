@@ -1,6 +1,6 @@
 {{- if .Values.rancher.enabled }}
-{{- $clientName := .Values.client.name }}
-{{- $namespace := .Values.client.namespace }}
+{{- $clientName := .Release.Name }}
+{{- $namespace := .Release.Namespace }}
 ---
 # Service Account pour le client
 apiVersion: v1
