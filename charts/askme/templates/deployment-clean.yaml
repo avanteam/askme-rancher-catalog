@@ -37,9 +37,9 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ include "askme.fullname" . }}-config
-        # Global Secret - ALL environment variables loaded from here
+        # Client-specific Secret - API keys for this client
         - secretRef:
-            name: askme-global-api-keys
+            name: {{ include "askme.fullname" . }}-secrets
         
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
