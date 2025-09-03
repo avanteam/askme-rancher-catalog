@@ -122,6 +122,12 @@ data:
   SEARCH_TOP_K: {{ .Values.config.searchTopK | quote }}
   SEARCH_STRICTNESS: {{ .Values.config.searchStrictness | quote }}
   SEARCH_ENABLE_IN_DOMAIN: {{ .Values.config.searchEnableInDomain | quote }}
+  IMAGE_MAX_SIZE_MB: {{ .Values.config.imageMaxSizeMb | quote }}
+  CITATION_CONTENT_MAX_LENGTH: {{ .Values.config.citationContentMaxLength | quote }}
+  DEFAULT_LANGUAGE: {{ .Values.config.defaultLanguage | quote }}
+  AZURE_USE_AUTHENTICATION: {{ .Values.config.azureUseAuthentication | quote }}
+  CHAT_HISTORY_ENABLED: {{ .Values.config.chatHistoryEnabled | quote }}
+  ORCHESTRATION_STRATEGY: {{ .Values.config.orchestrationStrategy | quote }}
   
   # Services vocaux
   VOICE_INPUT_ENABLED: {{ .Values.voice.inputEnabled | quote }}
@@ -141,8 +147,6 @@ data:
   AZURE_USE_AUTHENTICATION: {{ .Values.config.azureUseAuthentication | quote }}
   CHAT_HISTORY_ENABLED: {{ .Values.config.chatHistoryEnabled | quote }}
   ORCHESTRATION_STRATEGY: {{ .Values.config.orchestrationStrategy | quote }}
-  
-  # Azure Search
   AZURE_SEARCH_USE_SEMANTIC_SEARCH: {{ .Values.config.azureSearchUseSemanticSearch | quote }}
   AZURE_SEARCH_SEMANTIC_SEARCH_CONFIG: {{ .Values.azure.search.semanticSearchConfig | quote }}
   AZURE_SEARCH_INDEX_IS_PRECHUNKED: {{ .Values.azure.search.indexIsPrechunked | quote }}

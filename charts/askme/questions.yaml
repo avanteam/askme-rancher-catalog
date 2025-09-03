@@ -23,14 +23,6 @@ questions:
   group: "Configuration Client"
   label: "Nom du Déploiement"
 
-- variable: client.namespace
-  default: "askme-{{ .Values.client.name }}"
-  description: "Namespace Kubernetes pour ce client (auto-généré depuis le nom client)"
-  type: string
-  required: true
-  group: "Configuration Client"
-  label: "Namespace (Auto)"
-
 - variable: client.domain
   default: "avanteam-saas.com"
   description: "Domaine public du client (ex: askme.avanteam-online.com)"
