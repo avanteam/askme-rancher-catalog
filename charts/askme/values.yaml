@@ -187,7 +187,7 @@ dns:
   ovh:
     enabled: true  # Activer pour créer automatiquement les entrées DNS
     zone: "avanteam-saas.com"  # Zone DNS OVH à gérer
-    targetIP: "auto"  # IP cible ("auto" pour récupération automatique depuis l'ingress)
+    targetIP: "57.128.59.187"  # IP LoadBalancer OVH (IP de votre cluster)
     ttl: 300  # TTL en secondes pour les enregistrements DNS
     appKey: "your-ovh-app-key-here"  # OVH Application Key
     appSecret: "your-ovh-app-secret-here"  # OVH Application Secret

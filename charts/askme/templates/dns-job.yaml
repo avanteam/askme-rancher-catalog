@@ -47,7 +47,14 @@ spec:
           if [ "$TARGET_IP" = "auto" ] || [ -z "$TARGET_IP" ]; then
             echo "🔄 Recherche automatique de l'IP d'ingress..."
             for i in {1..30}; do
+              # Essayer d'abord loadBalancer.ingress
               TARGET_IP=$(kubectl get ingress {{ include "askme.fullname" . }} -n {{ .Release.Namespace }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
+              
+              # Si pas trouvé, chercher dans les annotations (Rancher/OVH)
+              if [ -z "$TARGET_IP" ] || [ "$TARGET_IP" = "null" ]; then
+                TARGET_IP=$(kubectl get ingress {{ include "askme.fullname" . }} -n {{ .Release.Namespace }} -o jsonpath='{.metadata.annotations.field\.cattle\.io/publicEndpoints}' 2>/dev/null | grep -o '"addresses":\["[^"]*"' | sed 's/.*"\([^"]*\)"/\1/' | head -1 || echo "")
+              fi
+              
               if [ -n "$TARGET_IP" ] && [ "$TARGET_IP" != "null" ]; then
                 echo "✅ IP trouvée automatiquement: $TARGET_IP"
                 break
