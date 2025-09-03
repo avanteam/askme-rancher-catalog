@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "askme.fullname" . }}
-  namespace: askme-{{ .Values.client.name }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "askme.labels" . | nindent 4 }}
     askme.avanteam.com/client-name: {{ .Values.client.name | quote }}

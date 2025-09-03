@@ -7,7 +7,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ $clientName }}-sa
-  namespace: askme-{{ $clientName }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ include "askme.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -23,7 +23,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: askme-{{ $clientName }}
+  namespace: {{ .Release.Namespace }}
   name: {{ $clientName }}-role
   labels:
     app.kubernetes.io/name: {{ include "askme.name" . }}
@@ -50,7 +50,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ $clientName }}-binding
-  namespace: askme-{{ $clientName }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ include "askme.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -63,7 +63,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: {{ $clientName }}-sa
-  namespace: askme-{{ $clientName }}
+  namespace: {{ .Release.Namespace }}
 
 {{- if .Values.rancher.rbac.additionalUsers }}
 ---
@@ -72,7 +72,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ $clientName }}-users-binding
-  namespace: askme-{{ $clientName }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ include "askme.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ include "askme.fullname" . }}-dns-setup
-  namespace: askme-{{ .Values.client.name }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "askme.labels" . | nindent 4 }}
     app.kubernetes.io/component: dns-manager
@@ -47,7 +47,7 @@ spec:
           if [ "$TARGET_IP" = "auto" ] || [ -z "$TARGET_IP" ]; then
             echo "🔄 Recherche automatique de l'IP d'ingress..."
             for i in {1..30}; do
-              TARGET_IP=$(kubectl get ingress {{ include "askme.fullname" . }} -n askme-{{ .Values.client.name }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
+              TARGET_IP=$(kubectl get ingress {{ include "askme.fullname" . }} -n {{ .Release.Namespace }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
               if [ -n "$TARGET_IP" ] && [ "$TARGET_IP" != "null" ]; then
                 echo "✅ IP trouvée automatiquement: $TARGET_IP"
                 break
