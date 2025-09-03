@@ -1,4 +1,4 @@
-{{- if false }}
+{{- if .Values.dns.ovh.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
