@@ -189,9 +189,9 @@ dns:
     zone: "avanteam-saas.com"  # Zone DNS OVH à gérer
     targetIP: "57.128.59.187"  # IP LoadBalancer OVH (IP de votre cluster)
     ttl: 300  # TTL en secondes pour les enregistrements DNS
-    appKey: "your-ovh-app-key-here"  # OVH Application Key
-    appSecret: "your-ovh-app-secret-here"  # OVH Application Secret
-    consumerKey: "your-ovh-consumer-key-here"  # OVH Consumer Key
+    appKey: "VOS_VRAIES_CLES_APP_KEY"  # Remplacez par votre vraie clé
+    appSecret: "VOS_VRAIES_CLES_APP_SECRET"  # Remplacez par votre vraie clé  
+    consumerKey: "VOS_VRAIES_CLES_CONSUMER_KEY"  # À générer depuis OVH API
     endpoint: "ovh-eu"  # Endpoint API OVH (ovh-eu, ovh-ca, ovh-us)
 
 # ===== RESSOURCES =====
