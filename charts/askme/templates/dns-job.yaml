@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/component: dns-manager
   annotations:
     helm.sh/hook: post-install,post-upgrade
-    helm.sh/hook-weight: "1"
+    helm.sh/hook-weight: "1" 
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
 spec:
   ttlSecondsAfterFinished: 300
@@ -27,91 +27,153 @@ spec:
         - /bin/bash
         - -c
         - |
-          echo "🌐 Installation des dépendances..."
-          pip install requests
+          set -e
+          echo "🌐 Installation des dépendances OVH API..."
+          pip install --no-cache-dir requests
           
           echo "📋 Configuration DNS pour client: {{ .Values.client.name }}"
           echo "🎯 Domaine cible: {{ .Values.client.domain }}"
           echo "🏷️ Zone DNS: {{ .Values.dns.ovh.zone }}"
           
-          # Extraction du sous-domaine depuis le domaine complet
+          # Variables
           CLIENT_SUBDOMAIN=$(echo "{{ .Values.client.domain }}" | sed 's/\.{{ .Values.dns.ovh.zone }}$//')
-          echo "📝 Sous-domaine extrait: $CLIENT_SUBDOMAIN"
-          
-          # Récupération de l'IP du LoadBalancer/Ingress
-          echo "🔍 Récupération de l'IP du service..."
           TARGET_IP="{{ .Values.dns.ovh.targetIP }}"
+          ZONE="{{ .Values.dns.ovh.zone }}"
+          TTL="{{ .Values.dns.ovh.ttl }}"
           
-          # Si pas d'IP fournie, essayer de la récupérer depuis l'ingress
-          if [ -z "$TARGET_IP" ] || [ "$TARGET_IP" = "auto" ]; then
+          echo "📝 Sous-domaine: $CLIENT_SUBDOMAIN"
+          
+          # Auto-détection IP si nécessaire
+          if [ "$TARGET_IP" = "auto" ] || [ -z "$TARGET_IP" ]; then
             echo "🔄 Recherche automatique de l'IP d'ingress..."
-            # Attendre que l'ingress soit prêt
             for i in {1..30}; do
               TARGET_IP=$(kubectl get ingress {{ include "askme.fullname" . }} -n {{ .Values.client.namespace }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
-              if [ -n "$TARGET_IP" ]; then
-                echo "✅ IP trouvée: $TARGET_IP"
+              if [ -n "$TARGET_IP" ] && [ "$TARGET_IP" != "null" ]; then
+                echo "✅ IP trouvée automatiquement: $TARGET_IP"
                 break
               fi
               echo "⏳ Attente IP ingress... ($i/30)"
               sleep 10
             done
             
-            if [ -z "$TARGET_IP" ]; then
-              echo "❌ Impossible de récupérer l'IP d'ingress"
+            if [ -z "$TARGET_IP" ] || [ "$TARGET_IP" = "null" ]; then
+              echo "❌ Impossible de récupérer l'IP d'ingress automatiquement"
+              echo "💡 Définissez dns.ovh.targetIP manuellement dans values.yaml"
               exit 1
             fi
           fi
           
-          echo "🎯 IP cible: $TARGET_IP"
+          echo "🎯 IP cible finale: $TARGET_IP"
           
-          # Créer le script Python inline
-          cat > /tmp/ovh_dns_manager.py << 'EOF'
-import sys
-import os
-import argparse
-
-def create_dns_record(zone, client_subdomain, target_ip, app_key, app_secret, consumer_key):
-    """Cree une entree DNS chez OVH"""
-    print("DNS create: " + client_subdomain + "." + zone + " -> " + target_ip)
-    print("DNS record created successfully")
-    return True
-
-def delete_dns_record(zone, client_subdomain, app_key, app_secret, consumer_key):
-    """Supprime une entree DNS chez OVH"""
-    print("DNS delete: " + client_subdomain + "." + zone)
-    print("DNS record deleted successfully")
-    return True
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--action", required=True, choices=["create", "delete"])
-    parser.add_argument("--zone", required=True)
-    parser.add_argument("--client", required=True)
-    parser.add_argument("--ip", required=False)
-    args = parser.parse_args()
-    
-    if args.action == "create":
-        create_dns_record(args.zone, args.client, args.ip,
-                         os.environ.get("OVH_APP_KEY", ""),
-                         os.environ.get("OVH_APP_SECRET", ""), 
-                         os.environ.get("OVH_CONSUMER_KEY", ""))
-    elif args.action == "delete":
-        delete_dns_record(args.zone, args.client,
-                         os.environ.get("OVH_APP_KEY", ""),
-                         os.environ.get("OVH_APP_SECRET", ""), 
-                         os.environ.get("OVH_CONSUMER_KEY", ""))
-EOF
+          # Script Python OVH API REEL
+          python3 << 'PYTHON_EOF'
+          import requests
+          import json
+          import hashlib
+          import time
+          import os
+          import sys
           
-          # Exécuter la gestion DNS
-          echo "🚀 Création de l'entrée DNS..."
-          python3 /tmp/ovh_dns_manager.py \
-            --action create \
-            --zone "{{ .Values.dns.ovh.zone }}" \
-            --client "$CLIENT_SUBDOMAIN" \
-            --ip "$TARGET_IP"
+          # Configuration OVH API depuis les variables d'environnement
+          OVH_APP_KEY = os.environ['OVH_APP_KEY']
+          OVH_APP_SECRET = os.environ['OVH_APP_SECRET'] 
+          OVH_CONSUMER_KEY = os.environ['OVH_CONSUMER_KEY']
+          OVH_ENDPOINT = os.environ['OVH_ENDPOINT']
           
-          echo "🎉 Configuration DNS terminée avec succès !"
+          # Variables du DNS
+          zone = os.environ['DNS_ZONE']
+          subdomain = os.environ['DNS_SUBDOMAIN']
+          target_ip = os.environ['DNS_TARGET_IP']
+          ttl = int(os.environ['DNS_TTL'])
           
+          # URLs API OVH selon l'endpoint
+          api_endpoints = {
+              'ovh-eu': 'https://eu.api.ovh.com/1.0',
+              'ovh-ca': 'https://ca.api.ovh.com/1.0', 
+              'ovh-us': 'https://api.us.ovhcloud.com/1.0'
+          }
+          
+          base_url = api_endpoints.get(OVH_ENDPOINT, api_endpoints['ovh-eu'])
+          
+          def ovh_api_signature(method, query, body, timestamp):
+              """Génère la signature pour l'API OVH"""
+              s = '+'.join([
+                  OVH_APP_SECRET,
+                  OVH_CONSUMER_KEY, 
+                  method.upper(),
+                  query,
+                  body,
+                  str(timestamp)
+              ])
+              return '$1$' + hashlib.sha1(s.encode()).hexdigest()
+          
+          def ovh_api_call(method, path, data=None):
+              """Effectue un appel à l'API OVH"""
+              query = base_url + path
+              body = json.dumps(data) if data else ''
+              timestamp = int(time.time())
+              
+              headers = {
+                  'X-Ovh-Application': OVH_APP_KEY,
+                  'X-Ovh-Consumer': OVH_CONSUMER_KEY,
+                  'X-Ovh-Signature': ovh_api_signature(method, query, body, timestamp),
+                  'X-Ovh-Timestamp': str(timestamp),
+                  'Content-Type': 'application/json'
+              }
+              
+              response = requests.request(method, query, headers=headers, data=body)
+              
+              if not response.ok:
+                  print(f"❌ Erreur API OVH: {response.status_code} - {response.text}")
+                  raise Exception(f"API Error: {response.status_code}")
+              
+              return response.json() if response.text else {}
+          
+          def main():
+              print(f"🌐 Création enregistrement DNS: {subdomain}.{zone} -> {target_ip}")
+              print(f"📍 API OVH: {base_url}")
+              print(f"⏱️ TTL: {ttl}s")
+              
+              try:
+                  # 1. Vérifier si l'enregistrement existe déjà
+                  print("🔍 Vérification des enregistrements existants...")
+                  existing_records = ovh_api_call('GET', f'/domain/zone/{zone}/record?fieldType=A&subDomain={subdomain}')
+                  
+                  # 2. Supprimer les anciens enregistrements si ils existent
+                  for record_id in existing_records:
+                      record_info = ovh_api_call('GET', f'/domain/zone/{zone}/record/{record_id}')
+                      print(f"🗑️ Suppression ancien enregistrement: {record_info.get('subDomain', '')}.{zone} -> {record_info.get('target', '')}")
+                      ovh_api_call('DELETE', f'/domain/zone/{zone}/record/{record_id}')
+                  
+                  # 3. Créer le nouvel enregistrement
+                  record_data = {
+                      'fieldType': 'A',
+                      'subDomain': subdomain,
+                      'target': target_ip,
+                      'ttl': ttl
+                  }
+                  
+                  print(f"➕ Création nouvel enregistrement DNS...")
+                  new_record = ovh_api_call('POST', f'/domain/zone/{zone}/record', record_data)
+                  print(f"✅ Enregistrement créé avec l'ID: {new_record.get('id', 'N/A')}")
+                  
+                  # 4. Rafraîchir la zone DNS
+                  print("🔄 Rafraîchissement de la zone DNS...")
+                  ovh_api_call('POST', f'/domain/zone/{zone}/refresh')
+                  
+                  print(f"🎉 DNS configuré avec succès!")
+                  print(f"📋 Résultat: {subdomain}.{zone} -> {target_ip} (TTL: {ttl}s)")
+                  
+              except Exception as e:
+                  print(f"❌ Erreur lors de la configuration DNS: {str(e)}")
+                  sys.exit(1)
+          
+          if __name__ == "__main__":
+              main()
+          PYTHON_EOF
+          
+          echo "✅ Configuration DNS terminée avec succès!"
+        
         env:
         - name: OVH_APP_KEY
           valueFrom:
@@ -128,13 +190,24 @@ EOF
             secretKeyRef:
               name: {{ include "askme.fullname" . }}-dns-secrets
               key: ovh-consumer-key
+        - name: OVH_ENDPOINT
+          value: {{ .Values.dns.ovh.endpoint | quote }}
+        - name: DNS_ZONE
+          value: {{ .Values.dns.ovh.zone | quote }}
+        - name: DNS_SUBDOMAIN
+          value: "{{ .Values.client.domain | replace (printf ".%s" .Values.dns.ovh.zone) "" }}"
+        - name: DNS_TARGET_IP
+          value: {{ .Values.dns.ovh.targetIP | quote }}
+        - name: DNS_TTL
+          value: {{ .Values.dns.ovh.ttl | quote }}
+        
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "100m"
-          limits:
             memory: "128Mi"
             cpu: "200m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
 ---
 apiVersion: v1
 kind: Secret

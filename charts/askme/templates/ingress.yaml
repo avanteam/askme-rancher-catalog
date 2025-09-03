@@ -12,14 +12,14 @@ spec:
   {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className }}
   {{- end }}
-  {{- if and .Values.ingress.tls.enabled .Values.ingress.host }}
+  {{- if .Values.ingress.tls.enabled }}
   tls:
     - hosts:
-        - {{ .Values.ingress.host }}
+        - {{ .Values.client.domain }}
       secretName: {{ include "askme.fullname" . }}-tls
   {{- end }}
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: {{ .Values.client.domain }}
       http:
         paths:
           - path: /
