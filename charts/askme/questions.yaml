@@ -430,8 +430,8 @@ questions:
   show_if: "dns.ovh.enabled=true"
 
 - variable: dns.ovh.targetIP
-  default: "auto"
-  description: "IP cible pour l'entrée DNS ('auto' pour récupération automatique)"
+  default: "57.128.59.187"
+  description: "IP cible pour l'entrée DNS (IP de votre cluster OVH)"
   type: string
   group: "Gestion DNS"
   label: "IP Cible"
@@ -445,30 +445,6 @@ questions:
   label: "TTL DNS"
   show_if: "dns.ovh.enabled=true"
 
-- variable: dns.ovh.appKey
-  default: "your-ovh-app-key-here"
-  description: "OVH Application Key pour l'API"
-  type: string
-  group: "Gestion DNS" 
-  label: "OVH App Key"
-  show_if: "dns.ovh.enabled=true"
-
-- variable: dns.ovh.appSecret
-  default: "your-ovh-app-secret-here"
-  description: "OVH Application Secret pour l'API"
-  type: password
-  group: "Gestion DNS"
-  label: "OVH App Secret"
-  show_if: "dns.ovh.enabled=true"
-
-- variable: dns.ovh.consumerKey
-  default: "your-ovh-consumer-key-here"
-  description: "OVH Consumer Key pour l'API"
-  type: password
-  group: "Gestion DNS"
-  label: "OVH Consumer Key"
-  show_if: "dns.ovh.enabled=true"
-
 - variable: dns.ovh.endpoint
   default: "ovh-eu"
   description: "Endpoint API OVH selon la région"
@@ -480,3 +456,7 @@ questions:
   group: "Gestion DNS"
   label: "Endpoint OVH"
   show_if: "dns.ovh.enabled=true"
+
+# Note: Les clés OVH (appKey, appSecret, consumerKey) sont maintenant
+# centralisées dans le secret global 'ovh-global-dns-keys' 
+# Plus besoin de les ressaisir à chaque déploiement !
