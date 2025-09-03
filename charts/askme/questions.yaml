@@ -457,26 +457,5 @@ questions:
   label: "Endpoint OVH"
   show_if: "dns.ovh.enabled=true"
 
-- variable: dns.ovh.appKey
-  default: "your-ovh-app-key-here"
-  description: "OVH Application Key pour l'API"
-  type: string
-  group: "Gestion DNS" 
-  label: "OVH App Key"
-  show_if: "dns.ovh.enabled=true"
-
-- variable: dns.ovh.appSecret
-  default: "your-ovh-app-secret-here"
-  description: "OVH Application Secret pour l'API"
-  type: password
-  group: "Gestion DNS"
-  label: "OVH App Secret"  
-  show_if: "dns.ovh.enabled=true"
-
-- variable: dns.ovh.consumerKey
-  default: "your-ovh-consumer-key-here"
-  description: "OVH Consumer Key pour l'API"
-  type: password
-  group: "Gestion DNS"
-  label: "OVH Consumer Key"
-  show_if: "dns.ovh.enabled=true"
+# Note: Clés OVH centralisées dans secret 'ovh-global-dns-keys@askme-platform'
+# Configuration automatique - aucune saisie requise

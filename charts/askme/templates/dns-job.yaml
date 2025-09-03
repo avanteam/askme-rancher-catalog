@@ -20,6 +20,7 @@ spec:
         app.kubernetes.io/component: dns-manager
     spec:
       restartPolicy: Never
+      serviceAccountName: {{ include "askme.fullname" . }}-dns-manager
       containers:
       - name: ovh-dns-manager
         image: python:3.11-slim
@@ -181,22 +182,12 @@ spec:
           
           echo "✅ Configuration DNS terminée avec succès!"
         
+        envFrom:
+        # Secret OVH synchronisé dans le namespace local
+        - secretRef:
+            name: ovh-local-dns-keys
+        
         env:
-        - name: OVH_APP_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ include "askme.fullname" . }}-secrets
-              key: OVH_APP_KEY
-        - name: OVH_APP_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: {{ include "askme.fullname" . }}-secrets
-              key: OVH_APP_SECRET
-        - name: OVH_CONSUMER_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ include "askme.fullname" . }}-secrets
-              key: OVH_CONSUMER_KEY
         - name: OVH_ENDPOINT
           value: {{ .Values.dns.ovh.endpoint | quote }}
         - name: DNS_ZONE
