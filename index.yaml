@@ -16,9 +16,9 @@ entries:
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-09-02T15:02:02.811905183Z"
+    created: "2025-09-03T16:03:47.428574053Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: 10b5c1f6a93105f37add086a74c19baf616fa394b60c151cede40805397a86cc
+    digest: 66cad2c39ba9ccf886f4b3c592abc9e77071cbe10cbe7eacb9d3c740cb4adbca
     home: https://github.com/avanteam/askme-rancher-catalog
     keywords:
     - ai
@@ -36,4 +36,4 @@ entries:
     urls:
     - https://github.com/avanteam/askme-rancher-catalog/askme-1.0.0.tgz
     version: 1.0.0
-generated: "2025-09-02T15:02:02.810152904Z"
+generated: "2025-09-03T16:03:47.426818137Z"
