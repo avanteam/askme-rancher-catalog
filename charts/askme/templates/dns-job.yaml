@@ -178,18 +178,18 @@ spec:
         - name: OVH_APP_KEY
           valueFrom:
             secretKeyRef:
-              name: {{ include "askme.fullname" . }}-dns-secrets
-              key: ovh-app-key
+              name: askme-global-api-keys
+              key: OVH_APP_KEY
         - name: OVH_APP_SECRET
           valueFrom:
             secretKeyRef:
-              name: {{ include "askme.fullname" . }}-dns-secrets
-              key: ovh-app-secret
+              name: askme-global-api-keys
+              key: OVH_APP_SECRET
         - name: OVH_CONSUMER_KEY
           valueFrom:
             secretKeyRef:
-              name: {{ include "askme.fullname" . }}-dns-secrets
-              key: ovh-consumer-key
+              name: askme-global-api-keys
+              key: OVH_CONSUMER_KEY
         - name: OVH_ENDPOINT
           value: {{ .Values.dns.ovh.endpoint | quote }}
         - name: DNS_ZONE
@@ -208,18 +208,4 @@ spec:
           limits:
             memory: "256Mi"
             cpu: "500m"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ include "askme.fullname" . }}-dns-secrets
-  namespace: {{ .Values.client.namespace }}
-  labels:
-    {{- include "askme.labels" . | nindent 4 }}
-    app.kubernetes.io/component: dns-manager
-type: Opaque
-stringData:
-  ovh-app-key: {{ .Values.dns.ovh.appKey | quote }}
-  ovh-app-secret: {{ .Values.dns.ovh.appSecret | quote }}
-  ovh-consumer-key: {{ .Values.dns.ovh.consumerKey | quote }}
 {{- end }}
