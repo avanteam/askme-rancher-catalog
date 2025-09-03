@@ -185,17 +185,17 @@ spec:
         - name: OVH_APP_KEY
           valueFrom:
             secretKeyRef:
-              name: ovh-global-dns-keys
+              name: {{ include "askme.fullname" . }}-secrets
               key: OVH_APP_KEY
         - name: OVH_APP_SECRET
           valueFrom:
             secretKeyRef:
-              name: ovh-global-dns-keys
+              name: {{ include "askme.fullname" . }}-secrets
               key: OVH_APP_SECRET
         - name: OVH_CONSUMER_KEY
           valueFrom:
             secretKeyRef:
-              name: ovh-global-dns-keys
+              name: {{ include "askme.fullname" . }}-secrets
               key: OVH_CONSUMER_KEY
         - name: OVH_ENDPOINT
           value: {{ .Values.dns.ovh.endpoint | quote }}
