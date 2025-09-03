@@ -31,17 +31,6 @@ questions:
   group: "Configuration Client"
   label: "Domaine Client"
 
-- variable: image.tag
-  default: "1.0.0"
-  description: "Version d'AskMe à déployer pour ce client"
-  type: enum
-  options:
-    - "1.0.0"
-    - "latest"
-  required: true
-  group: "Configuration Client"
-  label: "Version AskMe"
-
 # ===== INTERFACE UTILISATEUR =====
 - variable: ui.title
   default: "Avanteam AskMe"

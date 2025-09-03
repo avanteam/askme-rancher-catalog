@@ -93,11 +93,11 @@ jobs:
           echo "✅ values.yaml updated:"
           grep "tag:" charts/askme/values.yaml
 
-      - name: Clean Old Packages
+      - name: Keep Existing Packages
         run: |
-          echo "🧹 Cleaning old chart packages..."
-          rm -f *.tgz
-          echo "✅ Old packages cleaned"
+          echo "📦 Conservation des versions existantes..."
+          ls -la *.tgz 2>/dev/null || echo "Aucun package existant"
+          echo "✅ Packages existants conservés"
 
       - name: Package Helm Chart
         run: |
@@ -109,11 +109,12 @@ jobs:
 
       - name: Generate Chart Index
         run: |
-          echo "📝 Generating Helm repository index..."
-          helm repo index . --url https://github.com/${{ github.repository }}/releases/download
+          echo "📝 Generating Helm repository index with all versions..."
+          # Index avec toutes les versions (existantes + nouvelle)
+          helm repo index . --url https://github.com/${{ github.repository }}/releases/download --merge index.yaml
           
-          echo "✅ Index generated:"
-          ls -la index.yaml
+          echo "✅ Index updated with all versions:"
+          grep -E "version: |appVersion: " index.yaml | head -10
 
       - name: Upload Chart Artifacts
         uses: actions/upload-artifact@v4
@@ -130,8 +131,9 @@ jobs:
           git config user.name "AskMe Release Bot"
           git config user.email "noreply@avanteam.com"
           
-          # Ajouter les fichiers modifiés
-          git add charts/askme/Chart.yaml charts/askme/values.yaml index.yaml *.tgz
+          # Ajouter les fichiers modifiés + TOUS les packages
+          git add charts/askme/Chart.yaml charts/askme/values.yaml index.yaml
+          git add *.tgz  # Tous les packages (nouveaux et existants)
           
           # Commit seulement si il y a des changements
           if git diff --staged --quiet; then
