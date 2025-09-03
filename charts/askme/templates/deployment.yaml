@@ -43,6 +43,10 @@ spec:
         # Client-specific Secret - API keys for this client
         - secretRef:
             name: {{ include "askme.fullname" . }}-secrets
+        # Global tokens synchronized from askme-platform
+        - secretRef:
+            name: askme-local-tokens
+            optional: true  # Optionnel si pas de secret global
         
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
