@@ -24,12 +24,12 @@ questions:
   label: "Nom du Déploiement"
 
 - variable: client.namespace
-  default: "askme-platform"
-  description: "Namespace Kubernetes pour toutes les applications AskMe (recommandé: askme-platform)"
+  default: "askme-{{ .Values.client.name }}"
+  description: "Namespace Kubernetes pour ce client (auto-généré depuis le nom client)"
   type: string
   required: true
   group: "Configuration Client"
-  label: "Namespace"
+  label: "Namespace (Auto)"
 
 - variable: client.domain
   default: "avanteam-saas.com"
@@ -38,6 +38,22 @@ questions:
   required: true
   group: "Configuration Client"
   label: "Domaine Client"
+
+- variable: image.tag
+  default: "latest"
+  description: "Version d'AskMe à déployer pour ce client"
+  type: enum
+  options:
+    - "latest"
+    - "1.2.3"
+    - "1.2.2"
+    - "1.2.1"
+    - "1.2.0"
+    - "1.1.0"
+    - "1.0.0"
+  required: true
+  group: "Configuration Client"
+  label: "Version AskMe"
 
 # ===== INTERFACE UTILISATEUR =====
 - variable: ui.title
@@ -361,13 +377,6 @@ questions:
   show_if: "rancher.enabled=true"
 
 # ===== AVANCÉ =====
-- variable: image.tag
-  default: "latest"
-  description: "Tag de l'image Docker"
-  type: string
-  group: "Configuration Avancée"
-  label: "Version Image"
-
 - variable: debug.enabled
   default: false
   description: "Activer le mode debug"

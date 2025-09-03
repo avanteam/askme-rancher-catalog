@@ -12,7 +12,7 @@ fullnameOverride: ""
 # ===== CONFIGURATION CLIENT =====
 client:
   name: "askme-client"
-  namespace: "askme-platform"  # Namespace fixe pour toutes les applications
+  namespace: "askme-{{ .Values.client.name }}"  # Namespace unique par client
   domain: "avanteam-saas.com"
 
 # ===== INTERFACE UTILISATEUR =====
