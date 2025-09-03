@@ -13,7 +13,6 @@ entries:
       catalog.cattle.io/kube-version: '>= 1.21.0-0'
       catalog.cattle.io/questions-path: questions.yaml
       catalog.cattle.io/rancher-version: '>= 2.6.0-0'
-      catalog.cattle.io/release-name: askme
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
     appVersion: 1.0.0
