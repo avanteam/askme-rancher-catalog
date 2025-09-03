@@ -26,6 +26,97 @@ data:
   LLM_PROVIDER: {{ .Values.llm.defaultProvider | quote }}
   AVAILABLE_LLM_PROVIDERS: {{ .Values.llm.availableProviders | quote }}
 
+  # Azure OpenAI Configuration
+  AZURE_OPENAI_RESOURCE: {{ .Values.azure.openai.resource | quote }}
+  AZURE_OPENAI_ENDPOINT: {{ .Values.azure.openai.endpoint | quote }}
+  AZURE_OPENAI_MODEL: {{ .Values.azure.openai.model | quote }}
+  AZURE_OPENAI_MODEL_NAME: {{ .Values.azure.openai.modelName | quote }}
+  AZURE_OPENAI_TEMPERATURE: {{ .Values.azure.openai.temperature | quote }}
+  AZURE_OPENAI_TOP_P: {{ .Values.azure.openai.topP | quote }}
+  AZURE_OPENAI_STOP_SEQUENCE: {{ .Values.azure.openai.stopSequence | quote }}
+  AZURE_OPENAI_SEED: {{ .Values.azure.openai.seed | quote }}
+  AZURE_OPENAI_CHOICES_COUNT: {{ .Values.azure.openai.choicesCount | quote }}
+  AZURE_OPENAI_PRESENCE_PENALTY: {{ .Values.azure.openai.presencePenalty | quote }}
+  AZURE_OPENAI_FREQUENCY_PENALTY: {{ .Values.azure.openai.frequencyPenalty | quote }}
+  AZURE_OPENAI_LOGIT_BIAS: {{ .Values.azure.openai.logitBias | quote }}
+  AZURE_OPENAI_USER: {{ .Values.azure.openai.user | quote }}
+  AZURE_OPENAI_TOOLS: {{ .Values.azure.openai.tools | quote }}
+  AZURE_OPENAI_TOOL_CHOICE: {{ .Values.azure.openai.toolChoice | quote }}
+  AZURE_OPENAI_STREAM: {{ .Values.azure.openai.stream | quote }}
+  AZURE_OPENAI_SYSTEM_MESSAGE: {{ .Values.azure.openai.systemMessage | quote }}
+  AZURE_OPENAI_PREVIEW_API_VERSION: {{ .Values.azure.openai.previewApiVersion | quote }}
+  AZURE_OPENAI_EMBEDDING_NAME: {{ .Values.azure.openai.embeddingName | quote }}
+  AZURE_OPENAI_EMBEDDING_ENDPOINT: {{ .Values.azure.openai.embeddingEndpoint | quote }}
+  AZURE_OPENAI_RESPONSE_VERY_SHORT_MAX_TOKENS: {{ .Values.azure.openai.responseVeryShortMaxTokens | quote }}
+  AZURE_OPENAI_RESPONSE_NORMAL_MAX_TOKENS: {{ .Values.azure.openai.responseNormalMaxTokens | quote }}
+  AZURE_OPENAI_RESPONSE_COMPREHENSIVE_MAX_TOKENS: {{ .Values.azure.openai.responseComprehensiveMaxTokens | quote }}
+
+  # Claude AI Configuration
+  CLAUDE_MODEL: {{ .Values.claude.model | quote }}
+  CLAUDE_TEMPERATURE: {{ .Values.claude.temperature | quote }}
+  CLAUDE_TOP_P: {{ .Values.claude.topP | quote }}
+  CLAUDE_SYSTEM_MESSAGE: {{ .Values.claude.systemMessage | quote }}
+  CLAUDE_RESPONSE_VERY_SHORT_MAX_TOKENS: {{ .Values.claude.responseVeryShortMaxTokens | quote }}
+  CLAUDE_RESPONSE_NORMAL_MAX_TOKENS: {{ .Values.claude.responseNormalMaxTokens | quote }}
+  CLAUDE_RESPONSE_COMPREHENSIVE_MAX_TOKENS: {{ .Values.claude.responseComprehensiveMaxTokens | quote }}
+
+  # OpenAI Direct Configuration
+  OPENAI_DIRECT_MODEL: {{ .Values.openai.model | quote }}
+  OPENAI_DIRECT_TEMPERATURE: {{ .Values.openai.temperature | quote }}
+  OPENAI_DIRECT_TOP_P: {{ .Values.openai.topP | quote }}
+  OPENAI_DIRECT_STOP_SEQUENCE: {{ .Values.openai.stopSequence | quote }}
+  OPENAI_DIRECT_BASE_URL: {{ .Values.openai.baseUrl | quote }}
+  OPENAI_DIRECT_SYSTEM_MESSAGE: {{ .Values.openai.systemMessage | quote }}
+  OPENAI_DIRECT_RESPONSE_VERY_SHORT_MAX_TOKENS: {{ .Values.openai.responseVeryShortMaxTokens | quote }}
+  OPENAI_DIRECT_RESPONSE_NORMAL_MAX_TOKENS: {{ .Values.openai.responseNormalMaxTokens | quote }}
+  OPENAI_DIRECT_RESPONSE_COMPREHENSIVE_MAX_TOKENS: {{ .Values.openai.responseComprehensiveMaxTokens | quote }}
+
+  # Mistral AI Configuration
+  MISTRAL_MODEL: {{ .Values.mistral.model | quote }}
+  MISTRAL_TEMPERATURE: {{ .Values.mistral.temperature | quote }}
+  MISTRAL_TOP_P: {{ .Values.mistral.topP | quote }}
+  MISTRAL_SYSTEM_MESSAGE: {{ .Values.mistral.systemMessage | quote }}
+  MISTRAL_RESPONSE_VERY_SHORT_MAX_TOKENS: {{ .Values.mistral.responseVeryShortMaxTokens | quote }}
+  MISTRAL_RESPONSE_NORMAL_MAX_TOKENS: {{ .Values.mistral.responseNormalMaxTokens | quote }}
+  MISTRAL_RESPONSE_COMPREHENSIVE_MAX_TOKENS: {{ .Values.mistral.responseComprehensiveMaxTokens | quote }}
+
+  # Gemini AI Configuration
+  GEMINI_MODEL: {{ .Values.gemini.model | quote }}
+  GEMINI_TEMPERATURE: {{ .Values.gemini.temperature | quote }}
+  GEMINI_TOP_P: {{ .Values.gemini.topP | quote }}
+  GEMINI_SYSTEM_MESSAGE: {{ .Values.gemini.systemMessage | quote }}
+  GEMINI_RESPONSE_VERY_SHORT_MAX_TOKENS: {{ .Values.gemini.responseVeryShortMaxTokens | quote }}
+  GEMINI_RESPONSE_NORMAL_MAX_TOKENS: {{ .Values.gemini.responseNormalMaxTokens | quote }}
+  GEMINI_RESPONSE_COMPREHENSIVE_MAX_TOKENS: {{ .Values.gemini.responseComprehensiveMaxTokens | quote }}
+
+  # Azure Services Configuration
+  AZURE_SEARCH_SERVICE: {{ .Values.azure.search.service | quote }}
+  AZURE_SEARCH_INDEX: {{ .Values.azure.search.index | quote }}
+  AZURE_SEARCH_SEMANTIC_SEARCH_CONFIG: {{ .Values.azure.search.semanticSearchConfig | quote }}
+  AZURE_SEARCH_INDEX_IS_PRECHUNKED: {{ .Values.azure.search.indexIsPrechunked | quote }}
+  AZURE_SEARCH_TOP_K: {{ .Values.azure.search.topK | quote }}
+  AZURE_SEARCH_ENABLE_IN_DOMAIN: {{ .Values.azure.search.enableInDomain | quote }}
+  AZURE_SEARCH_CONTENT_COLUMNS: {{ .Values.azure.search.contentColumns | quote }}
+  AZURE_SEARCH_FILENAME_COLUMN: {{ .Values.azure.search.filenameColumn | quote }}
+  AZURE_SEARCH_TITLE_COLUMN: {{ .Values.azure.search.titleColumn | quote }}
+  AZURE_SEARCH_URL_COLUMN: {{ .Values.azure.search.urlColumn | quote }}
+  AZURE_SEARCH_VECTOR_COLUMNS: {{ .Values.azure.search.vectorColumns | quote }}
+  AZURE_SEARCH_QUERY_TYPE: {{ .Values.azure.search.queryType | quote }}
+  AZURE_SEARCH_PERMITTED_GROUPS_COLUMN: {{ .Values.azure.search.permittedGroupsColumn | quote }}
+  AZURE_SEARCH_STRICTNESS: {{ .Values.azure.search.strictness | quote }}
+
+  # Azure Speech Configuration
+  AZURE_SPEECH_ENABLED: {{ .Values.azure.speech.enabled | quote }}
+  AZURE_SPEECH_REGION: {{ .Values.azure.speech.region | quote }}
+  AZURE_SPEECH_VOICE_FR: {{ .Values.azure.speech.voiceFr | quote }}
+  AZURE_SPEECH_VOICE_EN: {{ .Values.azure.speech.voiceEn | quote }}
+
+  # Azure CosmosDB Configuration
+  AZURE_COSMOSDB_ACCOUNT: {{ .Values.azure.cosmosdb.account | quote }}
+  AZURE_COSMOSDB_DATABASE: {{ .Values.azure.cosmosdb.database | quote }}
+  AZURE_COSMOSDB_CONVERSATIONS_CONTAINER: {{ .Values.azure.cosmosdb.conversationsContainer | quote }}
+  AZURE_COSMOSDB_ENABLE_FEEDBACK: {{ .Values.azure.cosmosdb.enableFeedback | quote }}
+
   # Configuration des sources de données
   DATASOURCE_TYPE: {{ .Values.config.datasourceType | quote }}
   SEARCH_TOP_K: {{ .Values.config.searchTopK | quote }}
@@ -66,10 +157,16 @@ data:
   AZURE_SEARCH_PERMITTED_GROUPS_COLUMN: {{ .Values.azure.search.permittedGroupsColumn | quote }}
   AZURE_SEARCH_STRICTNESS: {{ .Values.azure.search.strictness | quote }}
   
-  # Avanteam Custom
+  # Avanteam Custom Configuration
   AVANTEAM_URL_BASE: {{ .Values.avanteam.urlBase | quote }}
+  AVANTEAM_LICENCEHUB_HANDLERURL: {{ .Values.avanteam.licenceHubHandlerUrl | quote }}
+  AVANTEAM_LICENCEHUB_KEY: {{ .Values.avanteam.licenceHubKey | quote }}
   AUTH_ENABLED: {{ .Values.avanteam.authEnabled | quote }}
-  SCM_DO_BUILD_DURING_DEPLOYMENT: "true"
+  SCM_DO_BUILD_DURING_DEPLOYMENT: {{ .Values.config.scmDoBuildDuringDeployment | quote }}
+
+  # MS Defender Configuration
+  MS_DEFENDER_ENABLED: {{ .Values.msDefender.enabled | quote }}
+  MS_DEFENDER_ENDPOINT: {{ .Values.msDefender.endpoint | quote }}
   
   # Autres datasources (vides mais présentes pour éviter les erreurs)
   AZURE_COSMOSDB_MONGO_VCORE_CONNECTION_STRING: {{ .Values.datasources.cosmosdbMongo.connectionString | quote }}
