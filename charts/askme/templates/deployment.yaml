@@ -41,6 +41,10 @@ spec:
         - configMapRef:
             name: {{ include "askme.fullname" . }}-config
         # Client-specific Secret - contient les clés client + askme-tokens fusionnés
+        # Global tokens copiés depuis askme-platform
+        - secretRef:
+            name: askme-local-tokens
+            optional: true
         - secretRef:
             name: {{ include "askme.fullname" . }}-secrets
         
