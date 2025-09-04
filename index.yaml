@@ -21,10 +21,10 @@ entries:
       catalog.cattle.io/rancher-version: '>= 2.6.0-0'
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
-    appVersion: 1.0.0
-    created: "2025-09-04T09:55:42.947699275+02:00"
+    appVersion: 1.0.3
+    created: "2025-09-04T09:52:45.564464179Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: 716b5f69d366c85fa294630d16eb205f83418399ae920e31de752e15a5024b11
+    digest: 74f2e66fcb3a293dfce98ccf2fdd52233884c7202096ee60d2dcbc883f43d1b6
     home: https://github.com/avanteam/askme-rancher-catalog
     keywords:
     - ai
@@ -40,41 +40,6 @@ entries:
     - https://github.com/avanteam/askme-app
     type: application
     urls:
-    - askme-1.0.1.tgz
-    version: 1.0.1
-  - annotations:
-      catalog.cattle.io/certified: avanteam
-      catalog.cattle.io/changes: |-
-        - Version initiale
-        - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
-        - Interface vocale avec wake words
-        - Multi-client avec isolation namespace
-        - Intégration Rancher RBAC
-      catalog.cattle.io/display-name: AskMe Assistant IA
-      catalog.cattle.io/kube-version: '>= 1.21.0-0'
-      catalog.cattle.io/questions-path: questions.yaml
-      catalog.cattle.io/rancher-version: '>= 2.6.0-0'
-      catalog.cattle.io/upstream-version: 1.0.0
-    apiVersion: v2
-    appVersion: 1.0.0
-    created: "2025-09-04T09:55:42.941500338+02:00"
-    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: a0e2a929ff66ab2305a9e5f0a6b3eb60f5e5747d1f3fb0679e02ea7b0c6b5889
-    home: https://github.com/avanteam/askme-rancher-catalog
-    keywords:
-    - ai
-    - chatbot
-    - llm
-    - avanteam
-    - qualitysaas
-    maintainers:
-    - email: devops@avanteam.com
-      name: Avanteam DevOps
-    name: askme
-    sources:
-    - https://github.com/avanteam/askme-app
-    type: application
-    urls:
-    - askme-1.0.0.tgz
-    version: 1.0.0
-generated: "2025-09-04T09:55:42.934138834+02:00"
+    - https://github.com/avanteam/askme-rancher-catalog/askme-1.0.3.tgz
+    version: 1.0.3
+generated: "2025-09-04T09:52:45.562429282Z"
