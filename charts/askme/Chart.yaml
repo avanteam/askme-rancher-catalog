@@ -36,11 +36,6 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/changes: |
-    v1.0.1:
-    - Fix: Correction des jobs de synchronisation des secrets
-    - Fix: Remplacement des hooks post-install par des ressources normales
-    - Fix: Architecture simplifiée avec uniquement askme-local-tokens
-    - Fix: Suppression de client-secrets.yaml (obsolète)
     v1.0.0:
     - Version initiale
     - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
