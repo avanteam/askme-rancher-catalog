@@ -236,12 +236,12 @@ jobs:
           # Vérifier si index.yaml existe et contient des données
           if [[ -f "index.yaml" ]] && yq eval '.entries.askme | length' index.yaml > /dev/null 2>&1; then
             echo "✅ index.yaml existant trouvé, fusion avec les nouvelles versions..."
-            # Merge avec l'index existant
-            helm repo index . --url https://github.com/${{ github.repository }}/releases/download --merge index.yaml
+            # Merge avec l'index existant - URL corrigée vers raw.githubusercontent.com
+            helm repo index . --url https://raw.githubusercontent.com/${{ github.repository }}/prod --merge index.yaml
           else
             echo "🆕 Création d'un nouvel index.yaml..."
-            # Créer un nouvel index
-            helm repo index . --url https://github.com/${{ github.repository }}/releases/download
+            # Créer un nouvel index - URL corrigée vers raw.githubusercontent.com
+            helm repo index . --url https://raw.githubusercontent.com/${{ github.repository }}/prod
           fi
           
           echo "✅ Index mis à jour, versions disponibles:"
