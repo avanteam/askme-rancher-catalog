@@ -40,7 +40,7 @@ entries:
     - https://github.com/avanteam/askme-app
     type: application
     urls:
-    - https://github.com/avanteam/askme-rancher-catalog/releases/download/askme-1.0.4.tgz
+    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.4.tgz
     version: 1.0.4
   - annotations:
       catalog.cattle.io/certified: avanteam
@@ -81,7 +81,7 @@ entries:
     - https://github.com/avanteam/askme-app
     type: application
     urls:
-    - https://github.com/avanteam/askme-rancher-catalog/releases/download/askme-1.0.3.tgz
+    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.3.tgz
     version: 1.0.3
   - annotations:
       catalog.cattle.io/certified: avanteam
@@ -122,7 +122,7 @@ entries:
     - https://github.com/avanteam/askme-app
     type: application
     urls:
-    - https://github.com/avanteam/askme-rancher-catalog/releases/download/askme-1.0.2.tgz
+    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.2.tgz
     version: 1.0.2
   - annotations:
       catalog.cattle.io/certified: avanteam
@@ -157,7 +157,7 @@ entries:
     - https://github.com/avanteam/askme-app
     type: application
     urls:
-    - https://github.com/avanteam/askme-rancher-catalog/releases/download/askme-1.0.1.tgz
+    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.1.tgz
     version: 1.0.1
   - annotations:
       catalog.cattle.io/certified: avanteam
@@ -192,6 +192,6 @@ entries:
     - https://github.com/avanteam/askme-app
     type: application
     urls:
-    - https://github.com/avanteam/askme-rancher-catalog/releases/download/askme-1.0.0.tgz
+    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.0.tgz
     version: 1.0.0
 generated: "2025-09-04T15:51:19.90980787+02:00"
