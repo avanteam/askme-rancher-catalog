@@ -11,6 +11,18 @@ on:
     branches:
       - main
       - prod
+  repository_dispatch:
+    types: [new-askme-release]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version à packager (ex: 1.0.2)'
+        required: true
+        type: string
+      app_changes:
+        description: 'Changements de askme-app (optionnel)'
+        required: false
+        type: string
 
 jobs:
   # ===== TESTS =====
@@ -46,7 +58,7 @@ jobs:
     name: 📦 Package Helm Chart
     runs-on: ubuntu-latest
     needs: test
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout Catalog
         uses: actions/checkout@v4
@@ -58,14 +70,31 @@ jobs:
         with:
           version: '3.12.0'
 
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
       - name: Extract Version
         id: version
         run: |
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            # Version manuelle depuis l'input
+            VERSION="${{ github.event.inputs.version }}"
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "is-release=true" >> $GITHUB_OUTPUT
+            echo "📌 Manual release version: $VERSION"
+          elif [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
+            # Version depuis le payload repository_dispatch
+            VERSION="${{ github.event.client_payload.version }}"
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "is-release=true" >> $GITHUB_OUTPUT
+            echo "📌 Automatic release version from askme-app: $VERSION"
+          elif [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/v}
             echo "version=$VERSION" >> $GITHUB_OUTPUT
             echo "is-release=true" >> $GITHUB_OUTPUT
-            echo "📌 Release version: $VERSION"
+            echo "📌 Tag release version: $VERSION"
           else
             # Pour les branches, utiliser version dev avec hash
             VERSION="0.0.0-dev-${GITHUB_SHA::8}"
@@ -74,11 +103,82 @@ jobs:
             echo "📌 Development version: $VERSION"
           fi
 
-      - name: Update Chart Version
+      - name: Fetch App Changes (for repository_dispatch)
+        if: github.event_name == 'repository_dispatch'
+        id: app_changes
+        run: |
+          echo "📡 Récupération des changements depuis askme-app..."
+          
+          # Récupérer les changements depuis le payload
+          APP_CHANGES="${{ github.event.client_payload.changes }}"
+          
+          if [[ -n "$APP_CHANGES" ]]; then
+            echo "✅ Changements reçus depuis askme-app:"
+            echo "$APP_CHANGES"
+            
+            # Échapper les caractères spéciaux pour le JSON
+            APP_CHANGES_ESCAPED=$(echo "$APP_CHANGES" | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+            echo "app_changes=$APP_CHANGES_ESCAPED" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Aucun changement fourni par askme-app"
+            echo "app_changes=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Fetch App Changes (for workflow_dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        id: manual_changes
+        run: |
+          echo "📋 Utilisation des changements manuels..."
+          
+          APP_CHANGES="${{ github.event.inputs.app_changes }}"
+          if [[ -n "$APP_CHANGES" ]]; then
+            APP_CHANGES_ESCAPED=$(echo "$APP_CHANGES" | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+            echo "app_changes=$APP_CHANGES_ESCAPED" >> $GITHUB_OUTPUT
+          else
+            echo "app_changes=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update Chart Version and Changes
         run: |
           echo "📝 Updating Chart.yaml with version ${{ steps.version.outputs.version }}"
+          
+          # Récupérer les changements selon le type d'événement
+          if [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
+            NEW_CHANGES="${{ steps.app_changes.outputs.app_changes }}"
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            NEW_CHANGES="${{ steps.manual_changes.outputs.app_changes }}"
+          else
+            NEW_CHANGES=""
+          fi
+          
+          # Mise à jour des versions
           sed -i "s/^version:.*/version: ${{ steps.version.outputs.version }}/" charts/askme/Chart.yaml
           sed -i "s/^appVersion:.*/appVersion: \"${{ steps.version.outputs.version }}\"/" charts/askme/Chart.yaml
+          
+          # Mise à jour des changements si on a de nouvelles informations
+          if [[ -n "$NEW_CHANGES" ]]; then
+            echo "📝 Mise à jour des changements avec les infos de askme-app..."
+            
+            # Lire les changements existants
+            CURRENT_CHANGES=$(yq eval '.annotations."catalog.cattle.io/changes"' charts/askme/Chart.yaml)
+            
+            # Construire les nouveaux changements
+            NEW_VERSION_CHANGES="v${{ steps.version.outputs.version }}:"$'\n'"$NEW_CHANGES"
+            
+            # Combiner avec les existants
+            if [[ "$CURRENT_CHANGES" != "null" ]] && [[ -n "$CURRENT_CHANGES" ]]; then
+              COMBINED_CHANGES="$NEW_VERSION_CHANGES"$'\n'"$CURRENT_CHANGES"
+            else
+              COMBINED_CHANGES="$NEW_VERSION_CHANGES"
+            fi
+            
+            # Appliquer les changements avec yq
+            yq eval -i '.annotations."catalog.cattle.io/changes" = "'"$COMBINED_CHANGES"'"' charts/askme/Chart.yaml
+            
+            echo "✅ Changements mis à jour avec les infos de askme-app"
+          else
+            echo "📋 Pas de nouveaux changements à ajouter"
+          fi
           
           echo "✅ Chart.yaml updated:"
           grep "^version:" charts/askme/Chart.yaml
@@ -95,9 +195,16 @@ jobs:
 
       - name: Keep Existing Packages
         run: |
-          echo "📦 Conservation des versions existantes..."
-          ls -la *.tgz 2>/dev/null || echo "Aucun package existant"
-          echo "✅ Packages existants conservés"
+          echo "📦 Vérification des packages existants dans le repo..."
+          ls -la *.tgz 2>/dev/null && echo "✅ Packages existants trouvés" || echo "⚠️ Aucun package existant dans le workspace"
+          
+          echo "📝 Contenu actuel de index.yaml:"
+          if [[ -f "index.yaml" ]]; then
+            echo "✅ index.yaml trouvé, versions disponibles:"
+            yq eval '.entries.askme[].version' index.yaml || echo "Erreur lors de la lecture des versions"
+          else
+            echo "⚠️ index.yaml non trouvé dans le workspace"
+          fi
 
       - name: Package Helm Chart
         run: |
@@ -110,11 +217,23 @@ jobs:
       - name: Generate Chart Index
         run: |
           echo "📝 Generating Helm repository index with all versions..."
-          # Index avec toutes les versions (existantes + nouvelle)
-          helm repo index . --url https://github.com/${{ github.repository }}/releases/download --merge index.yaml
           
-          echo "✅ Index updated with all versions:"
-          grep -E "version: |appVersion: " index.yaml | head -10
+          # Vérifier si index.yaml existe et contient des données
+          if [[ -f "index.yaml" ]] && yq eval '.entries.askme | length' index.yaml > /dev/null 2>&1; then
+            echo "✅ index.yaml existant trouvé, fusion avec les nouvelles versions..."
+            # Merge avec l'index existant
+            helm repo index . --url https://github.com/${{ github.repository }}/releases/download --merge index.yaml
+          else
+            echo "🆕 Création d'un nouvel index.yaml..."
+            # Créer un nouvel index
+            helm repo index . --url https://github.com/${{ github.repository }}/releases/download
+          fi
+          
+          echo "✅ Index mis à jour, versions disponibles:"
+          yq eval '.entries.askme[].version' index.yaml | sort -V || echo "Erreur lors de la lecture"
+          
+          echo "📊 Nombre total de versions dans le catalogue:"
+          yq eval '.entries.askme | length' index.yaml || echo "Erreur lors du compte"
 
       - name: Upload Chart Artifacts
         uses: actions/upload-artifact@v4
@@ -133,18 +252,36 @@ jobs:
           
           # Ajouter les fichiers modifiés + TOUS les packages
           git add charts/askme/Chart.yaml charts/askme/values.yaml index.yaml
+          
+          # S'assurer que TOUS les packages .tgz sont ajoutés (même s'ils existaient déjà)
+          echo "📦 Ajout de tous les packages .tgz au commit:"
+          ls -la *.tgz
           git add *.tgz  # Tous les packages (nouveaux et existants)
+          
+          # Vérifier ce qui sera committé
+          echo "📋 Fichiers qui seront committés:"
+          git diff --staged --name-only
           
           # Commit seulement si il y a des changements
           if git diff --staged --quiet; then
             echo "📋 No changes to commit"
           else
+            # Message de commit adapté selon le déclencheur
+            if [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
+              TRIGGER_INFO="Auto-triggered from askme-app release"
+            elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              TRIGGER_INFO="Manual release via workflow_dispatch"
+            else
+              TRIGGER_INFO="Release from git tag"
+            fi
+            
             git commit -m "🚀 Release AskMe Helm Chart v${{ steps.version.outputs.version }}
 
             - Updated Chart.yaml version to ${{ steps.version.outputs.version }}
             - Updated values.yaml image tag to ${{ steps.version.outputs.version }}  
-            - Updated index.yaml with new chart version
+            - Updated index.yaml with new chart version (preserving all previous versions)
             - Added packaged chart askme-${{ steps.version.outputs.version }}.tgz
+            - $TRIGGER_INFO
             
             Ready for deployment via Rancher UI"
             
