@@ -59,7 +59,7 @@ entries:
     appVersion: 1.0.0
     created: "2025-09-04T09:55:42.941500338+02:00"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: ded18249f0d65647e21cc52f2a7d559264f5a76694c5410164e713e0792c4546
+    digest: a0e2a929ff66ab2305a9e5f0a6b3eb60f5e5747d1f3fb0679e02ea7b0c6b5889
     home: https://github.com/avanteam/askme-rancher-catalog
     keywords:
     - ai
