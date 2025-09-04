@@ -40,13 +40,9 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ include "askme.fullname" . }}-config
-        # Client-specific Secret - contient les clés client + askme-tokens fusionnés
-        # Global tokens copiés depuis askme-platform
+        # Global tokens from askme-platform (consolidated in askme-local-tokens)
         - secretRef:
             name: askme-local-tokens
-            optional: true
-        - secretRef:
-            name: {{ include "askme.fullname" . }}-secrets
         
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
