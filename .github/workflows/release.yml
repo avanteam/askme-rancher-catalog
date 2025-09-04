@@ -1,34 +1,21 @@
-name: AskMe Rancher Catalog - Helm Chart Only
+name: AskMe Rancher Catalog - Manual Release
+
+# Workflow simple pour tests manuels ou releases ponctuelles
+# Le workflow principal est dans askme-app-aoai/deploy.yml
 
 on:
-  push:
-    tags:
-      - 'v*'
-    branches:
-      - main
-      - prod
-  pull_request:
-    branches:
-      - main
-      - prod
-  repository_dispatch:
-    types: [new-askme-release]
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version à packager (ex: 1.0.2)'
+        description: 'Version à packager (ex: 1.0.3)'
         required: true
-        type: string
-      app_changes:
-        description: 'Changements de askme-app (optionnel)'
-        required: false
         type: string
 
 jobs:
-  # ===== TESTS =====
-  test:
-    name: 🧪 Validate Catalog
+  manual-release:
+    name: 📦 Manual Chart Release
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -38,368 +25,30 @@ jobs:
         with:
           version: '3.12.0'
 
-      - name: Validate Helm Chart
+      - name: Manual Package and Index
         run: |
-          helm lint charts/askme/
-          helm template test charts/askme/ --dry-run
-
-      - name: Validate questions.yaml
-        run: |
-          # Vérifier que questions.yaml est un YAML valide
-          python -c "import yaml; yaml.safe_load(open('charts/askme/questions.yaml'))"
-
-      - name: Validate values.yaml
-        run: |
-          # Vérifier que values.yaml est un YAML valide
-          python -c "import yaml; yaml.safe_load(open('charts/askme/values.yaml'))"
-
-  # ===== PACKAGE HELM =====
-  package:
-    name: 📦 Package Helm Chart
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.event_name == 'push' || github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch'
-    steps:
-      - name: Checkout Catalog
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Install Helm
-        uses: azure/setup-helm@v3
-        with:
-          version: '3.12.0'
-
-      - name: Install yq
-        run: |
-          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-          sudo chmod +x /usr/local/bin/yq
-
-      - name: Extract Version
-        id: version
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            # Version manuelle depuis l'input
-            VERSION="${{ github.event.inputs.version }}"
-            echo "version=$VERSION" >> $GITHUB_OUTPUT
-            echo "is-release=true" >> $GITHUB_OUTPUT
-            echo "📌 Manual release version: $VERSION"
-          elif [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
-            # Version depuis le payload repository_dispatch
-            VERSION="${{ github.event.client_payload.version }}"
-            echo "version=$VERSION" >> $GITHUB_OUTPUT
-            echo "is-release=true" >> $GITHUB_OUTPUT
-            echo "📌 Automatic release version from askme-app: $VERSION"
-          elif [[ $GITHUB_REF == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/v}
-            echo "version=$VERSION" >> $GITHUB_OUTPUT
-            echo "is-release=true" >> $GITHUB_OUTPUT
-            echo "📌 Tag release version: $VERSION"
-          else
-            # Pour les branches, utiliser version dev avec hash
-            VERSION="0.0.0-dev-${GITHUB_SHA::8}"
-            echo "version=$VERSION" >> $GITHUB_OUTPUT
-            echo "is-release=false" >> $GITHUB_OUTPUT
-            echo "📌 Development version: $VERSION"
-          fi
-
-      - name: Fetch App Changes (for repository_dispatch)
-        if: github.event_name == 'repository_dispatch'
-        id: app_changes
-        run: |
-          echo "📡 Récupération des changements depuis askme-app..."
+          echo "📦 Manual packaging for version ${{ github.event.inputs.version }}"
           
-          # Récupérer les changements depuis le payload
-          APP_CHANGES="${{ github.event.client_payload.changes }}"
+          # Update Chart.yaml manually
+          sed -i "s/^version:.*/version: ${{ github.event.inputs.version }}/" charts/askme/Chart.yaml
+          sed -i "s/^appVersion:.*/appVersion: \"${{ github.event.inputs.version }}\"/" charts/askme/Chart.yaml
           
-          if [[ -n "$APP_CHANGES" ]]; then
-            echo "✅ Changements reçus depuis askme-app:"
-            echo "$APP_CHANGES"
-            
-            # Échapper les caractères spéciaux pour le JSON
-            APP_CHANGES_ESCAPED=$(echo "$APP_CHANGES" | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
-            echo "app_changes=$APP_CHANGES_ESCAPED" >> $GITHUB_OUTPUT
-          else
-            echo "⚠️ Aucun changement fourni par askme-app"
-            echo "app_changes=" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Fetch App Changes (for workflow_dispatch)
-        if: github.event_name == 'workflow_dispatch'
-        id: manual_changes
-        run: |
-          echo "📋 Utilisation des changements manuels..."
-          
-          APP_CHANGES="${{ github.event.inputs.app_changes }}"
-          if [[ -n "$APP_CHANGES" ]]; then
-            APP_CHANGES_ESCAPED=$(echo "$APP_CHANGES" | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
-            echo "app_changes=$APP_CHANGES_ESCAPED" >> $GITHUB_OUTPUT
-          else
-            echo "app_changes=" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Update Chart Version and Changes
-        run: |
-          echo "📝 Updating Chart.yaml with version ${{ steps.version.outputs.version }}"
-          
-          # Récupérer les changements selon le type d'événement
-          if [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
-            NEW_CHANGES="${{ steps.app_changes.outputs.app_changes }}"
-          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            NEW_CHANGES="${{ steps.manual_changes.outputs.app_changes }}"
-          else
-            NEW_CHANGES=""
-          fi
-          
-          # Mise à jour des versions
-          sed -i "s/^version:.*/version: ${{ steps.version.outputs.version }}/" charts/askme/Chart.yaml
-          sed -i "s/^appVersion:.*/appVersion: \"${{ steps.version.outputs.version }}\"/" charts/askme/Chart.yaml
-          
-          # Mise à jour des changements si on a de nouvelles informations
-          if [[ -n "$NEW_CHANGES" ]]; then
-            echo "📝 Mise à jour des changements avec les infos de askme-app..."
-            
-            # Lire les changements existants
-            CURRENT_CHANGES=$(yq eval '.annotations."catalog.cattle.io/changes"' charts/askme/Chart.yaml)
-            
-            # Construire les nouveaux changements
-            NEW_VERSION_CHANGES="v${{ steps.version.outputs.version }}:"$'\n'"$NEW_CHANGES"
-            
-            # Combiner avec les existants
-            if [[ "$CURRENT_CHANGES" != "null" ]] && [[ -n "$CURRENT_CHANGES" ]]; then
-              COMBINED_CHANGES="$NEW_VERSION_CHANGES"$'\n'"$CURRENT_CHANGES"
-            else
-              COMBINED_CHANGES="$NEW_VERSION_CHANGES"
-            fi
-            
-            # Appliquer les changements avec yq
-            yq eval -i '.annotations."catalog.cattle.io/changes" = "'"$COMBINED_CHANGES"'"' charts/askme/Chart.yaml
-            
-            echo "✅ Changements mis à jour avec les infos de askme-app"
-          else
-            echo "📋 Pas de nouveaux changements à ajouter"
-          fi
-          
-          echo "✅ Chart.yaml updated:"
-          grep "^version:" charts/askme/Chart.yaml
-          grep "^appVersion:" charts/askme/Chart.yaml
-
-      - name: Update Chart Values (for releases)
-        if: steps.version.outputs.is-release == 'true'
-        run: |
-          echo "📝 Updating values.yaml image tag for release"
-          sed -i "s|tag: \".*\"|tag: \"${{ steps.version.outputs.version }}\"|" charts/askme/values.yaml
-          
-          echo "✅ values.yaml updated:"
-          grep "tag:" charts/askme/values.yaml
-
-      - name: Restore All Previous Packages
-        run: |
-          echo "📦 Récupération de TOUS les packages .tgz depuis l'historique git..."
-          
-          # Récupérer tous les packages .tgz depuis les commits précédents
-          git log --name-only --pretty=format: | grep '\.tgz$' | sort | uniq | while read tgz_file; do
-            if [[ -n "$tgz_file" ]] && [[ ! -f "$tgz_file" ]]; then
-              echo "🔄 Récupération de $tgz_file depuis l'historique..."
-              # Essayer de récupérer le fichier depuis l'historique
-              git checkout HEAD~1 -- "$tgz_file" 2>/dev/null || \
-              git checkout HEAD~2 -- "$tgz_file" 2>/dev/null || \
-              git checkout HEAD~3 -- "$tgz_file" 2>/dev/null || \
-              git checkout HEAD~5 -- "$tgz_file" 2>/dev/null || \
-              echo "⚠️ Impossible de récupérer $tgz_file"
-            fi
-          done
-          
-          echo "📋 Packages disponibles après récupération:"
-          ls -la *.tgz 2>/dev/null || echo "Aucun package trouvé"
-          
-          echo "📝 Contenu actuel de index.yaml:"
-          if [[ -f "index.yaml" ]]; then
-            echo "✅ index.yaml trouvé, versions disponibles:"
-            yq eval '.entries.askme[].version' index.yaml 2>/dev/null | sort -V || echo "Erreur lors de la lecture des versions"
-          else
-            echo "⚠️ index.yaml non trouvé dans le workspace"
-          fi
-
-      - name: Package Helm Chart
-        run: |
-          echo "📦 Packaging Helm chart..."
+          # Package chart
           helm package charts/askme --destination ./
           
-          echo "✅ Chart packaged:"
+          # Create index
+          helm repo index . --url https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod
+          
+          echo "✅ Manual package created:"
           ls -la *.tgz
 
-      - name: Generate Chart Index
+      - name: Commit Changes
         run: |
-          echo "📝 Generating Helm repository index with all versions..."
-          
-          # Vérifier si index.yaml existe et contient des données
-          if [[ -f "index.yaml" ]] && yq eval '.entries.askme | length' index.yaml > /dev/null 2>&1; then
-            echo "✅ index.yaml existant trouvé, fusion avec les nouvelles versions..."
-            # Merge avec l'index existant - URL corrigée vers raw.githubusercontent.com
-            helm repo index . --url https://raw.githubusercontent.com/${{ github.repository }}/prod --merge index.yaml
-          else
-            echo "🆕 Création d'un nouvel index.yaml..."
-            # Créer un nouvel index - URL corrigée vers raw.githubusercontent.com
-            helm repo index . --url https://raw.githubusercontent.com/${{ github.repository }}/prod
-          fi
-          
-          echo "✅ Index mis à jour, versions disponibles:"
-          yq eval '.entries.askme[].version' index.yaml | sort -V || echo "Erreur lors de la lecture"
-          
-          echo "📊 Nombre total de versions dans le catalogue:"
-          yq eval '.entries.askme | length' index.yaml || echo "Erreur lors du compte"
-
-      - name: Upload Chart Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: helm-charts-${{ steps.version.outputs.version }}
-          path: |
-            *.tgz
-            index.yaml
-
-      - name: Update Repository Index (for releases)
-        if: steps.version.outputs.is-release == 'true'
-        run: |
-          echo "🔄 Committing updated files for release..."
-          git config user.name "AskMe Release Bot"
+          git config user.name "Manual Release"
           git config user.email "noreply@avanteam.com"
           
-          # Ajouter les fichiers modifiés + TOUS les packages
-          git add charts/askme/Chart.yaml charts/askme/values.yaml index.yaml
+          git add .
+          git commit -m "📦 Manual release v${{ github.event.inputs.version }}"
           
-          # S'assurer que TOUS les packages .tgz sont ajoutés (même s'ils existaient déjà)
-          echo "📦 Ajout de tous les packages .tgz au commit:"
-          ls -la *.tgz
-          git add *.tgz  # Tous les packages (nouveaux et existants)
-          
-          # Vérifier ce qui sera committé
-          echo "📋 Fichiers qui seront committés:"
-          git diff --staged --name-only
-          
-          # Commit seulement si il y a des changements
-          if git diff --staged --quiet; then
-            echo "📋 No changes to commit"
-          else
-            # Message de commit adapté selon le déclencheur
-            if [[ "${{ github.event_name }}" == "repository_dispatch" ]]; then
-              TRIGGER_INFO="Auto-triggered from askme-app release"
-            elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-              TRIGGER_INFO="Manual release via workflow_dispatch"
-            else
-              TRIGGER_INFO="Release from git tag"
-            fi
-            
-            git commit -m "🚀 Release AskMe Helm Chart v${{ steps.version.outputs.version }}
-
-            - Updated Chart.yaml version to ${{ steps.version.outputs.version }}
-            - Updated values.yaml image tag to ${{ steps.version.outputs.version }}  
-            - Updated index.yaml with new chart version (preserving all previous versions)
-            - Added packaged chart askme-${{ steps.version.outputs.version }}.tgz
-            - $TRIGGER_INFO
-            
-            Ready for deployment via Rancher UI"
-            
-            echo "✅ Changes committed successfully"
-          fi
-
-  # ===== RELEASE =====
-  release:
-    name: 🚀 Create GitHub Release  
-    runs-on: ubuntu-latest
-    needs: [test, package]
-    if: startsWith(github.ref, 'refs/tags/v')
-    steps:
-      - name: Checkout Catalog
-        uses: actions/checkout@v4
-
-      - name: Download Chart Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: helm-charts-${{ needs.package.outputs.version || github.ref_name }}
-          path: ./
-
-      - name: Extract Version
-        id: version
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Generate Release Notes
-        run: |
-          cat > release-notes.md << EOF
-          ## 🚀 AskMe Helm Chart v${{ steps.version.outputs.version }}
-          
-          ### 📦 Installation via Rancher UI
-          1. **Ajouter le catalogue :** \`https://github.com/${{ github.repository }}\`
-          2. **Apps & Marketplace → Charts → AskMe**
-          3. **Sélectionner version :** \`${{ steps.version.outputs.version }}\`
-          4. **Configurer les paramètres client**
-          5. **Install**
-          
-          ### 📦 Installation via Helm CLI
-          \`\`\`bash
-          # Ajouter le repository
-          helm repo add askme https://github.com/${{ github.repository }}/releases/download/v${{ steps.version.outputs.version }}/
-          helm repo update
-          
-          # Installer AskMe
-          helm install my-askme askme/askme --version ${{ steps.version.outputs.version }} \\
-            --set client.name=mon-client \\
-            --set client.domain=mon-client.avanteam-saas.com
-          \`\`\`
-          
-          ### 🔧 Configuration
-          - **Multi-LLM** : Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
-          - **Multi-client** : Isolation namespace automatique
-          - **Interface vocale** : Wake words configurables  
-          - **DNS automatique** : Intégration OVH API
-          - **Secrets centralisés** : Gestion unifiée des clés API
-          
-          ### 📋 Fichiers de Configuration
-          - [\`questions.yaml\`](https://github.com/${{ github.repository }}/blob/v${{ steps.version.outputs.version }}/charts/askme/questions.yaml) : Interface Rancher UI
-          - [\`values.yaml\`](https://github.com/${{ github.repository }}/blob/v${{ steps.version.outputs.version }}/charts/askme/values.yaml) : Valeurs par défaut
-          
-          ### 🐳 Image Docker Correspondante
-          \`\`\`
-          7wpjr0wh.c1.gra9.container-registry.ovh.net/library/askme-app:${{ steps.version.outputs.version }}
-          \`\`\`
-          
-          **Note:** L'image Docker est construite automatiquement par le repository [\`askme-app-aoai\`](https://github.com/avanteam/askme-app-aoai)
-          EOF
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            *.tgz
-            index.yaml
-          body_path: release-notes.md
-          generate_release_notes: true
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # ===== NOTIFICATION =====
-  notify:
-    name: 📢 Notification
-    runs-on: ubuntu-latest
-    needs: [test, package]
-    if: always()
-    steps:
-      - name: Success Notification
-        if: needs.test.result == 'success' && needs.package.result == 'success'
-        run: |
-          echo "✅ Rancher Catalog pipeline réussie pour ${{ github.ref_name }}"
-          echo "📦 Chart Helm packagé avec succès"
-          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            echo "🚀 Release créée : https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
-            echo "🌐 Nouvelle version disponible dans Rancher UI"
-          fi
-
-      - name: Failure Notification
-        if: needs.test.result == 'failure' || needs.package.result == 'failure'
-        run: |
-          echo "❌ Rancher Catalog pipeline échouée pour ${{ github.ref_name }}"
-          echo "Tests: ${{ needs.test.result }}"
-          echo "Package: ${{ needs.package.result }}"
+          echo "✅ Ready to push manually"
+          echo "💡 Use: git push to apply changes"
