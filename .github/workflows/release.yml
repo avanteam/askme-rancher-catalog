@@ -193,15 +193,30 @@ jobs:
           echo "✅ values.yaml updated:"
           grep "tag:" charts/askme/values.yaml
 
-      - name: Keep Existing Packages
+      - name: Restore All Previous Packages
         run: |
-          echo "📦 Vérification des packages existants dans le repo..."
-          ls -la *.tgz 2>/dev/null && echo "✅ Packages existants trouvés" || echo "⚠️ Aucun package existant dans le workspace"
+          echo "📦 Récupération de TOUS les packages .tgz depuis l'historique git..."
+          
+          # Récupérer tous les packages .tgz depuis les commits précédents
+          git log --name-only --pretty=format: | grep '\.tgz$' | sort | uniq | while read tgz_file; do
+            if [[ -n "$tgz_file" ]] && [[ ! -f "$tgz_file" ]]; then
+              echo "🔄 Récupération de $tgz_file depuis l'historique..."
+              # Essayer de récupérer le fichier depuis l'historique
+              git checkout HEAD~1 -- "$tgz_file" 2>/dev/null || \
+              git checkout HEAD~2 -- "$tgz_file" 2>/dev/null || \
+              git checkout HEAD~3 -- "$tgz_file" 2>/dev/null || \
+              git checkout HEAD~5 -- "$tgz_file" 2>/dev/null || \
+              echo "⚠️ Impossible de récupérer $tgz_file"
+            fi
+          done
+          
+          echo "📋 Packages disponibles après récupération:"
+          ls -la *.tgz 2>/dev/null || echo "Aucun package trouvé"
           
           echo "📝 Contenu actuel de index.yaml:"
           if [[ -f "index.yaml" ]]; then
             echo "✅ index.yaml trouvé, versions disponibles:"
-            yq eval '.entries.askme[].version' index.yaml || echo "Erreur lors de la lecture des versions"
+            yq eval '.entries.askme[].version' index.yaml 2>/dev/null | sort -V || echo "Erreur lors de la lecture des versions"
           else
             echo "⚠️ index.yaml non trouvé dans le workspace"
           fi

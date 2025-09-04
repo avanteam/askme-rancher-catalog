@@ -2,8 +2,8 @@ apiVersion: v2
 name: askme
 description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
 type: application
-version: 1.0.4
-appVersion: "1.0.4"
+version: 1.0.0
+appVersion: "1.0.0"
 
 # Métadonnées pour Rancher
 keywords:
