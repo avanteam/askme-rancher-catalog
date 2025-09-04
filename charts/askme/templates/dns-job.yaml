@@ -8,9 +8,8 @@ metadata:
     {{- include "askme.labels" . | nindent 4 }}
     app.kubernetes.io/component: dns-manager
   annotations:
-    helm.sh/hook: post-install,post-upgrade
-    helm.sh/hook-weight: "3" 
-    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    askme.avanteam.com/job-type: "dns-setup"
+    askme.avanteam.com/depends-on: "secret-sync"
 spec:
   ttlSecondsAfterFinished: 300
   template:
