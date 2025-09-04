@@ -16,8 +16,44 @@ entries:
       catalog.cattle.io/rancher-version: '>= 2.6.0-0'
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
+    appVersion: 1.0.3
+    created: "2025-09-04T16:23:09.951829167Z"
+    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
+    digest: 655cc3abff15f457f2fdb859e4bc8e7865a7136b273b42ee0e0b6e71d71ae3e7
+    home: https://github.com/avanteam/askme-rancher-catalog
+    keywords:
+    - ai
+    - chatbot
+    - llm
+    - avanteam
+    - qualitysaas
+    maintainers:
+    - email: devops@avanteam.com
+      name: Avanteam DevOps
+    name: askme
+    sources:
+    - https://github.com/avanteam/askme-app
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.3.tgz
+    version: 1.0.3
+  - annotations:
+      catalog.cattle.io/certified: avanteam
+      catalog.cattle.io/changes: |-
+        v1.0.0:
+        - Version initiale
+        - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
+        - Interface vocale avec wake words
+        - Multi-client avec isolation namespace
+        - Intégration Rancher RBAC
+      catalog.cattle.io/display-name: AskMe Assistant IA
+      catalog.cattle.io/kube-version: '>= 1.21.0-0'
+      catalog.cattle.io/questions-path: questions.yaml
+      catalog.cattle.io/rancher-version: '>= 2.6.0-0'
+      catalog.cattle.io/upstream-version: 1.0.0
+    apiVersion: v2
     appVersion: 1.0.2
-    created: "2025-09-04T16:06:53.306592775Z"
+    created: "2025-09-04T16:23:09.950220473Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
     digest: 67244561b6bb1755d1d43fbc567163d17572b66fa6375c3d06c648c14e06d06d
     home: https://github.com/avanteam/askme-rancher-catalog
@@ -35,6 +71,6 @@ entries:
     - https://github.com/avanteam/askme-app
     type: application
     urls:
-    - https://github.com/avanteam/askme-rancher-catalog/askme-1.0.2.tgz
+    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.2.tgz
     version: 1.0.2
-generated: "2025-09-04T16:06:53.30481477Z"
+generated: "2025-09-04T16:23:09.948422888Z"
