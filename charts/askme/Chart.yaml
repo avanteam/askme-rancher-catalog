@@ -36,6 +36,7 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/changes: |
+    v1.0.0: Mise à jour automatique via CI/CD
     v1.0.0:
     - Version initiale avec corrections de robustesse
     - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini

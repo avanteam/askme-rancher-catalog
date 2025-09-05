@@ -4,6 +4,7 @@ entries:
   - annotations:
       catalog.cattle.io/certified: avanteam
       catalog.cattle.io/changes: |-
+        v1.0.0: Mise à jour automatique via CI/CD
         v1.0.0:
         - Version initiale avec corrections de robustesse
         - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
@@ -19,9 +20,9 @@ entries:
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-09-05T17:14:23.911205509+02:00"
+    created: "2025-09-05T16:28:21.180779502Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: 5d90132b816da91f740ec4f7448e9b158429c7532e93fc3ab8f5e75a6a46e94b
+    digest: 0ea86b022647940e7bd9c3da0b54264c58011ce9dededc71c95bc1fd3b335931
     home: https://github.com/avanteam/askme-rancher-catalog
     keywords:
     - ai
@@ -39,4 +40,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.0.tgz
     version: 1.0.0
-generated: "2025-09-05T17:14:23.902056398+02:00"
+generated: "2025-09-05T16:28:21.178975736Z"
