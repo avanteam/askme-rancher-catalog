@@ -29,6 +29,15 @@ spec:
         - |
           set -e
           echo "🌐 Installation des dépendances OVH API..."
+          # Vérification des prérequis critiques
+          echo "🔍 Vérification des secrets requis..."
+          if [ -z "$OVH_APP_KEY" ] || [ -z "$OVH_APP_SECRET" ] || [ -z "$OVH_CONSUMER_KEY" ]; then
+            echo "❌ ERREUR CRITIQUE: Secrets OVH manquants (OVH_APP_KEY, OVH_APP_SECRET, OVH_CONSUMER_KEY)"
+            echo "💡 Vérifiez que le secret 'ovh-local-dns-keys' existe dans le namespace {{ .Release.Namespace }}"
+            exit 1
+          fi
+          
+          echo "✅ Secrets OVH détectés"
           pip install --no-cache-dir requests
           
           echo "📋 Configuration DNS pour client: {{ .Release.Name }}"
@@ -43,30 +52,56 @@ spec:
           
           echo "📝 Sous-domaine: $CLIENT_SUBDOMAIN"
           
-          # Auto-détection IP si nécessaire
+          # Auto-détection IP si nécessaire (avec fallback sécurisé)
           if [ "$TARGET_IP" = "auto" ] || [ -z "$TARGET_IP" ]; then
             echo "🔄 Recherche automatique de l'IP d'ingress..."
-            for i in {1..30}; do
-              # Essayer d'abord loadBalancer.ingress
+            
+            # Attendre d'abord que l'ingress existe
+            echo "⏳ Attente création ingress..."
+            for i in {1..15}; do
+              if kubectl get ingress {{ include "askme.fullname" . }} -n {{ .Release.Namespace }} >/dev/null 2>&1; then
+                echo "✅ Ingress trouvé"
+                break
+              fi
+              echo "⏳ Ingress non trouvé, attente... ($i/15)"
+              sleep 10
+            done
+            
+            # Maintenant chercher l'IP avec timeout et retry robuste
+            for i in {1..20}; do
+              # Méthode 1: loadBalancer.ingress
               TARGET_IP=$(kubectl get ingress {{ include "askme.fullname" . }} -n {{ .Release.Namespace }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
               
-              # Si pas trouvé, chercher dans les annotations (Rancher/OVH)
+              # Méthode 2: annotations Rancher
               if [ -z "$TARGET_IP" ] || [ "$TARGET_IP" = "null" ]; then
                 TARGET_IP=$(kubectl get ingress {{ include "askme.fullname" . }} -n {{ .Release.Namespace }} -o jsonpath='{.metadata.annotations.field\.cattle\.io/publicEndpoints}' 2>/dev/null | grep -o '"addresses":\["[^"]*"' | sed 's/.*"\([^"]*\)"/\1/' | head -1 || echo "")
               fi
               
-              if [ -n "$TARGET_IP" ] && [ "$TARGET_IP" != "null" ]; then
-                echo "✅ IP trouvée automatiquement: $TARGET_IP"
+              # Méthode 3: service LoadBalancer
+              if [ -z "$TARGET_IP" ] || [ "$TARGET_IP" = "null" ]; then
+                TARGET_IP=$(kubectl get service -n {{ .Release.Namespace }} -o jsonpath='{.items[?(@.spec.type=="LoadBalancer")].status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
+              fi
+              
+              # Validation IP
+              if [ -n "$TARGET_IP" ] && [ "$TARGET_IP" != "null" ] && [[ "$TARGET_IP" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+                echo "✅ IP valide trouvée: $TARGET_IP"
                 break
               fi
-              echo "⏳ Attente IP ingress... ($i/30)"
-              sleep 10
+              
+              echo "⏳ Recherche IP... ($i/20)"
+              sleep 15
             done
             
-            if [ -z "$TARGET_IP" ] || [ "$TARGET_IP" = "null" ]; then
-              echo "❌ Impossible de récupérer l'IP d'ingress automatiquement"
-              echo "💡 Définissez dns.ovh.targetIP manuellement dans values.yaml"
-              exit 1
+            # Mode dégradé : Utiliser IP par défaut si échec
+            if [ -z "$TARGET_IP" ] || [ "$TARGET_IP" = "null" ] || ! [[ "$TARGET_IP" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+              echo "⚠️ Auto-détection échouée, utilisation IP par défaut: {{ .Values.dns.ovh.targetIP }}"
+              TARGET_IP="{{ .Values.dns.ovh.targetIP }}"
+              
+              if [ "$TARGET_IP" = "auto" ] || [ -z "$TARGET_IP" ]; then
+                echo "❌ ERREUR: Aucune IP disponible (auto-détection échouée + pas d'IP par défaut)"
+                echo "💡 Définissez dns.ovh.targetIP avec une IP valide dans values.yaml"
+                exit 1
+              fi
             fi
           fi
           
@@ -114,27 +149,50 @@ spec:
               ])
               return '$1$' + hashlib.sha1(s.encode()).hexdigest()
           
-          def ovh_api_call(method, path, data=None):
-              """Effectue un appel à l'API OVH"""
-              query = base_url + path
-              body = json.dumps(data) if data else ''
-              timestamp = int(time.time())
+          def ovh_api_call(method, path, data=None, retries=3):
+              """Effectue un appel à l'API OVH avec retry automatique"""
+              for attempt in range(retries):
+                  try:
+                      query = base_url + path
+                      body = json.dumps(data) if data else ''
+                      timestamp = int(time.time())
+                      
+                      headers = {
+                          'X-Ovh-Application': OVH_APP_KEY,
+                          'X-Ovh-Consumer': OVH_CONSUMER_KEY,
+                          'X-Ovh-Signature': ovh_api_signature(method, query, body, timestamp),
+                          'X-Ovh-Timestamp': str(timestamp),
+                          'Content-Type': 'application/json'
+                      }
+                      
+                      # Timeout de 30 secondes pour éviter les blocages
+                      response = requests.request(method, query, headers=headers, data=body, timeout=30)
+                      
+                      if response.ok:
+                          return response.json() if response.text else {}
+                      
+                      print(f"⚠️ Tentative {attempt + 1}/{retries} échouée: {response.status_code} - {response.text}")
+                      
+                      if attempt < retries - 1:
+                          time.sleep(2 ** attempt)  # Backoff exponentiel
+                          continue
+                      else:
+                          raise Exception(f"API Error après {retries} tentatives: {response.status_code}")
+                          
+                  except requests.exceptions.Timeout:
+                      print(f"⚠️ Timeout tentative {attempt + 1}/{retries}")
+                      if attempt < retries - 1:
+                          time.sleep(2 ** attempt)
+                      else:
+                          raise Exception("Timeout API OVH après plusieurs tentatives")
+                  except requests.exceptions.RequestException as e:
+                      print(f"⚠️ Erreur réseau tentative {attempt + 1}/{retries}: {str(e)}")
+                      if attempt < retries - 1:
+                          time.sleep(2 ** attempt)
+                      else:
+                          raise Exception(f"Erreur réseau: {str(e)}")
               
-              headers = {
-                  'X-Ovh-Application': OVH_APP_KEY,
-                  'X-Ovh-Consumer': OVH_CONSUMER_KEY,
-                  'X-Ovh-Signature': ovh_api_signature(method, query, body, timestamp),
-                  'X-Ovh-Timestamp': str(timestamp),
-                  'Content-Type': 'application/json'
-              }
-              
-              response = requests.request(method, query, headers=headers, data=body)
-              
-              if not response.ok:
-                  print(f"❌ Erreur API OVH: {response.status_code} - {response.text}")
-                  raise Exception(f"API Error: {response.status_code}")
-              
-              return response.json() if response.text else {}
+              raise Exception("Échec inattendu de l'appel API")
           
           def main():
               print(f"🌐 Création enregistrement DNS: {subdomain}.{zone} -> {target_ip}")

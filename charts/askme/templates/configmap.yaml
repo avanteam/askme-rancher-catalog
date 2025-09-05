@@ -135,31 +135,8 @@ data:
   WAKE_WORD_PHRASES: {{ printf "[%s]" (replace "," "\", \"" .Values.voice.wakeWords) | quote }}
   WAKE_WORD_VARIANTS: {{ .Values.voice.wakeWordVariants | quote }}
   
-  # Azure Speech
-  AZURE_SPEECH_ENABLED: {{ .Values.azure.speech.enabled | quote }}
-  AZURE_SPEECH_VOICE_FR: {{ .Values.azure.speech.voiceFr | quote }}
-  AZURE_SPEECH_VOICE_EN: {{ .Values.azure.speech.voiceEn | quote }}
-  
-  # Configuration générale
-  IMAGE_MAX_SIZE_MB: {{ .Values.config.imageMaxSizeMb | quote }}
-  CITATION_CONTENT_MAX_LENGTH: {{ .Values.config.citationContentMaxLength | quote }}
-  DEFAULT_LANGUAGE: {{ .Values.config.defaultLanguage | quote }}
-  AZURE_USE_AUTHENTICATION: {{ .Values.config.azureUseAuthentication | quote }}
-  CHAT_HISTORY_ENABLED: {{ .Values.config.chatHistoryEnabled | quote }}
-  ORCHESTRATION_STRATEGY: {{ .Values.config.orchestrationStrategy | quote }}
-  AZURE_SEARCH_USE_SEMANTIC_SEARCH: {{ .Values.config.azureSearchUseSemanticSearch | quote }}
-  AZURE_SEARCH_SEMANTIC_SEARCH_CONFIG: {{ .Values.azure.search.semanticSearchConfig | quote }}
-  AZURE_SEARCH_INDEX_IS_PRECHUNKED: {{ .Values.azure.search.indexIsPrechunked | quote }}
-  AZURE_SEARCH_TOP_K: {{ .Values.azure.search.topK | quote }}
-  AZURE_SEARCH_ENABLE_IN_DOMAIN: {{ .Values.azure.search.enableInDomain | quote }}
-  AZURE_SEARCH_CONTENT_COLUMNS: {{ .Values.azure.search.contentColumns | quote }}
-  AZURE_SEARCH_FILENAME_COLUMN: {{ .Values.azure.search.filenameColumn | quote }}
-  AZURE_SEARCH_TITLE_COLUMN: {{ .Values.azure.search.titleColumn | quote }}
-  AZURE_SEARCH_URL_COLUMN: {{ .Values.azure.search.urlColumn | quote }}
-  AZURE_SEARCH_VECTOR_COLUMNS: {{ .Values.azure.search.vectorColumns | quote }}
-  AZURE_SEARCH_QUERY_TYPE: {{ .Values.azure.search.queryType | quote }}
-  AZURE_SEARCH_PERMITTED_GROUPS_COLUMN: {{ .Values.azure.search.permittedGroupsColumn | quote }}
-  AZURE_SEARCH_STRICTNESS: {{ .Values.azure.search.strictness | quote }}
+  # NOTE: Section Azure Speech supprimée - définie ligne 108-112
+  # NOTE: Section Configuration générale nettoyée - duplications supprimées
   
   # Avanteam Custom Configuration
   AVANTEAM_URL_BASE: {{ .Values.avanteam.urlBase | quote }}

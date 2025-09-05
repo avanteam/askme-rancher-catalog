@@ -2,8 +2,8 @@ apiVersion: v2
 name: askme
 description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
 type: application
-version: 1.0.5
-appVersion: "1.0.5"
+version: 1.0.0
+appVersion: "1.0.0"
 
 # Métadonnées pour Rancher
 keywords:
@@ -37,8 +37,10 @@ annotations:
   # Changements de version
   catalog.cattle.io/changes: |
     v1.0.0:
-    - Version initiale
+    - Version initiale avec corrections de robustesse
     - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
     - Interface vocale avec wake words
     - Multi-client avec isolation namespace
     - Intégration Rancher RBAC
+    - DNS automatique OVH avec retry et fallback
+    - Déploiement robuste avec pullPolicy Always

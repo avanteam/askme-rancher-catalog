@@ -28,8 +28,8 @@ ui:
 # ===== CONFIGURATION IMAGE =====
 image:
   repository: "7wpjr0wh.c1.gra9.container-registry.ovh.net/library/askme-app"
-  tag: "1.0.5"
-  pullPolicy: IfNotPresent
+  tag: "1.0.0"
+  pullPolicy: Always  # CRITIQUE: Force le rechargement des nouvelles images lors des upgrades
 
 # ===== FOURNISSEURS LLM =====
 llm:
