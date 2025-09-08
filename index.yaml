@@ -5,6 +5,7 @@ entries:
       catalog.cattle.io/certified: avanteam
       catalog.cattle.io/changes: |-
         v1.0.3: Mise à jour automatique via CI/CD
+        v1.0.3: Mise à jour automatique via CI/CD
         v1.0.2: Mise à jour automatique via CI/CD
         v1.0.1: Mise à jour automatique via CI/CD
         v1.0.0: Mise à jour automatique via CI/CD
@@ -23,9 +24,9 @@ entries:
       catalog.cattle.io/upstream-version: 1.0.3
     apiVersion: v2
     appVersion: 1.0.3
-    created: "2025-09-08T08:55:09.799651709Z"
+    created: "2025-09-08T13:24:55.061239051Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: 6e0d7ac321100abd5e03a59c062468e97e569652a555cab1d7407342b84c6c29
+    digest: 8132b1991729ed7414889eb1e31a03efaae17fb24a6d1751dd7430e53f891549
     home: https://github.com/avanteam/askme-rancher-catalog
     keywords:
     - ai
@@ -64,7 +65,7 @@ entries:
       catalog.cattle.io/upstream-version: 1.0.2
     apiVersion: v2
     appVersion: 1.0.2
-    created: "2025-09-08T08:55:09.797998964Z"
+    created: "2025-09-08T13:24:55.058705812Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
     digest: 61df44cee777edebe18821a93bd1913668951df55f7d3f7000d0265395a3f188
     home: https://github.com/avanteam/askme-rancher-catalog
@@ -104,7 +105,7 @@ entries:
       catalog.cattle.io/upstream-version: 1.0.1
     apiVersion: v2
     appVersion: 1.0.1
-    created: "2025-09-08T08:55:09.795400169Z"
+    created: "2025-09-08T13:24:55.056922425Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
     digest: a6bd4f47e62dfe6fe4182bf6cac036c4f94f8718582880c7a4c53a5e62261cc7
     home: https://github.com/avanteam/askme-rancher-catalog
@@ -143,7 +144,7 @@ entries:
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-09-08T08:55:09.793606074Z"
+    created: "2025-09-08T13:24:55.055282887Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
     digest: 0ea86b022647940e7bd9c3da0b54264c58011ce9dededc71c95bc1fd3b335931
     home: https://github.com/avanteam/askme-rancher-catalog
@@ -163,4 +164,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.0.tgz
     version: 1.0.0
-generated: "2025-09-08T08:55:09.79185425Z"
+generated: "2025-09-08T13:24:55.053436783Z"

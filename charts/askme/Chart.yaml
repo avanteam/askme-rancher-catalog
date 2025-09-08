@@ -37,6 +37,7 @@ annotations:
   # Changements de version
   catalog.cattle.io/changes: |
     v1.0.3: Mise à jour automatique via CI/CD
+    v1.0.3: Mise à jour automatique via CI/CD
     v1.0.2: Mise à jour automatique via CI/CD
     v1.0.1: Mise à jour automatique via CI/CD
     v1.0.0: Mise à jour automatique via CI/CD
