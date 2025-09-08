@@ -36,6 +36,7 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/changes: |
+    v1.0.4: Mise à jour automatique via CI/CD
     v1.0.4: Correction repository path + mise à jour automatique via CI/CD
     v1.0.3: Mise à jour automatique via CI/CD
     v1.0.2: Mise à jour automatique via CI/CD
