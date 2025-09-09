@@ -251,6 +251,11 @@ probes:
     timeoutSeconds: 3
     failureThreshold: 3
 
+# ===== AUTHENTIFICATION =====
+authentication:
+  enabled: false  # Si true, active le contrôle d'authentification par token
+  authToken: ""   # Token d'authentification (laissez vide pour utiliser le secret global)
+
 # ===== SECRETS =====
 imagePullSecrets:
   - name: harbor-keys

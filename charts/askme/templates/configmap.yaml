@@ -142,6 +142,10 @@ data:
   AVANTEAM_URL_BASE: {{ .Values.avanteam.urlBase | quote }}
   AVANTEAM_LICENCEHUB_HANDLERURL: {{ .Values.avanteam.licenceHubHandlerUrl | quote }}
   AVANTEAM_LICENCEHUB_KEY: {{ .Values.avanteam.licenceHubKey | quote }}
+  AVANTEAM_ENABLE_AUTH: {{ .Values.authentication.enabled | quote }}
+  {{- if .Values.authentication.authToken }}
+  AVANTEAM_AUTH_TOKEN: {{ .Values.authentication.authToken | quote }}
+  {{- end }}
   AUTH_ENABLED: {{ .Values.avanteam.authEnabled | quote }}
   SCM_DO_BUILD_DURING_DEPLOYMENT: {{ .Values.config.scmDoBuildDuringDeployment | quote }}
 
