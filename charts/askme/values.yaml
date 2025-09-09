@@ -252,7 +252,8 @@ probes:
     failureThreshold: 3
 
 # ===== SECRETS =====
-imagePullSecrets: []
+imagePullSecrets:
+  - name: harbor-keys
 
 # ===== RANCHER INTEGRATION =====
 rancher:
