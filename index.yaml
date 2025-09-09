@@ -3,13 +3,11 @@ entries:
   askme:
   - annotations:
       catalog.cattle.io/certified: avanteam
-      catalog.cattle.io/changes: |-
-        v1.0.4: Mise à jour automatique via CI/CD
-        v1.0.4: Correction repository path + mise à jour automatique via CI/CD
-        v1.0.3: Mise à jour automatique via CI/CD
-        v1.0.2: Mise à jour automatique via CI/CD
-        v1.0.1: Mise à jour automatique via CI/CD
-        v1.0.0: Mise à jour automatique via CI/CD
+      catalog.cattle.io/display-name: AskMe Assistant IA
+      catalog.cattle.io/kube-version: '>= 1.21.0-0'
+      catalog.cattle.io/questions-path: questions.yaml
+      catalog.cattle.io/rancher-version: '>= 2.6.0-0'
+      catalog.cattle.io/release-notes: |-
         v1.0.0:
         - Version initiale avec corrections de robustesse
         - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
@@ -18,179 +16,12 @@ entries:
         - Intégration Rancher RBAC
         - DNS automatique OVH avec retry et fallback
         - Déploiement robuste avec pullPolicy Always
-      catalog.cattle.io/display-name: AskMe Assistant IA
-      catalog.cattle.io/kube-version: '>= 1.21.0-0'
-      catalog.cattle.io/questions-path: questions.yaml
-      catalog.cattle.io/rancher-version: '>= 2.6.0-0'
-      catalog.cattle.io/upstream-version: 1.0.4
-    apiVersion: v2
-    appVersion: 1.0.4
-    created: "2025-09-08T16:10:03.983563571Z"
-    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: 718c9cfa84150f54879353adfbbdf78d85b263e28dba9a9ba76add20676a9f54
-    home: https://github.com/avanteam/askme-rancher-catalog
-    keywords:
-    - ai
-    - chatbot
-    - llm
-    - avanteam
-    - qualitysaas
-    maintainers:
-    - email: devops@avanteam.com
-      name: Avanteam DevOps
-    name: askme
-    sources:
-    - https://github.com/avanteam/askme-app
-    type: application
-    urls:
-    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.4.tgz
-    version: 1.0.4
-  - annotations:
-      catalog.cattle.io/certified: avanteam
-      catalog.cattle.io/changes: |-
-        v1.0.3: Mise à jour automatique via CI/CD
-        v1.0.3: Mise à jour automatique via CI/CD
-        v1.0.2: Mise à jour automatique via CI/CD
-        v1.0.1: Mise à jour automatique via CI/CD
-        v1.0.0: Mise à jour automatique via CI/CD
-        v1.0.0:
-        - Version initiale avec corrections de robustesse
-        - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
-        - Interface vocale avec wake words
-        - Multi-client avec isolation namespace
-        - Intégration Rancher RBAC
-        - DNS automatique OVH avec retry et fallback
-        - Déploiement robuste avec pullPolicy Always
-      catalog.cattle.io/display-name: AskMe Assistant IA
-      catalog.cattle.io/kube-version: '>= 1.21.0-0'
-      catalog.cattle.io/questions-path: questions.yaml
-      catalog.cattle.io/rancher-version: '>= 2.6.0-0'
-      catalog.cattle.io/upstream-version: 1.0.3
-    apiVersion: v2
-    appVersion: 1.0.3
-    created: "2025-09-08T16:10:03.981879472Z"
-    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: 29a289d1f2e6c84dd4dd55fcc2a7be8f407a66853de714f5e5f89532b7f015ac
-    home: https://github.com/avanteam/askme-rancher-catalog
-    keywords:
-    - ai
-    - chatbot
-    - llm
-    - avanteam
-    - qualitysaas
-    maintainers:
-    - email: devops@avanteam.com
-      name: Avanteam DevOps
-    name: askme
-    sources:
-    - https://github.com/avanteam/askme-app
-    type: application
-    urls:
-    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.3.tgz
-    version: 1.0.3
-  - annotations:
-      catalog.cattle.io/certified: avanteam
-      catalog.cattle.io/changes: |-
-        v1.0.2: Mise à jour automatique via CI/CD
-        v1.0.1: Mise à jour automatique via CI/CD
-        v1.0.0: Mise à jour automatique via CI/CD
-        v1.0.0:
-        - Version initiale avec corrections de robustesse
-        - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
-        - Interface vocale avec wake words
-        - Multi-client avec isolation namespace
-        - Intégration Rancher RBAC
-        - DNS automatique OVH avec retry et fallback
-        - Déploiement robuste avec pullPolicy Always
-      catalog.cattle.io/display-name: AskMe Assistant IA
-      catalog.cattle.io/kube-version: '>= 1.21.0-0'
-      catalog.cattle.io/questions-path: questions.yaml
-      catalog.cattle.io/rancher-version: '>= 2.6.0-0'
-      catalog.cattle.io/upstream-version: 1.0.2
-    apiVersion: v2
-    appVersion: 1.0.2
-    created: "2025-09-08T16:10:03.979138619Z"
-    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: f09fdb70de32cce232712e371ad53a64a0149959ae8d036760e70ed098a5c3a9
-    home: https://github.com/avanteam/askme-rancher-catalog
-    keywords:
-    - ai
-    - chatbot
-    - llm
-    - avanteam
-    - qualitysaas
-    maintainers:
-    - email: devops@avanteam.com
-      name: Avanteam DevOps
-    name: askme
-    sources:
-    - https://github.com/avanteam/askme-app
-    type: application
-    urls:
-    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.2.tgz
-    version: 1.0.2
-  - annotations:
-      catalog.cattle.io/certified: avanteam
-      catalog.cattle.io/changes: |-
-        v1.0.1: Mise à jour automatique via CI/CD
-        v1.0.0: Mise à jour automatique via CI/CD
-        v1.0.0:
-        - Version initiale avec corrections de robustesse
-        - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
-        - Interface vocale avec wake words
-        - Multi-client avec isolation namespace
-        - Intégration Rancher RBAC
-        - DNS automatique OVH avec retry et fallback
-        - Déploiement robuste avec pullPolicy Always
-      catalog.cattle.io/display-name: AskMe Assistant IA
-      catalog.cattle.io/kube-version: '>= 1.21.0-0'
-      catalog.cattle.io/questions-path: questions.yaml
-      catalog.cattle.io/rancher-version: '>= 2.6.0-0'
-      catalog.cattle.io/upstream-version: 1.0.1
-    apiVersion: v2
-    appVersion: 1.0.1
-    created: "2025-09-08T16:10:03.977542093Z"
-    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: 66725bcab04fc6ac6315a72dd53fa8a530e3b5733e3bc95f135175e218791990
-    home: https://github.com/avanteam/askme-rancher-catalog
-    keywords:
-    - ai
-    - chatbot
-    - llm
-    - avanteam
-    - qualitysaas
-    maintainers:
-    - email: devops@avanteam.com
-      name: Avanteam DevOps
-    name: askme
-    sources:
-    - https://github.com/avanteam/askme-app
-    type: application
-    urls:
-    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.1.tgz
-    version: 1.0.1
-  - annotations:
-      catalog.cattle.io/certified: avanteam
-      catalog.cattle.io/changes: |-
-        v1.0.0: Mise à jour automatique via CI/CD
-        v1.0.0:
-        - Version initiale avec corrections de robustesse
-        - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
-        - Interface vocale avec wake words
-        - Multi-client avec isolation namespace
-        - Intégration Rancher RBAC
-        - DNS automatique OVH avec retry et fallback
-        - Déploiement robuste avec pullPolicy Always
-      catalog.cattle.io/display-name: AskMe Assistant IA
-      catalog.cattle.io/kube-version: '>= 1.21.0-0'
-      catalog.cattle.io/questions-path: questions.yaml
-      catalog.cattle.io/rancher-version: '>= 2.6.0-0'
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-09-08T16:10:03.975883342Z"
+    created: "2025-09-09T09:36:57.441603439+02:00"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: e58071edf572034bb296e0b13c44d3636a4d9d4b8768ef6020a031570b87ce67
+    digest: 2fe771dfec7f14b5dee717426e9a164f510a3fef78f4f356668c9884b65ec54c
     home: https://github.com/avanteam/askme-rancher-catalog
     keywords:
     - ai
@@ -206,6 +37,6 @@ entries:
     - https://github.com/avanteam/askme-app
     type: application
     urls:
-    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.0.tgz
+    - askme-1.0.0.tgz
     version: 1.0.0
-generated: "2025-09-08T16:10:03.974047611Z"
+generated: "2025-09-09T09:36:57.436842347+02:00"
