@@ -459,3 +459,245 @@ questions:
 
 # Note: Clés OVH centralisées dans secret 'ovh-global-dns-keys@askme-platform'
 # Configuration automatique - aucune saisie requise
+
+# ===== SYSTEM MESSAGES =====
+- variable: azure.openai.systemMessage
+  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
+  description: "Message système personnalisé pour Azure OpenAI"
+  type: multiline
+  required: false
+  group: "Configuration LLM"
+  label: "System Message - Azure OpenAI"
+  show_if: "llm.availableProviders=~AZURE_OPENAI"
+
+- variable: claude.systemMessage
+  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
+  description: "Message système personnalisé pour Claude"
+  type: multiline
+  required: false
+  group: "Configuration LLM"
+  label: "System Message - Claude"
+  show_if: "llm.availableProviders=~CLAUDE"
+
+- variable: openai.systemMessage
+  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
+  description: "Message système personnalisé pour OpenAI Direct"
+  type: multiline
+  required: false
+  group: "Configuration LLM"
+  label: "System Message - OpenAI Direct"
+  show_if: "llm.availableProviders=~OPENAI_DIRECT"
+
+- variable: mistral.systemMessage
+  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
+  description: "Message système personnalisé pour Mistral"
+  type: multiline
+  required: false
+  group: "Configuration LLM"
+  label: "System Message - Mistral"
+  show_if: "llm.availableProviders=~MISTRAL"
+
+- variable: gemini.systemMessage
+  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
+  description: "Message système personnalisé pour Gemini"
+  type: multiline
+  required: false
+  group: "Configuration LLM"
+  label: "System Message - Gemini"
+  show_if: "llm.availableProviders=~GEMINI"
+
+# ===== AZURE SEARCH AVANCÉ =====
+- variable: azure.search.contentColumns
+  default: "chunk,fieldMetadata"
+  description: "Colonnes contenant le contenu à rechercher"
+  type: string
+  required: false
+  group: "Configuration Recherche"
+  label: "Colonnes de Contenu"
+  show_if: "datasources.type=AzureCognitiveSearch"
+
+- variable: azure.search.filenameColumn
+  default: "metadata_storage_name"
+  description: "Nom de la colonne contenant le nom du fichier"
+  type: string
+  required: false
+  group: "Configuration Recherche"
+  label: "Colonne Nom de Fichier"
+  show_if: "datasources.type=AzureCognitiveSearch"
+
+- variable: azure.search.titleColumn
+  default: "titreDocument"
+  description: "Nom de la colonne contenant le titre du document"
+  type: string
+  required: false
+  group: "Configuration Recherche"
+  label: "Colonne Titre"
+  show_if: "datasources.type=AzureCognitiveSearch"
+
+- variable: azure.search.urlColumn
+  default: "metadata_storage_path"
+  description: "Nom de la colonne contenant l'URL du document"
+  type: string
+  required: false
+  group: "Configuration Recherche"
+  label: "Colonne URL"
+  show_if: "datasources.type=AzureCognitiveSearch"
+
+- variable: azure.search.vectorColumns
+  default: "text_vector"
+  description: "Nom de la colonne contenant les vecteurs d'embedding"
+  type: string
+  required: false
+  group: "Configuration Recherche"
+  label: "Colonne Vecteurs"
+  show_if: "datasources.type=AzureCognitiveSearch"
+
+- variable: azure.search.queryType
+  default: "vector_semantic_hybrid"
+  description: "Type de requête Azure Search"
+  type: enum
+  options:
+    - "simple"
+    - "full"
+    - "vector"
+    - "semantic"
+    - "vector_semantic_hybrid"
+  required: false
+  group: "Configuration Recherche"
+  label: "Type de Requête"
+  show_if: "datasources.type=AzureCognitiveSearch"
+
+- variable: azure.search.indexIsPrechunked
+  default: "false"
+  description: "L'index contient-il déjà du contenu pré-découpé ?"
+  type: boolean
+  required: false
+  group: "Configuration Recherche"
+  label: "Index Pré-découpé"
+  show_if: "datasources.type=AzureCognitiveSearch"
+
+# ===== CONFIGURATION UI AVANCÉE =====
+- variable: ui.favicon
+  default: ""
+  description: "URL de l'icône favicon personnalisée"
+  type: string
+  required: false
+  group: "Interface Utilisateur"
+  label: "Favicon"
+
+- variable: config.debug
+  default: "false"
+  description: "Activer le mode debug pour les logs détaillés"
+  type: boolean
+  required: false
+  group: "Configuration Système"
+  label: "Mode Debug"
+
+- variable: config.defaultLanguage
+  default: "fr"
+  description: "Langue par défaut de l'interface"
+  type: enum
+  options:
+    - "fr"
+    - "en"
+  required: false
+  group: "Configuration Système"
+  label: "Langue par Défaut"
+
+- variable: config.citationContentMaxLength
+  default: "2000"
+  description: "Longueur maximale du contenu des citations affichées"
+  type: int
+  required: false
+  group: "Configuration Système"
+  label: "Longueur Max Citations"
+
+- variable: voice.inputEnabled
+  default: "true"
+  description: "Activer la saisie vocale"
+  type: boolean
+  required: false
+  group: "Configuration Voix"
+  label: "Saisie Vocale"
+
+- variable: voice.wakeWordEnabled
+  default: "true"
+  description: "Activer les mots de réveil"
+  type: boolean
+  required: false
+  group: "Configuration Voix"
+  label: "Mots de Réveil"
+  show_if: "voice.inputEnabled=true"
+
+# ===== PARAMÈTRES LLM AVANCÉS =====
+- variable: azure.openai.temperature
+  default: "0.7"
+  description: "Température pour contrôler la créativité des réponses (0.0 = déterministe, 1.0 = créatif)"
+  type: string
+  required: false
+  group: "Configuration LLM"
+  label: "Température - Azure OpenAI"
+  show_if: "llm.availableProviders=~AZURE_OPENAI"
+
+- variable: azure.openai.topP
+  default: "0.95"
+  description: "Top-P pour le nucleus sampling"
+  type: string
+  required: false
+  group: "Configuration LLM"
+  label: "Top-P - Azure OpenAI"
+  show_if: "llm.availableProviders=~AZURE_OPENAI"
+
+- variable: azure.openai.maxTokensNormal
+  default: "6000"
+  description: "Nombre maximum de tokens pour réponses normales"
+  type: string
+  required: false
+  group: "Configuration LLM"
+  label: "Max Tokens Normal - Azure OpenAI"
+  show_if: "llm.availableProviders=~AZURE_OPENAI"
+
+- variable: azure.openai.maxTokensComprehensive
+  default: "16000"
+  description: "Nombre maximum de tokens pour réponses complètes"
+  type: string
+  required: false
+  group: "Configuration LLM"
+  label: "Max Tokens Complet - Azure OpenAI"
+  show_if: "llm.availableProviders=~AZURE_OPENAI"
+
+- variable: claude.temperature
+  default: "0"
+  description: "Température pour Claude (0.0 = déterministe, 1.0 = créatif)"
+  type: string
+  required: false
+  group: "Configuration LLM"
+  label: "Température - Claude"
+  show_if: "llm.availableProviders=~CLAUDE"
+
+- variable: openai.temperature
+  default: "0.1"
+  description: "Température pour OpenAI Direct"
+  type: string
+  required: false
+  group: "Configuration LLM"
+  label: "Température - OpenAI Direct"
+  show_if: "llm.availableProviders=~OPENAI_DIRECT"
+
+- variable: mistral.temperature
+  default: "0.7"
+  description: "Température pour Mistral"
+  type: string
+  required: false
+  group: "Configuration LLM"
+  label: "Température - Mistral"
+  show_if: "llm.availableProviders=~MISTRAL"
+
+- variable: gemini.temperature
+  default: "0.7"
+  description: "Température pour Gemini"
+  type: string
+  required: false
+  group: "Configuration LLM"
+  label: "Température - Gemini"
+  show_if: "llm.availableProviders=~GEMINI"

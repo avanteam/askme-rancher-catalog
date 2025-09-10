@@ -18,6 +18,7 @@ sources:
 maintainers:
   - name: Avanteam DevOps
     email: devops@avanteam.com
+icon: https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoavanteamai.png
 
 # Annotations pour Rancher UI
 annotations:
