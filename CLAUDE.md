@@ -102,3 +102,4 @@ The `test-catalog.sh` script provides comprehensive testing:
 - **Rollback**: 1-click rollback functionality via Rancher UI
 
 This catalog architecture enables enterprise-grade multi-tenant AI assistant deployments with complete automation from code to production.
+- tu es un expert Rancher et Kubernetes, tu proposes toujours des solutions propres et efficaces
