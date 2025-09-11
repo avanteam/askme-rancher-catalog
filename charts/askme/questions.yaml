@@ -152,6 +152,62 @@ questions:
   group: "Azure OpenAI"
   label: "Max Tokens Complet"
 
+- variable: azure.openai.maxTokensVeryShort
+  default: "1000"
+  description: "Nombre maximum de tokens pour réponses très courtes"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Max Tokens Très Court"
+
+- variable: azure.openai.modelName
+  default: "gpt-4o"
+  description: "Nom du modèle OpenAI (ex: gpt-4o, gpt-4, gpt-3.5-turbo)"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Nom du Modèle"
+
+- variable: azure.openai.stopSequence
+  default: ""
+  description: "Séquences d'arrêt pour le modèle"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Séquences d'arrêt"
+
+- variable: azure.openai.seed
+  default: ""
+  description: "Seed pour la reproductibilité (optionnel)"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Seed"
+
+- variable: azure.openai.choicesCount
+  default: "1"
+  description: "Nombre de choix de réponse à générer"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Nombre de Choix"
+
+- variable: azure.openai.presencePenalty
+  default: "0.0"
+  description: "Pénalité de présence (-2.0 à 2.0)"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Pénalité Présence"
+
+- variable: azure.openai.frequencyPenalty
+  default: "0.0"
+  description: "Pénalité de fréquence (-2.0 à 2.0)"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Pénalité Fréquence"
+
 # ===== CLAUDE AI =====
 - variable: claude.enabled
   default: true
@@ -191,12 +247,44 @@ questions:
   label: "System Message"
 
 - variable: claude.temperature
-  default: "0"
+  default: "0.2"
   description: "Température pour Claude (0.0 = déterministe, 1.0 = créatif)"
   type: string
   required: false
   group: "Claude AI"
   label: "Température"
+
+- variable: claude.topP
+  default: "1.0"
+  description: "Top-P pour le nucleus sampling"
+  type: string
+  required: false
+  group: "Claude AI"
+  label: "Top-P"
+
+- variable: claude.maxTokensVeryShort
+  default: "2000"
+  description: "Nombre maximum de tokens pour réponses très courtes"
+  type: string
+  required: false
+  group: "Claude AI"
+  label: "Max Tokens Très Court"
+
+- variable: claude.maxTokensNormal
+  default: "10000"
+  description: "Nombre maximum de tokens pour réponses normales"
+  type: string
+  required: false
+  group: "Claude AI"
+  label: "Max Tokens Normal"
+
+- variable: claude.maxTokensComprehensive
+  default: "40000"
+  description: "Nombre maximum de tokens pour réponses complètes"
+  type: string
+  required: false
+  group: "Claude AI"
+  label: "Max Tokens Complet"
 
 # ===== OPENAI DIRECT =====
 - variable: openai.enabled
@@ -222,12 +310,72 @@ questions:
   label: "System Message"
 
 - variable: openai.temperature
-  default: "0.1"
+  default: "0.2"
   description: "Température pour OpenAI Direct"
   type: string
   required: false
   group: "OpenAI Direct"
   label: "Température"
+
+- variable: openai.model
+  default: "gpt-4o"
+  description: "Modèle OpenAI à utiliser"
+  type: enum
+  options:
+    - "gpt-4o"
+    - "gpt-4"
+    - "gpt-3.5-turbo"
+  required: false
+  group: "OpenAI Direct"
+  label: "Modèle"
+
+- variable: openai.topP
+  default: "1.0"
+  description: "Top-P pour le nucleus sampling"
+  type: string
+  required: false
+  group: "OpenAI Direct"
+  label: "Top-P"
+
+- variable: openai.stopSequence
+  default: ""
+  description: "Séquences d'arrêt pour le modèle"
+  type: string
+  required: false
+  group: "OpenAI Direct"
+  label: "Séquences d'arrêt"
+
+- variable: openai.baseURL
+  default: "https://api.openai.com/v1"
+  description: "URL de base de l'API OpenAI"
+  type: string
+  required: false
+  group: "OpenAI Direct"
+  label: "Base URL"
+
+- variable: openai.maxTokensVeryShort
+  default: "1500"
+  description: "Nombre maximum de tokens pour réponses très courtes"
+  type: string
+  required: false
+  group: "OpenAI Direct"
+  label: "Max Tokens Très Court"
+
+- variable: openai.maxTokensNormal
+  default: "8000"
+  description: "Nombre maximum de tokens pour réponses normales"
+  type: string
+  required: false
+  group: "OpenAI Direct"
+  label: "Max Tokens Normal"
+
+- variable: openai.maxTokensComprehensive
+  default: "16000"
+  description: "Nombre maximum de tokens pour réponses complètes"
+  type: string
+  required: false
+  group: "OpenAI Direct"
+  label: "Max Tokens Complet"
 
 # ===== MISTRAL AI =====
 - variable: mistral.enabled
@@ -260,6 +408,50 @@ questions:
   group: "Mistral AI"
   label: "Température"
 
+- variable: mistral.model
+  default: "mistral-large-latest"
+  description: "Modèle Mistral à utiliser"
+  type: enum
+  options:
+    - "mistral-large-latest"
+    - "mistral-medium-latest"
+    - "mistral-small-latest"
+  required: false
+  group: "Mistral AI"
+  label: "Modèle"
+
+- variable: mistral.topP
+  default: "1.0"
+  description: "Top-P pour le nucleus sampling"
+  type: string
+  required: false
+  group: "Mistral AI"
+  label: "Top-P"
+
+- variable: mistral.maxTokensVeryShort
+  default: "1500"
+  description: "Nombre maximum de tokens pour réponses très courtes"
+  type: string
+  required: false
+  group: "Mistral AI"
+  label: "Max Tokens Très Court"
+
+- variable: mistral.maxTokensNormal
+  default: "8000"
+  description: "Nombre maximum de tokens pour réponses normales"
+  type: string
+  required: false
+  group: "Mistral AI"
+  label: "Max Tokens Normal"
+
+- variable: mistral.maxTokensComprehensive
+  default: "30000"
+  description: "Nombre maximum de tokens pour réponses complètes"
+  type: string
+  required: false
+  group: "Mistral AI"
+  label: "Max Tokens Complet"
+
 # ===== GEMINI AI =====
 - variable: gemini.enabled
   default: false
@@ -290,6 +482,50 @@ questions:
   required: false
   group: "Gemini AI"
   label: "Température"
+
+- variable: gemini.model
+  default: "gemini-1.5-flash"
+  description: "Modèle Gemini à utiliser"
+  type: enum
+  options:
+    - "gemini-1.5-flash"
+    - "gemini-1.5-pro"
+    - "gemini-pro"
+  required: false
+  group: "Gemini AI"
+  label: "Modèle"
+
+- variable: gemini.topP
+  default: "1.0"
+  description: "Top-P pour le nucleus sampling"
+  type: string
+  required: false
+  group: "Gemini AI"
+  label: "Top-P"
+
+- variable: gemini.maxTokensVeryShort
+  default: "1500"
+  description: "Nombre maximum de tokens pour réponses très courtes"
+  type: string
+  required: false
+  group: "Gemini AI"
+  label: "Max Tokens Très Court"
+
+- variable: gemini.maxTokensNormal
+  default: "8000"
+  description: "Nombre maximum de tokens pour réponses normales"
+  type: string
+  required: false
+  group: "Gemini AI"
+  label: "Max Tokens Normal"
+
+- variable: gemini.maxTokensComprehensive
+  default: "30000"
+  description: "Nombre maximum de tokens pour réponses complètes"
+  type: string
+  required: false
+  group: "Gemini AI"
+  label: "Max Tokens Complet"
 
 # ===== AZURE SEARCH =====
 - variable: azure.search.service
