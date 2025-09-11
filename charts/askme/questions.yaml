@@ -250,14 +250,14 @@ questions:
   default: true
   description: "Activer les services vocaux Azure"
   type: boolean
-  group: "Services Vocaux"
+  group: "Voice Configuration"
   label: "Activer Azure Speech"
 
 - variable: azure.speech.key
   default: "your-azure-speech-key-here"
   description: "Clé API Azure Speech"
   type: password
-  group: "Services Vocaux"
+  group: "Voice Configuration"
   label: "Clé Azure Speech"
   show_if: "azure.speech.enabled=true"
 
@@ -270,7 +270,7 @@ questions:
     - "westeurope"
     - "eastus"
     - "westus2"
-  group: "Services Vocaux"
+  group: "Voice Configuration"
   label: "Région"
   show_if: "azure.speech.enabled=true"
 
@@ -279,14 +279,14 @@ questions:
   default: true
   description: "Activer la détection de mots-clés"
   type: boolean
-  group: "Fonctionnalités Vocales"
+  group: "Voice Configuration"
   label: "Mots-clés Vocaux"
 
 - variable: voice.wakeWords
   default: "Sarah,Richard,Patrick,Mérade"
   description: "Mots-clés de réveil (séparés par virgule)"
   type: string
-  group: "Fonctionnalités Vocales"
+  group: "Voice Configuration"
   label: "Mots-clés"
   show_if: "voice.wakeWordEnabled=true"
 
@@ -295,28 +295,28 @@ questions:
   default: "250m"
   description: "CPU demandé par pod"
   type: string
-  group: "Ressources"
+  group: "Resources"
   label: "CPU Demandé"
 
 - variable: resources.requests.memory
   default: "512Mi"
   description: "Mémoire demandée par pod"
   type: string
-  group: "Ressources"
+  group: "Resources"
   label: "Mémoire Demandée"
 
 - variable: resources.limits.cpu
   default: "500m"
   description: "Limite CPU par pod"
   type: string
-  group: "Ressources"
+  group: "Resources"
   label: "Limite CPU"
 
 - variable: resources.limits.memory
   default: "1Gi"
   description: "Limite mémoire par pod"
   type: string
-  group: "Ressources"
+  group: "Resources"
   label: "Limite Mémoire"
 
 - variable: replicaCount
@@ -325,7 +325,7 @@ questions:
   type: int
   min: 1
   max: 10
-  group: "Ressources"
+  group: "Resources"
   label: "Nombre de Pods"
 
 # ===== RANCHER INTEGRATION =====
@@ -333,14 +333,14 @@ questions:
   default: true
   description: "Activer l'intégration Rancher (RBAC, Projets)"
   type: boolean
-  group: "Intégration Rancher"
+  group: "Rancher Integration"
   label: "Activer Rancher"
 
 - variable: rancher.projectName
   default: ""
   description: "Nom du projet Rancher (optionnel)"
   type: string
-  group: "Intégration Rancher"
+  group: "Rancher Integration"
   label: "Projet Rancher"
   show_if: "rancher.enabled=true"
 
@@ -349,7 +349,7 @@ questions:
   default: false
   description: "Activer le mode debug"
   type: boolean
-  group: "Configuration Avancée"
+  group: "System Configuration"
   label: "Mode Debug"
 
 
@@ -364,28 +364,28 @@ questions:
     - "Elasticsearch"
     - "Pinecone"
     - "MongoDB"
-  group: "Sources de Données"
+  group: "Search Configuration"
   label: "Type de Source"
 
 - variable: config.searchTopK
   default: "10"
   description: "Nombre maximum de documents à récupérer"
   type: string
-  group: "Sources de Données"
+  group: "Search Configuration"
   label: "Nombre de Documents"
 
 - variable: config.imageMaxSizeMb
   default: "12.0"
   description: "Taille maximum des images uploadées (MB)"
   type: string
-  group: "Configuration Générale"
+  group: "System Configuration"
   label: "Taille Max Images"
 
 - variable: config.citationContentMaxLength
   default: "2000"
   description: "Longueur maximum du contenu des citations"
   type: string
-  group: "Configuration Générale"
+  group: "System Configuration"
   label: "Longueur Max Citations"
 
 # ===== AVANTEAM CUSTOM =====
