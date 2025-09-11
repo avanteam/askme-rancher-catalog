@@ -111,7 +111,46 @@ questions:
   required: true
   group: "Azure OpenAI"
   label: "Modèle"
-  
+
+- variable: azure.openai.systemMessage
+  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
+  description: "Message système personnalisé pour Azure OpenAI"
+  type: multiline
+  required: false
+  group: "Azure OpenAI"
+  label: "System Message"
+
+- variable: azure.openai.temperature
+  default: "0.7"
+  description: "Température pour contrôler la créativité des réponses (0.0 = déterministe, 1.0 = créatif)"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Température"
+
+- variable: azure.openai.topP
+  default: "0.95"
+  description: "Top-P pour le nucleus sampling"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Top-P"
+
+- variable: azure.openai.maxTokensNormal
+  default: "6000"
+  description: "Nombre maximum de tokens pour réponses normales"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Max Tokens Normal"
+
+- variable: azure.openai.maxTokensComprehensive
+  default: "16000"
+  description: "Nombre maximum de tokens pour réponses complètes"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Max Tokens Complet"
 
 # ===== CLAUDE AI =====
 - variable: claude.enabled
@@ -143,6 +182,21 @@ questions:
   group: "Claude AI"
   label: "Modèle Claude"
 
+- variable: claude.systemMessage
+  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
+  description: "Message système personnalisé pour Claude"
+  type: multiline
+  required: false
+  group: "Claude AI"
+  label: "System Message"
+
+- variable: claude.temperature
+  default: "0"
+  description: "Température pour Claude (0.0 = déterministe, 1.0 = créatif)"
+  type: string
+  required: false
+  group: "Claude AI"
+  label: "Température"
 
 # ===== OPENAI DIRECT =====
 - variable: openai.enabled
@@ -159,6 +213,22 @@ questions:
   group: "OpenAI Direct"
   label: "API Key"
 
+- variable: openai.systemMessage
+  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
+  description: "Message système personnalisé pour OpenAI Direct"
+  type: multiline
+  required: false
+  group: "OpenAI Direct"
+  label: "System Message"
+
+- variable: openai.temperature
+  default: "0.1"
+  description: "Température pour OpenAI Direct"
+  type: string
+  required: false
+  group: "OpenAI Direct"
+  label: "Température"
+
 # ===== MISTRAL AI =====
 - variable: mistral.enabled
   default: false
@@ -174,6 +244,22 @@ questions:
   group: "Mistral AI"
   label: "API Key"
 
+- variable: mistral.systemMessage
+  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
+  description: "Message système personnalisé pour Mistral"
+  type: multiline
+  required: false
+  group: "Mistral AI"
+  label: "System Message"
+
+- variable: mistral.temperature
+  default: "0.7"
+  description: "Température pour Mistral"
+  type: string
+  required: false
+  group: "Mistral AI"
+  label: "Température"
+
 # ===== GEMINI AI =====
 - variable: gemini.enabled
   default: false
@@ -188,6 +274,22 @@ questions:
   type: password
   group: "Gemini AI"
   label: "API Key"
+
+- variable: gemini.systemMessage
+  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
+  description: "Message système personnalisé pour Gemini"
+  type: multiline
+  required: false
+  group: "Gemini AI"
+  label: "System Message"
+
+- variable: gemini.temperature
+  default: "0.7"
+  description: "Température pour Gemini"
+  type: string
+  required: false
+  group: "Gemini AI"
+  label: "Température"
 
 # ===== AZURE SEARCH =====
 - variable: azure.search.service
@@ -446,223 +548,3 @@ questions:
 # Note: Clés OVH centralisées dans secret 'ovh-global-dns-keys@askme-platform'
 # Configuration automatique - aucune saisie requise
 
-# ===== SYSTEM MESSAGES =====
-- variable: azure.openai.systemMessage
-  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
-  description: "Message système personnalisé pour Azure OpenAI"
-  type: multiline
-  required: false
-  group: "LLM Configuration"
-  label: "System Message - Azure OpenAI"
-
-- variable: claude.systemMessage
-  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
-  description: "Message système personnalisé pour Claude"
-  type: multiline
-  required: false
-  group: "LLM Configuration"
-  label: "System Message - Claude"
-
-- variable: openai.systemMessage
-  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
-  description: "Message système personnalisé pour OpenAI Direct"
-  type: multiline
-  required: false
-  group: "LLM Configuration"
-  label: "System Message - OpenAI Direct"
-
-- variable: mistral.systemMessage
-  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
-  description: "Message système personnalisé pour Mistral"
-  type: multiline
-  required: false
-  group: "LLM Configuration"
-  label: "System Message - Mistral"
-
-- variable: gemini.systemMessage
-  default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
-  description: "Message système personnalisé pour Gemini"
-  type: multiline
-  required: false
-  group: "LLM Configuration"
-  label: "System Message - Gemini"
-
-# ===== AZURE SEARCH AVANCÉ =====
-- variable: azure.search.contentColumns
-  default: "chunk,fieldMetadata"
-  description: "Colonnes contenant le contenu à rechercher"
-  type: string
-  required: false
-  group: "Search Configuration"
-  label: "Colonnes de Contenu"
-
-- variable: azure.search.filenameColumn
-  default: "metadata_storage_name"
-  description: "Nom de la colonne contenant le nom du fichier"
-  type: string
-  required: false
-  group: "Search Configuration"
-  label: "Colonne Nom de Fichier"
-
-- variable: azure.search.titleColumn
-  default: "titreDocument"
-  description: "Nom de la colonne contenant le titre du document"
-  type: string
-  required: false
-  group: "Search Configuration"
-  label: "Colonne Titre"
-
-- variable: azure.search.urlColumn
-  default: "metadata_storage_path"
-  description: "Nom de la colonne contenant l'URL du document"
-  type: string
-  required: false
-  group: "Search Configuration"
-  label: "Colonne URL"
-
-- variable: azure.search.vectorColumns
-  default: "text_vector"
-  description: "Nom de la colonne contenant les vecteurs d'embedding"
-  type: string
-  required: false
-  group: "Search Configuration"
-  label: "Colonne Vecteurs"
-
-- variable: azure.search.queryType
-  default: "vector_semantic_hybrid"
-  description: "Type de requête Azure Search"
-  type: enum
-  options:
-    - "simple"
-    - "full"
-    - "vector"
-    - "semantic"
-    - "vector_semantic_hybrid"
-  required: false
-  group: "Search Configuration"
-  label: "Type de Requête"
-
-- variable: azure.search.indexIsPrechunked
-  default: "false"
-  description: "L'index contient-il déjà du contenu pré-découpé ?"
-  type: boolean
-  required: false
-  group: "Search Configuration"
-  label: "Index Pré-découpé"
-
-# ===== CONFIGURATION UI AVANCÉE =====
-- variable: ui.favicon
-  default: ""
-  description: "URL de l'icône favicon personnalisée"
-  type: string
-  required: false
-  group: "User Interface"
-  label: "Favicon"
-
-- variable: config.debug
-  default: "false"
-  description: "Activer le mode debug pour les logs détaillés"
-  type: boolean
-  required: false
-  group: "System Configuration"
-  label: "Mode Debug"
-
-- variable: config.defaultLanguage
-  default: "fr"
-  description: "Langue par défaut de l'interface"
-  type: enum
-  options:
-    - "fr"
-    - "en"
-  required: false
-  group: "System Configuration"
-  label: "Langue par Défaut"
-
-- variable: config.citationContentMaxLength
-  default: "2000"
-  description: "Longueur maximale du contenu des citations affichées"
-  type: int
-  required: false
-  group: "System Configuration"
-  label: "Longueur Max Citations"
-
-- variable: voice.inputEnabled
-  default: "true"
-  description: "Activer la saisie vocale"
-  type: boolean
-  required: false
-  group: "Voice Configuration"
-  label: "Saisie Vocale"
-
-- variable: voice.wakeWordEnabled
-  default: "true"
-  description: "Activer les mots de réveil"
-  type: boolean
-  required: false
-  group: "Voice Configuration"
-  label: "Mots de Réveil"
-
-# ===== PARAMÈTRES LLM AVANCÉS =====
-- variable: azure.openai.temperature
-  default: "0.7"
-  description: "Température pour contrôler la créativité des réponses (0.0 = déterministe, 1.0 = créatif)"
-  type: string
-  required: false
-  group: "LLM Configuration"
-  label: "Température - Azure OpenAI"
-
-- variable: azure.openai.topP
-  default: "0.95"
-  description: "Top-P pour le nucleus sampling"
-  type: string
-  required: false
-  group: "LLM Configuration"
-  label: "Top-P - Azure OpenAI"
-
-- variable: azure.openai.maxTokensNormal
-  default: "6000"
-  description: "Nombre maximum de tokens pour réponses normales"
-  type: string
-  required: false
-  group: "LLM Configuration"
-  label: "Max Tokens Normal - Azure OpenAI"
-
-- variable: azure.openai.maxTokensComprehensive
-  default: "16000"
-  description: "Nombre maximum de tokens pour réponses complètes"
-  type: string
-  required: false
-  group: "LLM Configuration"
-  label: "Max Tokens Complet - Azure OpenAI"
-
-- variable: claude.temperature
-  default: "0"
-  description: "Température pour Claude (0.0 = déterministe, 1.0 = créatif)"
-  type: string
-  required: false
-  group: "LLM Configuration"
-  label: "Température - Claude"
-
-- variable: openai.temperature
-  default: "0.1"
-  description: "Température pour OpenAI Direct"
-  type: string
-  required: false
-  group: "LLM Configuration"
-  label: "Température - OpenAI Direct"
-
-- variable: mistral.temperature
-  default: "0.7"
-  description: "Température pour Mistral"
-  type: string
-  required: false
-  group: "LLM Configuration"
-  label: "Température - Mistral"
-
-- variable: gemini.temperature
-  default: "0.7"
-  description: "Température pour Gemini"
-  type: string
-  required: false
-  group: "LLM Configuration"
-  label: "Température - Gemini"
