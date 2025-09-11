@@ -117,6 +117,7 @@ questions:
   description: "Message système personnalisé pour Azure OpenAI"
   type: text
   multiline: true
+  min_length: 100
   required: false
   group: "Azure OpenAI"
   label: "System Message"
@@ -244,6 +245,7 @@ questions:
   description: "Message système personnalisé pour Claude"
   type: text
   multiline: true
+  min_length: 100
   required: false
   group: "Claude AI"
   label: "System Message"
@@ -308,6 +310,7 @@ questions:
   description: "Message système personnalisé pour OpenAI Direct"
   type: text
   multiline: true
+  min_length: 100
   required: false
   group: "OpenAI Direct"
   label: "System Message"
@@ -400,6 +403,7 @@ questions:
   description: "Message système personnalisé pour Mistral"
   type: text
   multiline: true
+  min_length: 100
   required: false
   group: "Mistral AI"
   label: "System Message"
@@ -476,6 +480,7 @@ questions:
   description: "Message système personnalisé pour Gemini"
   type: text
   multiline: true
+  min_length: 100
   required: false
   group: "Gemini AI"
   label: "System Message"

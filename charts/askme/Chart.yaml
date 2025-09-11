@@ -2,8 +2,8 @@ apiVersion: v2
 name: askme
 description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
 type: application
-version: 1.0.4
-appVersion: "1.0.4"
+version: 1.0.5
+appVersion: "1.0.5"
 
 # Métadonnées pour Rancher
 keywords:
@@ -35,6 +35,11 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/release-notes: |
+    v1.0.5:
+    - Amélioration UX: champs System Message plus grands avec min_length=100
+    - Optimisation affichage multiline dans interface Rancher
+    - Meilleure lisibilité des messages système pour tous les LLM
+    
     v1.0.4:
     - Configuration LLM améliorée avec provider par défaut depuis backend
     - Interface Rancher complète avec 77 options (vs 51 avant)
