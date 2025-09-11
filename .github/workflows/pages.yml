@@ -2,7 +2,7 @@ name: Deploy Helm Repository to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, prod ]
     tags: [ 'v*' ]
   workflow_dispatch:
 
