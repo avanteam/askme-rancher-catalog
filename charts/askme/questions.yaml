@@ -562,6 +562,114 @@ questions:
   group: "Azure Search"
   label: "API Key"
 
+- variable: azure.search.semanticSearchConfig
+  default: "idx-v-avanteam-qualitysaas-dev-semantic-configuration"
+  description: "Configuration de recherche sémantique Azure Search"
+  type: string
+  required: false
+  group: "Azure Search"
+  label: "Config Recherche Sémantique"
+
+- variable: azure.search.indexIsPrechunked
+  default: "false"
+  description: "L'index contient-il déjà du contenu pré-découpé ?"
+  type: boolean
+  required: false
+  group: "Azure Search"
+  label: "Index Pré-découpé"
+
+- variable: azure.search.topK
+  default: "10"
+  description: "Nombre maximum de résultats de recherche Azure Search"
+  type: string
+  required: false
+  group: "Azure Search"
+  label: "Top K Résultats"
+
+- variable: azure.search.enableInDomain
+  default: "true"
+  description: "Limiter les recherches aux données internes uniquement"
+  type: boolean
+  required: false
+  group: "Azure Search"
+  label: "Recherche Interne Seulement"
+
+- variable: azure.search.contentColumns
+  default: "chunk,fieldMetadata"
+  description: "Colonnes contenant le contenu à rechercher"
+  type: string
+  required: false
+  group: "Azure Search"
+  label: "Colonnes de Contenu"
+
+- variable: azure.search.filenameColumn
+  default: "metadata_storage_name"
+  description: "Nom de la colonne contenant le nom du fichier"
+  type: string
+  required: false
+  group: "Azure Search"
+  label: "Colonne Nom de Fichier"
+
+- variable: azure.search.titleColumn
+  default: "titreDocument"
+  description: "Nom de la colonne contenant le titre du document"
+  type: string
+  required: false
+  group: "Azure Search"
+  label: "Colonne Titre"
+
+- variable: azure.search.urlColumn
+  default: "metadata_storage_path"
+  description: "Nom de la colonne contenant l'URL du document"
+  type: string
+  required: false
+  group: "Azure Search"
+  label: "Colonne URL"
+
+- variable: azure.search.vectorColumns
+  default: "text_vector"
+  description: "Nom de la colonne contenant les vecteurs d'embedding"
+  type: string
+  required: false
+  group: "Azure Search"
+  label: "Colonne Vecteurs"
+
+- variable: azure.search.queryType
+  default: "vector_semantic_hybrid"
+  description: "Type de requête Azure Search"
+  type: enum
+  options:
+    - "simple"
+    - "full"
+    - "vector"
+    - "semantic"
+    - "vector_semantic_hybrid"
+  required: false
+  group: "Azure Search"
+  label: "Type de Requête"
+
+- variable: azure.search.permittedGroupsColumn
+  default: ""
+  description: "Colonne pour les groupes de sécurité autorisés"
+  type: string
+  required: false
+  group: "Azure Search"
+  label: "Colonne Groupes Autorisés"
+
+- variable: azure.search.strictness
+  default: "4"
+  description: "Niveau de strictesse pour les réponses (1-5)"
+  type: enum
+  options:
+    - "1"
+    - "2" 
+    - "3"
+    - "4"
+    - "5"
+  required: false
+  group: "Azure Search"
+  label: "Strictesse"
+
 # ===== AZURE COSMOSDB =====
 - variable: azure.cosmosdb.account
   default: "db-askme-avanteam-qualitysaas-dev-historique"
@@ -586,6 +694,49 @@ questions:
   required: true
   group: "Azure CosmosDB"
   label: "Clé Primaire"
+
+# ===== SEARCH CONFIGURATION =====
+- variable: search.datasourceType
+  default: "AzureCognitiveSearch"
+  description: "Type de source de données pour la recherche"
+  type: enum
+  options:
+    - "AzureCognitiveSearch"
+    - "AzureAISearch"
+    - "ElasticSearch"
+  required: false
+  group: "Search Configuration"
+  label: "Type de Source de Données"
+
+- variable: search.topK
+  default: "10"
+  description: "Nombre maximum de résultats de recherche généraux"
+  type: string
+  required: false
+  group: "Search Configuration"
+  label: "Top K Global"
+
+- variable: search.strictness
+  default: "3"
+  description: "Niveau de strictesse global pour les réponses (1-5)"
+  type: enum
+  options:
+    - "1"
+    - "2"
+    - "3"
+    - "4"
+    - "5"
+  required: false
+  group: "Search Configuration"
+  label: "Strictesse Globale"
+
+- variable: search.enableInDomain
+  default: "true"
+  description: "Limiter toutes les recherches aux données internes"
+  type: boolean
+  required: false
+  group: "Search Configuration"
+  label: "Recherche Interne Globale"
 
 # ===== AZURE SPEECH =====
 - variable: azure.speech.enabled
