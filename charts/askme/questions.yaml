@@ -20,7 +20,7 @@ questions:
   description: "Domaine public du client (ex: askme.avanteam-online.com)"
   type: string
   required: true
-  group: "Configuration Client"
+  group: "Client Configuration"
   label: "Domaine Client"
 
 # ===== INTERFACE UTILISATEUR =====
@@ -29,7 +29,7 @@ questions:
   description: "Titre affiché dans l'interface"
   type: string
   required: true
-  group: "Interface Utilisateur"
+  group: "User Interface"
   label: "Titre de l'Application"
 
 - variable: ui.description
@@ -37,21 +37,21 @@ questions:
   description: "Description affichée dans l'interface"
   type: string
   required: true
-  group: "Interface Utilisateur"
+  group: "User Interface"
   label: "Description"
 
 - variable: ui.logo
   default: "https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoavanteamai.png"
   description: "URL du logo principal"
   type: string
-  group: "Interface Utilisateur"
+  group: "User Interface"
   label: "Logo Principal"
 
 - variable: ui.chatLogo
   default: "https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoBot.gif"
   description: "URL du logo de chat"
   type: string
-  group: "Interface Utilisateur"
+  group: "User Interface"
   label: "Logo Chat"
 
 # ===== FOURNISSEURS LLM =====
@@ -66,7 +66,7 @@ questions:
     - "MISTRAL"
     - "GEMINI"
   required: true
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "Fournisseur LLM Par Défaut"
 
 - variable: llm.availableProviders
@@ -74,7 +74,7 @@ questions:
   description: "Liste des fournisseurs disponibles (séparés par virgule)"
   type: string
   required: true
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "Fournisseurs Disponibles"
 
 # ===== AZURE OPENAI =====
@@ -417,7 +417,7 @@ questions:
   default: true
   description: "Activer la création automatique des entrées DNS OVH"
   type: boolean
-  group: "Gestion DNS"
+  group: "DNS Management"
   label: "DNS Automatique OVH"
 
 - variable: dns.ovh.zone
@@ -425,7 +425,7 @@ questions:
   description: "Zone DNS OVH à gérer"
   type: string
   required: true
-  group: "Gestion DNS"
+  group: "DNS Management"
   label: "Zone DNS"
   show_if: "dns.ovh.enabled=true"
 
@@ -433,7 +433,7 @@ questions:
   default: "57.128.59.187"
   description: "IP cible pour l'entrée DNS (IP de votre cluster OVH)"
   type: string
-  group: "Gestion DNS"
+  group: "DNS Management"
   label: "IP Cible"
   show_if: "dns.ovh.enabled=true"
 
@@ -441,7 +441,7 @@ questions:
   default: "300"
   description: "TTL en secondes pour les enregistrements DNS"
   type: string
-  group: "Gestion DNS"
+  group: "DNS Management"
   label: "TTL DNS"
   show_if: "dns.ovh.enabled=true"
 
@@ -453,7 +453,7 @@ questions:
     - "ovh-eu"
     - "ovh-ca"
     - "ovh-us"
-  group: "Gestion DNS"
+  group: "DNS Management"
   label: "Endpoint OVH"
   show_if: "dns.ovh.enabled=true"
 
@@ -466,7 +466,7 @@ questions:
   description: "Message système personnalisé pour Azure OpenAI"
   type: multiline
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "System Message - Azure OpenAI"
   show_if: "llm.availableProviders=~AZURE_OPENAI"
 
@@ -475,7 +475,7 @@ questions:
   description: "Message système personnalisé pour Claude"
   type: multiline
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "System Message - Claude"
   show_if: "llm.availableProviders=~CLAUDE"
 
@@ -484,7 +484,7 @@ questions:
   description: "Message système personnalisé pour OpenAI Direct"
   type: multiline
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "System Message - OpenAI Direct"
   show_if: "llm.availableProviders=~OPENAI_DIRECT"
 
@@ -493,7 +493,7 @@ questions:
   description: "Message système personnalisé pour Mistral"
   type: multiline
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "System Message - Mistral"
   show_if: "llm.availableProviders=~MISTRAL"
 
@@ -502,7 +502,7 @@ questions:
   description: "Message système personnalisé pour Gemini"
   type: multiline
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "System Message - Gemini"
   show_if: "llm.availableProviders=~GEMINI"
 
@@ -512,7 +512,7 @@ questions:
   description: "Colonnes contenant le contenu à rechercher"
   type: string
   required: false
-  group: "Configuration Recherche"
+  group: "Search Configuration"
   label: "Colonnes de Contenu"
   show_if: "datasources.type=AzureCognitiveSearch"
 
@@ -521,7 +521,7 @@ questions:
   description: "Nom de la colonne contenant le nom du fichier"
   type: string
   required: false
-  group: "Configuration Recherche"
+  group: "Search Configuration"
   label: "Colonne Nom de Fichier"
   show_if: "datasources.type=AzureCognitiveSearch"
 
@@ -530,7 +530,7 @@ questions:
   description: "Nom de la colonne contenant le titre du document"
   type: string
   required: false
-  group: "Configuration Recherche"
+  group: "Search Configuration"
   label: "Colonne Titre"
   show_if: "datasources.type=AzureCognitiveSearch"
 
@@ -539,7 +539,7 @@ questions:
   description: "Nom de la colonne contenant l'URL du document"
   type: string
   required: false
-  group: "Configuration Recherche"
+  group: "Search Configuration"
   label: "Colonne URL"
   show_if: "datasources.type=AzureCognitiveSearch"
 
@@ -548,7 +548,7 @@ questions:
   description: "Nom de la colonne contenant les vecteurs d'embedding"
   type: string
   required: false
-  group: "Configuration Recherche"
+  group: "Search Configuration"
   label: "Colonne Vecteurs"
   show_if: "datasources.type=AzureCognitiveSearch"
 
@@ -563,7 +563,7 @@ questions:
     - "semantic"
     - "vector_semantic_hybrid"
   required: false
-  group: "Configuration Recherche"
+  group: "Search Configuration"
   label: "Type de Requête"
   show_if: "datasources.type=AzureCognitiveSearch"
 
@@ -572,7 +572,7 @@ questions:
   description: "L'index contient-il déjà du contenu pré-découpé ?"
   type: boolean
   required: false
-  group: "Configuration Recherche"
+  group: "Search Configuration"
   label: "Index Pré-découpé"
   show_if: "datasources.type=AzureCognitiveSearch"
 
@@ -582,7 +582,7 @@ questions:
   description: "URL de l'icône favicon personnalisée"
   type: string
   required: false
-  group: "Interface Utilisateur"
+  group: "User Interface"
   label: "Favicon"
 
 - variable: config.debug
@@ -590,7 +590,7 @@ questions:
   description: "Activer le mode debug pour les logs détaillés"
   type: boolean
   required: false
-  group: "Configuration Système"
+  group: "System Configuration"
   label: "Mode Debug"
 
 - variable: config.defaultLanguage
@@ -601,7 +601,7 @@ questions:
     - "fr"
     - "en"
   required: false
-  group: "Configuration Système"
+  group: "System Configuration"
   label: "Langue par Défaut"
 
 - variable: config.citationContentMaxLength
@@ -609,7 +609,7 @@ questions:
   description: "Longueur maximale du contenu des citations affichées"
   type: int
   required: false
-  group: "Configuration Système"
+  group: "System Configuration"
   label: "Longueur Max Citations"
 
 - variable: voice.inputEnabled
@@ -617,7 +617,7 @@ questions:
   description: "Activer la saisie vocale"
   type: boolean
   required: false
-  group: "Configuration Voix"
+  group: "Voice Configuration"
   label: "Saisie Vocale"
 
 - variable: voice.wakeWordEnabled
@@ -625,7 +625,7 @@ questions:
   description: "Activer les mots de réveil"
   type: boolean
   required: false
-  group: "Configuration Voix"
+  group: "Voice Configuration"
   label: "Mots de Réveil"
   show_if: "voice.inputEnabled=true"
 
@@ -635,7 +635,7 @@ questions:
   description: "Température pour contrôler la créativité des réponses (0.0 = déterministe, 1.0 = créatif)"
   type: string
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "Température - Azure OpenAI"
   show_if: "llm.availableProviders=~AZURE_OPENAI"
 
@@ -644,7 +644,7 @@ questions:
   description: "Top-P pour le nucleus sampling"
   type: string
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "Top-P - Azure OpenAI"
   show_if: "llm.availableProviders=~AZURE_OPENAI"
 
@@ -653,7 +653,7 @@ questions:
   description: "Nombre maximum de tokens pour réponses normales"
   type: string
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "Max Tokens Normal - Azure OpenAI"
   show_if: "llm.availableProviders=~AZURE_OPENAI"
 
@@ -662,7 +662,7 @@ questions:
   description: "Nombre maximum de tokens pour réponses complètes"
   type: string
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "Max Tokens Complet - Azure OpenAI"
   show_if: "llm.availableProviders=~AZURE_OPENAI"
 
@@ -671,7 +671,7 @@ questions:
   description: "Température pour Claude (0.0 = déterministe, 1.0 = créatif)"
   type: string
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "Température - Claude"
   show_if: "llm.availableProviders=~CLAUDE"
 
@@ -680,7 +680,7 @@ questions:
   description: "Température pour OpenAI Direct"
   type: string
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "Température - OpenAI Direct"
   show_if: "llm.availableProviders=~OPENAI_DIRECT"
 
@@ -689,7 +689,7 @@ questions:
   description: "Température pour Mistral"
   type: string
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "Température - Mistral"
   show_if: "llm.availableProviders=~MISTRAL"
 
@@ -698,6 +698,6 @@ questions:
   description: "Température pour Gemini"
   type: string
   required: false
-  group: "Configuration LLM"
+  group: "LLM Configuration"
   label: "Température - Gemini"
   show_if: "llm.availableProviders=~GEMINI"
