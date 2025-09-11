@@ -4,6 +4,31 @@ entries:
   - annotations:
       catalog.cattle.io/certified: avanteam
       catalog.cattle.io/display-name: AskMe Assistant IA
+      # Description détaillée (format Markdown supporté)
+      catalog.cattle.io/description: |
+        ## AskMe Assistant IA
+    
+        Assistant conversationnel multi-LLM pour les applications Avanteam.
+    
+        ### Fonctionnalités principales
+    
+        * **Multi-LLM** : Support d'Azure OpenAI, Claude, OpenAI Direct, Mistral et Gemini
+        * **Module RAG** : Indexation et recherche sémantique dans les documents stockées dans les applications Avanteam
+        * **Gestion des droits d'accès** : Contrôle fin des permissions par utilisateur et par application 
+        * **Interface vocale** : Activation par wake words pour une interaction naturelle
+        * **Multi-tenant** : Isolation complète par namespace Kubernetes
+        * **Sécurité** : Intégration native avec Rancher RBAC
+        * **DNS automatique** : Configuration OVH avec retry et fallback
+        * **Haute disponibilité** : Déploiement robuste avec pullPolicy Always
+    
+        ### Architecture
+    
+        L'application utilise une architecture microservices avec :
+        - Frontend React pour l'interface utilisateur
+        - Backend API pour la gestion des requêtes LLM
+        - Service de reconnaissance vocale intégré
+        - Base de données pour l'historique des conversations
+  
       catalog.cattle.io/kube-version: '>= 1.21.0-0'
       catalog.cattle.io/questions-path: questions.yaml
       catalog.cattle.io/rancher-version: '>= 2.6.0-0'
@@ -20,7 +45,7 @@ entries:
     apiVersion: v2
     appVersion: 1.0.4
     created: "2025-09-10T16:30:01.120567158Z"
-    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
+    description: AskMe - Assistant IA multi-LLM pour les applications Avanteam
     digest: 3ca4b4eacd19e830aa53717b9143b9674584c0b09c0f71d8e6faa24aa1eecf20
     home: https://github.com/avanteam/askme-rancher-catalog
     icon: https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoavanteamai.png
@@ -35,7 +60,7 @@ entries:
       name: Avanteam DevOps
     name: askme
     sources:
-    - https://github.com/avanteam/askme-app
+    - https://github.com/avanteam/askme-app-aoai
     type: application
     urls:
     - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.4.tgz
@@ -59,7 +84,7 @@ entries:
     apiVersion: v2
     appVersion: 1.0.3
     created: "2025-09-10T16:30:01.11860133Z"
-    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
+    description: AskMe - Assistant IA multi-LLM pour Avanteam 
     digest: 7e2fdb5d21bbeb892cb4d145fedcbd4bfbf27cb37a4267ffe60a83bad3a25693
     home: https://github.com/avanteam/askme-rancher-catalog
     keywords:
@@ -73,7 +98,7 @@ entries:
       name: Avanteam DevOps
     name: askme
     sources:
-    - https://github.com/avanteam/askme-app
+    - https://github.com/avanteam/askme-app-aoai
     type: application
     urls:
     - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.3.tgz
@@ -97,7 +122,7 @@ entries:
     apiVersion: v2
     appVersion: 1.0.2
     created: "2025-09-10T16:30:01.115565718Z"
-    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
+    description: AskMe - Assistant IA multi-LLM pour les applications Avanteam
     digest: dddc52b9f6c2dea97d2849c132d011929acf411a330b9fd0815a2cbbfa4d5dd7
     home: https://github.com/avanteam/askme-rancher-catalog
     keywords:
@@ -111,7 +136,7 @@ entries:
       name: Avanteam DevOps
     name: askme
     sources:
-    - https://github.com/avanteam/askme-app
+    - https://github.com/avanteam/askme-app-aoai
     type: application
     urls:
     - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.2.tgz
@@ -135,7 +160,7 @@ entries:
     apiVersion: v2
     appVersion: 1.0.1
     created: "2025-09-10T16:30:01.113833678Z"
-    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
+    description: AskMe - Assistant IA multi-LLM pour les applications Avanteam
     digest: 1e59aa0ad018b8c2f1e17f0b3b170878356845b24b93b4e8ad719be91a90e227
     home: https://github.com/avanteam/askme-rancher-catalog
     keywords:
@@ -149,7 +174,7 @@ entries:
       name: Avanteam DevOps
     name: askme
     sources:
-    - https://github.com/avanteam/askme-app
+    - https://github.com/avanteam/askme-app-aoai
     type: application
     urls:
     - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.1.tgz
@@ -173,7 +198,7 @@ entries:
     apiVersion: v2
     appVersion: 1.0.0
     created: "2025-09-10T16:30:01.112122967Z"
-    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
+    description: AskMe - Assistant IA multi-LLM pour les applications Avanteam
     digest: df0976aface56d38209fa87ce0d6a6853499bbc2dea27dfa67707e69e8e8f300
     home: https://github.com/avanteam/askme-rancher-catalog
     keywords:
@@ -187,7 +212,7 @@ entries:
       name: Avanteam DevOps
     name: askme
     sources:
-    - https://github.com/avanteam/askme-app
+    - https://github.com/avanteam/askme-app-aoai
     type: application
     urls:
     - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.0.tgz
