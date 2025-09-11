@@ -84,7 +84,7 @@ questions:
   type: boolean
   group: "Azure OpenAI"
   label: "Activer Azure OpenAI"
-  show_if: "llm.availableProviders=AZURE_OPENAI||llm.availableProviders=~AZURE_OPENAI"
+ 
 
 - variable: azure.openai.endpoint
   default: "https://askmeopenai.openai.azure.com/"
@@ -93,7 +93,7 @@ questions:
   required: true
   group: "Azure OpenAI"
   label: "Endpoint"
-  show_if: "azure.openai.enabled=true"
+
 
 - variable: azure.openai.key
   default: "your-azure-openai-key-here"
@@ -102,7 +102,7 @@ questions:
   required: true
   group: "Azure OpenAI"
   label: "API Key"
-  show_if: "azure.openai.enabled=true"
+ 
 
 - variable: azure.openai.model
   default: "Avanteam-QualitySaaS"
@@ -111,7 +111,7 @@ questions:
   required: true
   group: "Azure OpenAI"
   label: "Modèle"
-  show_if: "azure.openai.enabled=true"
+  
 
 # ===== CLAUDE AI =====
 - variable: claude.enabled
@@ -120,7 +120,7 @@ questions:
   type: boolean
   group: "Claude AI"
   label: "Activer Claude"
-  show_if: "llm.availableProviders=CLAUDE||llm.availableProviders=~CLAUDE"
+ 
 
 - variable: claude.apiKey
   default: "your-claude-api-key-here"
@@ -129,7 +129,7 @@ questions:
   required: true
   group: "Claude AI"
   label: "API Key"
-  show_if: "claude.enabled=true"
+
 
 - variable: claude.model
   default: "claude-sonnet-4-20250514"
@@ -142,7 +142,7 @@ questions:
     - "claude-3-haiku-20240307"
   group: "Claude AI"
   label: "Modèle Claude"
-  show_if: "claude.enabled=true"
+
 
 # ===== OPENAI DIRECT =====
 - variable: openai.enabled
@@ -151,7 +151,6 @@ questions:
   type: boolean
   group: "OpenAI Direct"
   label: "Activer OpenAI Direct"
-  show_if: "llm.availableProviders=OPENAI_DIRECT||llm.availableProviders=~OPENAI_DIRECT"
 
 - variable: openai.apiKey
   default: "your-openai-api-key-here"
@@ -159,7 +158,6 @@ questions:
   type: password
   group: "OpenAI Direct"
   label: "API Key"
-  show_if: "openai.enabled=true"
 
 # ===== MISTRAL AI =====
 - variable: mistral.enabled
@@ -168,7 +166,6 @@ questions:
   type: boolean
   group: "Mistral AI"
   label: "Activer Mistral"
-  show_if: "llm.availableProviders=MISTRAL||llm.availableProviders=~MISTRAL"
 
 - variable: mistral.apiKey
   default: "your-mistral-api-key-here"
@@ -176,7 +173,6 @@ questions:
   type: password
   group: "Mistral AI"
   label: "API Key"
-  show_if: "mistral.enabled=true"
 
 # ===== GEMINI AI =====
 - variable: gemini.enabled
@@ -185,7 +181,6 @@ questions:
   type: boolean
   group: "Gemini AI"
   label: "Activer Gemini"
-  show_if: "llm.availableProviders=GEMINI||llm.availableProviders=~GEMINI"
 
 - variable: gemini.apiKey
   default: "your-gemini-api-key-here"
@@ -193,7 +188,6 @@ questions:
   type: password
   group: "Gemini AI"
   label: "API Key"
-  show_if: "gemini.enabled=true"
 
 # ===== AZURE SEARCH =====
 - variable: azure.search.service
@@ -259,7 +253,6 @@ questions:
   type: password
   group: "Voice Configuration"
   label: "Clé Azure Speech"
-  show_if: "azure.speech.enabled=true"
 
 - variable: azure.speech.region
   default: "francecentral"
@@ -272,7 +265,6 @@ questions:
     - "westus2"
   group: "Voice Configuration"
   label: "Région"
-  show_if: "azure.speech.enabled=true"
 
 # ===== FONCTIONNALITÉS VOCALES =====
 - variable: voice.wakeWordEnabled
@@ -288,7 +280,6 @@ questions:
   type: string
   group: "Voice Configuration"
   label: "Mots-clés"
-  show_if: "voice.wakeWordEnabled=true"
 
 # ===== RESSOURCES =====
 - variable: resources.requests.cpu
@@ -342,7 +333,6 @@ questions:
   type: string
   group: "Rancher Integration"
   label: "Projet Rancher"
-  show_if: "rancher.enabled=true"
 
 # ===== AVANCÉ =====
 - variable: debug.enabled
@@ -427,7 +417,6 @@ questions:
   required: true
   group: "DNS Management"
   label: "Zone DNS"
-  show_if: "dns.ovh.enabled=true"
 
 - variable: dns.ovh.targetIP
   default: "57.128.59.187"
@@ -435,7 +424,6 @@ questions:
   type: string
   group: "DNS Management"
   label: "IP Cible"
-  show_if: "dns.ovh.enabled=true"
 
 - variable: dns.ovh.ttl
   default: "300"
@@ -443,7 +431,6 @@ questions:
   type: string
   group: "DNS Management"
   label: "TTL DNS"
-  show_if: "dns.ovh.enabled=true"
 
 - variable: dns.ovh.endpoint
   default: "ovh-eu"
@@ -455,7 +442,6 @@ questions:
     - "ovh-us"
   group: "DNS Management"
   label: "Endpoint OVH"
-  show_if: "dns.ovh.enabled=true"
 
 # Note: Clés OVH centralisées dans secret 'ovh-global-dns-keys@askme-platform'
 # Configuration automatique - aucune saisie requise
@@ -468,7 +454,6 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "System Message - Azure OpenAI"
-  show_if: "llm.availableProviders=~AZURE_OPENAI"
 
 - variable: claude.systemMessage
   default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
@@ -477,7 +462,6 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "System Message - Claude"
-  show_if: "llm.availableProviders=~CLAUDE"
 
 - variable: openai.systemMessage
   default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
@@ -486,7 +470,6 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "System Message - OpenAI Direct"
-  show_if: "llm.availableProviders=~OPENAI_DIRECT"
 
 - variable: mistral.systemMessage
   default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
@@ -495,7 +478,6 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "System Message - Mistral"
-  show_if: "llm.availableProviders=~MISTRAL"
 
 - variable: gemini.systemMessage
   default: "Tu es AskMe, l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
@@ -504,7 +486,6 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "System Message - Gemini"
-  show_if: "llm.availableProviders=~GEMINI"
 
 # ===== AZURE SEARCH AVANCÉ =====
 - variable: azure.search.contentColumns
@@ -514,7 +495,6 @@ questions:
   required: false
   group: "Search Configuration"
   label: "Colonnes de Contenu"
-  show_if: "datasources.type=AzureCognitiveSearch"
 
 - variable: azure.search.filenameColumn
   default: "metadata_storage_name"
@@ -523,7 +503,6 @@ questions:
   required: false
   group: "Search Configuration"
   label: "Colonne Nom de Fichier"
-  show_if: "datasources.type=AzureCognitiveSearch"
 
 - variable: azure.search.titleColumn
   default: "titreDocument"
@@ -532,7 +511,6 @@ questions:
   required: false
   group: "Search Configuration"
   label: "Colonne Titre"
-  show_if: "datasources.type=AzureCognitiveSearch"
 
 - variable: azure.search.urlColumn
   default: "metadata_storage_path"
@@ -541,7 +519,6 @@ questions:
   required: false
   group: "Search Configuration"
   label: "Colonne URL"
-  show_if: "datasources.type=AzureCognitiveSearch"
 
 - variable: azure.search.vectorColumns
   default: "text_vector"
@@ -550,7 +527,6 @@ questions:
   required: false
   group: "Search Configuration"
   label: "Colonne Vecteurs"
-  show_if: "datasources.type=AzureCognitiveSearch"
 
 - variable: azure.search.queryType
   default: "vector_semantic_hybrid"
@@ -565,7 +541,6 @@ questions:
   required: false
   group: "Search Configuration"
   label: "Type de Requête"
-  show_if: "datasources.type=AzureCognitiveSearch"
 
 - variable: azure.search.indexIsPrechunked
   default: "false"
@@ -574,7 +549,6 @@ questions:
   required: false
   group: "Search Configuration"
   label: "Index Pré-découpé"
-  show_if: "datasources.type=AzureCognitiveSearch"
 
 # ===== CONFIGURATION UI AVANCÉE =====
 - variable: ui.favicon
@@ -627,7 +601,6 @@ questions:
   required: false
   group: "Voice Configuration"
   label: "Mots de Réveil"
-  show_if: "voice.inputEnabled=true"
 
 # ===== PARAMÈTRES LLM AVANCÉS =====
 - variable: azure.openai.temperature
@@ -637,7 +610,6 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "Température - Azure OpenAI"
-  show_if: "llm.availableProviders=~AZURE_OPENAI"
 
 - variable: azure.openai.topP
   default: "0.95"
@@ -646,7 +618,6 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "Top-P - Azure OpenAI"
-  show_if: "llm.availableProviders=~AZURE_OPENAI"
 
 - variable: azure.openai.maxTokensNormal
   default: "6000"
@@ -655,7 +626,6 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "Max Tokens Normal - Azure OpenAI"
-  show_if: "llm.availableProviders=~AZURE_OPENAI"
 
 - variable: azure.openai.maxTokensComprehensive
   default: "16000"
@@ -664,7 +634,6 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "Max Tokens Complet - Azure OpenAI"
-  show_if: "llm.availableProviders=~AZURE_OPENAI"
 
 - variable: claude.temperature
   default: "0"
@@ -673,7 +642,6 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "Température - Claude"
-  show_if: "llm.availableProviders=~CLAUDE"
 
 - variable: openai.temperature
   default: "0.1"
@@ -682,7 +650,6 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "Température - OpenAI Direct"
-  show_if: "llm.availableProviders=~OPENAI_DIRECT"
 
 - variable: mistral.temperature
   default: "0.7"
@@ -691,7 +658,6 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "Température - Mistral"
-  show_if: "llm.availableProviders=~MISTRAL"
 
 - variable: gemini.temperature
   default: "0.7"
@@ -700,4 +666,3 @@ questions:
   required: false
   group: "LLM Configuration"
   label: "Température - Gemini"
-  show_if: "llm.availableProviders=~GEMINI"
