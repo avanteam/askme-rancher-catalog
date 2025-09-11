@@ -8,6 +8,79 @@ entries:
       catalog.cattle.io/questions-path: questions.yaml
       catalog.cattle.io/rancher-version: '>= 2.6.0-0'
       catalog.cattle.io/release-notes: |-
+        v1.0.6:
+        - Force refresh: recréation complète pour Rancher cache cleanup
+        - Amélioration UX: champs System Message plus grands avec min_length=100
+        - Optimisation affichage multiline dans interface Rancher
+        - Meilleure lisibilité des messages système pour tous les LLM
+
+        v1.0.5:
+        - Amélioration UX: champs System Message plus grands avec min_length=100
+        - Optimisation affichage multiline dans interface Rancher
+        - Meilleure lisibilité des messages système pour tous les LLM
+
+        v1.0.4:
+        - Configuration LLM améliorée avec provider par défaut depuis backend
+        - Interface Rancher complète avec 77 options (vs 51 avant)
+        - Protection des secrets (plus de perte lors des upgrades)
+        - System messages personnalisés pour tous les providers LLM
+        - Configuration Azure Search avancée (colonnes, types de requête)
+        - Paramètres LLM avancés (température, tokens) exposés
+        - Corrections TypeScript et compilation sans erreur
+        - Icône du chart ajoutée pour meilleure UX
+
+        v1.0.3:
+        - Corrections de stabilité et robustesse
+        - Amélioration de la gestion des erreurs
+        - Optimisations des performances
+
+        v1.0.2:
+        - Corrections de bugs mineurs
+        - Améliorations de sécurité
+
+        v1.0.1:
+        - Corrections post-lancement
+        - Stabilisation des déploiements
+
+        v1.0.0:
+        - Version initiale avec corrections de robustesse
+        - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
+        - Interface vocale avec wake words
+        - Multi-client avec isolation namespace
+        - Intégration Rancher RBAC
+        - DNS automatique OVH avec retry et fallback
+        - Déploiement robuste avec pullPolicy Always
+      catalog.cattle.io/upstream-version: 1.0.0
+    apiVersion: v2
+    appVersion: 1.0.6
+    created: "2025-09-11T18:23:16.0503078+02:00"
+    description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
+    digest: 73d1b3476cbd4b003f7b79a4652f7efb6a32d15e9279e0354c1ff6bae7213634
+    home: https://github.com/avanteam/askme-rancher-catalog
+    icon: https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoavanteamai.png
+    keywords:
+    - ai
+    - chatbot
+    - llm
+    - avanteam
+    - qualitysaas
+    maintainers:
+    - email: devops@avanteam.com
+      name: Avanteam DevOps
+    name: askme
+    sources:
+    - https://github.com/avanteam/askme-app
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.6.tgz
+    version: 1.0.6
+  - annotations:
+      catalog.cattle.io/certified: avanteam
+      catalog.cattle.io/display-name: AskMe Assistant IA
+      catalog.cattle.io/kube-version: '>= 1.21.0-0'
+      catalog.cattle.io/questions-path: questions.yaml
+      catalog.cattle.io/rancher-version: '>= 2.6.0-0'
+      catalog.cattle.io/release-notes: |-
         v1.0.5:
         - Amélioration UX: champs System Message plus grands avec min_length=100
         - Optimisation affichage multiline dans interface Rancher
@@ -282,4 +355,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.0.tgz
     version: 1.0.0
-generated: "2025-09-11T18:20:13.8618596+02:00"
+generated: "2025-09-11T18:23:16.0470752+02:00"
