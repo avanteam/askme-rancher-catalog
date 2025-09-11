@@ -2,8 +2,8 @@ apiVersion: v2
 name: askme
 description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
 type: application
-version: 1.0.8
-appVersion: "1.0.8"
+version: 1.0.9
+appVersion: "1.0.9"
 
 # Métadonnées pour Rancher
 keywords:
@@ -35,6 +35,12 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/release-notes: |
+    v1.0.9:
+    - Ajout paramètres Azure CosmosDB manquants: conversations container et feedback
+    - Configuration Azure CosmosDB complète avec 5 paramètres
+    - Support du conteneur conversations et système de feedback
+    - Correspondance parfaite avec tous les paramètres .env CosmosDB
+    
     v1.0.8:
     - Ajout paramètre Azure Search manquant: AZURE_SEARCH_USE_SEMANTIC_SEARCH
     - Configuration Azure Search désormais complète avec 16 paramètres

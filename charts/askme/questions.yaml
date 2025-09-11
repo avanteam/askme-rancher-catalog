@@ -703,6 +703,22 @@ questions:
   group: "Azure CosmosDB"
   label: "Clé Primaire"
 
+- variable: azure.cosmosdb.conversationsContainer
+  default: "conversations"
+  description: "Nom du conteneur pour les conversations"
+  type: string
+  required: true
+  group: "Azure CosmosDB"
+  label: "Conteneur Conversations"
+
+- variable: azure.cosmosdb.enableFeedback
+  default: "true"
+  description: "Activer le système de feedback dans CosmosDB"
+  type: boolean
+  required: false
+  group: "Azure CosmosDB"
+  label: "Activer Feedback"
+
 # ===== SEARCH CONFIGURATION =====
 - variable: search.datasourceType
   default: "AzureCognitiveSearch"
