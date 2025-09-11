@@ -67,9 +67,9 @@ entries:
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
     appVersion: 1.0.8
-    created: "2025-09-11T19:09:16.7877881+02:00"
+    created: "2025-09-11T17:10:28.540955162Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
-    digest: 4f5b8f1c37d2c3a608b5604ab2792828acd7200125ae1e72f507acf54e0ae0a0
+    digest: 2468363b142ad616d613e5a681ff8dacee194bd56ce006bf3357954effacf373
     home: https://github.com/avanteam/askme-rancher-catalog
     icon: https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoavanteamai.png
     keywords:
@@ -148,7 +148,7 @@ entries:
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
     appVersion: 1.0.7
-    created: "2025-09-11T19:09:16.7867425+02:00"
+    created: "2025-09-11T17:10:28.539232658Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
     digest: 1d4f58c14f7926c5678e035805e964ced223bb2c0fe2a6bc62681b477ea5c761
     home: https://github.com/avanteam/askme-rancher-catalog
@@ -221,7 +221,7 @@ entries:
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
     appVersion: 1.0.6
-    created: "2025-09-11T19:09:16.7840934+02:00"
+    created: "2025-09-11T17:10:28.537493944Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
     digest: d2ff7556fa012ebe7c99abea03c9ce8a2f622f893f0f6e7a4abbe74c55bfa7d9
     home: https://github.com/avanteam/askme-rancher-catalog
@@ -288,7 +288,7 @@ entries:
       catalog.cattle.io/upstream-version: 1.0.0
     apiVersion: v2
     appVersion: 1.0.5
-    created: "2025-09-11T19:09:16.7830622+02:00"
+    created: "2025-09-11T17:10:28.535759939Z"
     description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
     digest: 9a91ce125a15538eacc4ded801c591473ed26851323e5008128d8d00f45c4aca
     home: https://github.com/avanteam/askme-rancher-catalog
@@ -309,4 +309,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/askme-1.0.5.tgz
     version: 1.0.5
-generated: "2025-09-11T19:09:16.7815172+02:00"
+generated: "2025-09-11T17:10:28.533779141Z"
