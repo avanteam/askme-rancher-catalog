@@ -2,8 +2,8 @@ apiVersion: v2
 name: askme
 description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
 type: application
-version: 1.0.7
-appVersion: "1.0.7"
+version: 1.0.8
+appVersion: "1.0.8"
 
 # Métadonnées pour Rancher
 keywords:
@@ -35,6 +35,12 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/release-notes: |
+    v1.0.8:
+    - Ajout paramètre Azure Search manquant: AZURE_SEARCH_USE_SEMANTIC_SEARCH
+    - Configuration Azure Search désormais complète avec 16 paramètres
+    - Paramètre recherche sémantique activé par défaut
+    - Correspondance parfaite avec tous les paramètres .env Azure Search
+    
     v1.0.7:
     - Configuration Azure Search complète: 15 paramètres vs 3 avant
     - Nouveaux paramètres Azure Search: semantic search, colonnes, strictness

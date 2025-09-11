@@ -570,6 +570,14 @@ questions:
   group: "Azure Search"
   label: "Config Recherche Sémantique"
 
+- variable: azure.search.useSemanticSearch
+  default: "true"
+  description: "Activer la recherche sémantique Azure Search"
+  type: boolean
+  required: false
+  group: "Azure Search"
+  label: "Utiliser Recherche Sémantique"
+
 - variable: azure.search.indexIsPrechunked
   default: "false"
   description: "L'index contient-il déjà du contenu pré-découpé ?"
