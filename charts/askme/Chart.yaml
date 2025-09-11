@@ -35,6 +35,29 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/release-notes: |
+    v1.0.4:
+    - Configuration LLM améliorée avec provider par défaut depuis backend
+    - Interface Rancher complète avec 77 options (vs 51 avant)
+    - Protection des secrets (plus de perte lors des upgrades)
+    - System messages personnalisés pour tous les providers LLM
+    - Configuration Azure Search avancée (colonnes, types de requête)
+    - Paramètres LLM avancés (température, tokens) exposés
+    - Corrections TypeScript et compilation sans erreur
+    - Icône du chart ajoutée pour meilleure UX
+    
+    v1.0.3:
+    - Corrections de stabilité et robustesse
+    - Amélioration de la gestion des erreurs
+    - Optimisations des performances
+    
+    v1.0.2:
+    - Corrections de bugs mineurs
+    - Améliorations de sécurité
+    
+    v1.0.1:
+    - Corrections post-lancement
+    - Stabilisation des déploiements
+    
     v1.0.0:
     - Version initiale avec corrections de robustesse
     - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
