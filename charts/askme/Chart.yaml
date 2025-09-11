@@ -2,8 +2,8 @@ apiVersion: v2
 name: askme
 description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
 type: application
-version: 1.0.9
-appVersion: "1.0.9"
+version: 1.0.10
+appVersion: "1.0.10"
 
 # Métadonnées pour Rancher
 keywords:
@@ -35,6 +35,13 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/release-notes: |
+    v1.0.10:
+    - Ajout paramètres Avanteam Custom manquants (6 nouveaux)
+    - Support URL Handler Licence Hub et build deployment
+    - Configuration interface UI (boutons partage/export)
+    - Paramètres authentification et SCM build
+    - Section Avanteam Custom complète avec 9 paramètres
+    
     v1.0.9:
     - Ajout paramètres Azure CosmosDB manquants: conversations container et feedback
     - Configuration Azure CosmosDB complète avec 5 paramètres

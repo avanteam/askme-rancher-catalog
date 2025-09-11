@@ -925,6 +925,46 @@ questions:
   group: "Avanteam Custom"
   label: "Clé Licence Hub"
 
+- variable: avanteam.licenceHubHandlerUrl
+  default: "https://aimanager-dev2.avanteam-online.com/APP/Custom/AI/AskMeV2_Monitoring/AskMeMonitoring.ashx"
+  description: "URL du handler pour le Hub de licences Avanteam"
+  type: string
+  required: false
+  group: "Avanteam Custom"
+  label: "URL Handler Licence Hub"
+
+- variable: scm.doBuildDuringDeployment
+  default: "true"
+  description: "Effectuer le build durant le déploiement"
+  type: boolean
+  required: false
+  group: "Avanteam Custom"
+  label: "Build During Deployment"
+
+- variable: ui.showShareButton
+  default: "false"
+  description: "Afficher le bouton de partage dans l'interface"
+  type: boolean
+  required: false
+  group: "Avanteam Custom"
+  label: "Afficher Bouton Partage"
+
+- variable: ui.showExportButton
+  default: "true"
+  description: "Afficher le bouton d'export dans l'interface"
+  type: boolean
+  required: false
+  group: "Avanteam Custom"
+  label: "Afficher Bouton Export"
+
+- variable: auth.enabled
+  default: "false"
+  description: "Activer l'authentification"
+  type: boolean
+  required: false
+  group: "Avanteam Custom"
+  label: "Authentification Activée"
+
 # ===== GESTION DNS AUTOMATIQUE =====
 - variable: dns.ovh.enabled
   default: true
