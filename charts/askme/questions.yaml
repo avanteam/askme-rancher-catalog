@@ -194,6 +194,30 @@ questions:
   group: "Azure OpenAI"
   label: "Nombre de Choix"
 
+- variable: azure.openai.embeddingName
+  default: "text-embedding-ada-002"
+  description: "Nom du modèle d'embedding déployé dans Azure OpenAI"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Nom du Modèle Embedding"
+
+- variable: azure.openai.embeddingEndpoint
+  default: "https://askmeopenai.openai.azure.com/"
+  description: "Endpoint spécifique pour les embeddings Azure OpenAI"
+  type: string
+  required: false
+  group: "Azure OpenAI"
+  label: "Endpoint Embedding"
+
+- variable: azure.openai.embeddingKey
+  default: "your-azure-openai-embedding-key-here"
+  description: "Clé API spécifique pour les embeddings Azure OpenAI"
+  type: password
+  required: false
+  group: "Azure OpenAI"
+  label: "Clé API Embedding"
+
 - variable: azure.openai.presencePenalty
   default: "0.0"
   description: "Pénalité de présence (-2.0 à 2.0)"
@@ -498,6 +522,7 @@ questions:
   description: "Modèle Gemini à utiliser"
   type: enum
   options:
+    - "gemini-2.5-flash"
     - "gemini-1.5-flash"
     - "gemini-1.5-pro"
     - "gemini-pro"
