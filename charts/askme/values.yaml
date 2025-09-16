@@ -180,7 +180,6 @@ avanteam:
   authToken: "@v@nt€m-Q@litYs@AS-d€v31"
   licenceHubHandlerUrl: "https://aimanager-dev2.avanteam-online.com/APP/Custom/AI/AskMeV2_Monitoring/AskMeMonitoring.ashx"
   licenceHubKey: "AVANTEAM-QUALITYSAAS-DEV"
-  authEnabled: false
 
 # ===== GESTION DNS AUTOMATIQUE =====
 dns:

@@ -982,7 +982,7 @@ questions:
   group: "Avanteam Custom"
   label: "Afficher Bouton Export"
 
-- variable: auth.enabled
+- variable: authentication.enabled
   default: "false"
   description: "Activer l'authentification"
   type: boolean
