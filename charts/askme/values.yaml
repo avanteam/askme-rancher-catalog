@@ -90,7 +90,7 @@ azure:
     account: "db-askme-avanteam-qualitysaas-dev-historique"
     database: "db_conversation_history"
     conversationsContainer: "conversations"
-    key: ""  # Laissez vide pour utiliser la clé COSMOS_DB_KEY du secret global askme-local-tokens
+    key: ""  # Laissez vide pour utiliser AZURE_COSMOSDB_ACCOUNT_KEY du secret global askme-local-tokens
     enableFeedback: "true"
 
   # ===== AZURE SPEECH =====

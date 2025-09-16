@@ -722,7 +722,7 @@ questions:
 
 - variable: azure.cosmosdb.key
   default: ""
-  description: "Clé primaire CosmosDB (laissez vide pour utiliser la clé COSMOS_DB_KEY du secret global askme-local-tokens)"
+  description: "Clé primaire CosmosDB (laissez vide pour utiliser AZURE_COSMOSDB_ACCOUNT_KEY du secret global askme-local-tokens)"
   type: password
   required: false
   group: "Azure CosmosDB"
