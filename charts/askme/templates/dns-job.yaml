@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "askme.fullname" . }}-dns-setup
+  name: {{ include "askme.fullname" . }}-dns-setup-{{ .Chart.Version | replace "." "-" }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "askme.labels" . | nindent 4 }}
