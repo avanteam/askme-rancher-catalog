@@ -1,0 +1,37 @@
+# Documentation
+*.md
+*.MD
+README*
+CHANGELOG*
+LICENSE*
+
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# Development files
+.env
+.env.*
+
+# Test files
+*_test.yaml
+*_test.yml
+test/
+tests/

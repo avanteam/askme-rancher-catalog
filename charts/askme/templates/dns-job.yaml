@@ -12,6 +12,10 @@ metadata:
     askme.avanteam.com/depends-on: "secret-sync"
 spec:
   ttlSecondsAfterFinished: 300
+  selector:
+    matchLabels:
+      {{- include "askme.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: dns-manager
   template:
     metadata:
       labels:
