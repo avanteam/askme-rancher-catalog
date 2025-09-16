@@ -721,10 +721,10 @@ questions:
   label: "Base de Données"
 
 - variable: azure.cosmosdb.key
-  default: "your-cosmosdb-key-here"
-  description: "Clé primaire CosmosDB"
+  default: ""
+  description: "Clé primaire CosmosDB (laissez vide pour utiliser la clé COSMOS_DB_KEY du secret global askme-local-tokens)"
   type: password
-  required: true
+  required: false
   group: "Azure CosmosDB"
   label: "Clé Primaire"
 
