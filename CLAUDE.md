@@ -43,7 +43,7 @@ The chart contains 9 Kubernetes resource templates:
 - **ingress.yaml**: HTTPS ingress with Let's Encrypt
 - **rancher-project.yaml**: Rancher project isolation
 - **rancher-rbac.yaml**: Rancher role-based access control
-- **secret.yaml**: Client-specific API keys storage
+- **service.yaml**: Kubernetes service for pod exposure
 
 ### Multi-LLM Support
 The application supports multiple LLM providers:
@@ -58,7 +58,7 @@ Each provider has individual configuration sections in values.yaml with API keys
 ### Configuration Management
 - **values.yaml**: 386 lines of comprehensive configuration covering all LLM providers, Azure services, UI customization, DNS automation, and deployment settings
 - **questions.yaml**: Rancher UI form definitions for easy configuration via web interface
-- **Global secrets**: Shared API keys across multiple clients via `askme-global-api-keys` secret
+- **Global secrets**: Shared API keys across multiple clients via `askme-tokens`, `harbor-keys`, and `ovh-global-dns-keys` secrets in `askme-platform` namespace
 
 ### Infrastructure Integration
 - **Harbor Registry**: Private Docker images at `7wpjr0wh.c1.gra9.container-registry.ovh.net`
@@ -71,7 +71,9 @@ Each provider has individual configuration sections in values.yaml with API keys
 2. **Release**: Git tags trigger automated Docker builds and Helm packaging
 3. **Catalog Sync**: Rancher automatically detects new chart versions
 4. **Deployment**: 1-click deployment via Rancher UI with form-based configuration
-5. **DNS**: Automatic subdomain creation and SSL certificate provisioning
+5. **Secret Synchronization**: Global secrets from `askme-platform` namespace are automatically synchronized to deployment namespace
+6. **DNS**: Automatic subdomain creation and SSL certificate provisioning with security validation
+7. **Verification**: All jobs complete successfully and application pods start running
 
 ### Version Management
 - Semantic versioning (v1.0.0, v1.0.1, etc.)
@@ -85,6 +87,9 @@ Each provider has individual configuration sections in values.yaml with API keys
 - **Network Policies**: Controlled traffic between services
 - **Image Security**: Harbor registry scanning for vulnerabilities
 - **Secret Management**: Global vs. client-specific secret handling
+- **DNS Security**: RFC 1035 validation and URL escaping to prevent injection attacks
+- **Input Validation**: Strict validation of DNS zones, subdomains, and IP addresses
+- **Container Security**: Use of `alpine/k8s:1.30.0` image with proper shell support
 
 ### Testing and Validation
 The `test-catalog.sh` script provides comprehensive testing:
