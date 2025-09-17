@@ -88,7 +88,7 @@ Le formulaire Rancher affichera automatiquement tous les champs définis dans `q
 
 #### **Interface Utilisateur**
 - **Titre de l'Application** : `Avanteam AskMe`
-- **Description** : `Assistant IA QualitySaaS...`
+- **Description** : `Assistant IA ...`
 - **Logo Principal** : URL du logo
 
 #### **Configuration LLM**

@@ -16,7 +16,7 @@ client:
 # ===== INTERFACE UTILISATEUR =====
 ui:
   title: "Avanteam AskMe"
-  description: "Cet assistant Quality SaaS est configuré pour répondre à vos questions sur la documentation Avanteam"
+  description: "Cet assistant IA est configuré pour répondre à vos questions sur la documentation Avanteam"
   logo: "https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoavanteamai.png"
   chatLogo: "https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoBot.gif"
   chatTitle: "Commencer une discussion"

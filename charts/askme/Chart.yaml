@@ -1,6 +1,6 @@
 apiVersion: v2
 name: askme
-description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
+description: AskMe - Assistant IA multi-LLM pour Avanteam 
 type: application
 version: 1.0.20
 appVersion: "1.0.20"
@@ -17,7 +17,7 @@ sources:
   - https://github.com/avanteam/askme-app
 maintainers:
   - name: Avanteam DevOps
-    email: devops@avanteam.com
+    email: info@avanteam.com
 icon: https://aimanager-dev.avanteam-online.com/app/custom/ai/shareddata/logoavanteamai.png
 
 # Annotations pour Rancher UI
