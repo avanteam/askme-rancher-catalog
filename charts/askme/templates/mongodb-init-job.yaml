@@ -204,17 +204,17 @@ spec:
               askme.avanteam.com/created-by: mongodb-init-job
           type: Opaque
           stringData:
-            MONGODB_URI: "mongodb://${USERNAME}:${PASSWORD}@{{ .Values.mongodb.externalService.name | default "mongodb-external" }}:{{ .Values.mongodb.externalService.port | default 27017 }}/${DATABASE_NAME}?replicaSet=rs0&readPreference=secondaryPreferred&authSource=${DATABASE_NAME}"
-            MONGODB_DATABASE: "${DATABASE_NAME}"
-            MONGODB_USERNAME: "${USERNAME}"
-            MONGODB_PASSWORD: "${PASSWORD}"
+            MONGODB_URI: "mongodb://\${USERNAME}:\${PASSWORD}@{{ .Values.mongodb.externalService.name | default \"mongodb-external\" }}:{{ .Values.mongodb.externalService.port | default 27017 }}/\${DATABASE_NAME}?replicaSet=rs0&readPreference=secondaryPreferred&authSource=\${DATABASE_NAME}"
+            MONGODB_DATABASE: "\${DATABASE_NAME}"
+            MONGODB_USERNAME: "\${USERNAME}"
+            MONGODB_PASSWORD: "\${PASSWORD}"
           EOF
 
           # Appliquer le Secret via kubectl
           kubectl apply -f /tmp/mongodb-credentials.yaml
 
           echo "✅ Secret MongoDB créé avec succès"
-          echo "🔗 URI de connexion: mongodb://${USERNAME}:[PASSWORD]@{{ .Values.mongodb.externalService.name | default "mongodb-external" }}:{{ .Values.mongodb.externalService.port | default 27017 }}/${DATABASE_NAME}?replicaSet=rs0&readPreference=secondaryPreferred&authSource=${DATABASE_NAME}"
+          echo "🔗 URI de connexion: mongodb://\${USERNAME}:[PASSWORD]@{{ .Values.mongodb.externalService.name | default \"mongodb-external\" }}:{{ .Values.mongodb.externalService.port | default 27017 }}/\${DATABASE_NAME}?replicaSet=rs0&readPreference=secondaryPreferred&authSource=\${DATABASE_NAME}"
           echo "🎉 Initialisation MongoDB terminée pour le client {{ .Release.Name }}"
 
         env:
