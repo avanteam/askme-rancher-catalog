@@ -744,6 +744,126 @@ questions:
   group: "Azure CosmosDB"
   label: "Activer Feedback"
 
+# ===== HISTORY PROVIDER =====
+- variable: config.historyProvider
+  default: "MONGODB"
+  description: "Provider pour l'historique des conversations"
+  type: enum
+  options:
+    - "MONGODB"
+    - "COSMOSDB"
+  required: true
+  group: "History Configuration"
+  label: "Provider Historique"
+
+# ===== MONGODB (Alternative à CosmosDB) =====
+- variable: mongodb.enabled
+  default: true
+  description: "Utiliser MongoDB au lieu de CosmosDB pour l'historique"
+  type: boolean
+  group: "MongoDB Configuration"
+  label: "Activer MongoDB"
+  show_if: "config.historyProvider=MONGODB"
+
+- variable: mongodb.uri
+  default: "mongodb://root:AskMe-MongoDB-2024-Secure!@mongodb-external:27017/?replicaSet=rs0&readPreference=secondaryPreferred"
+  description: "URI de connexion MongoDB (utilise le service cross-namespace)"
+  type: string
+  required: true
+  group: "MongoDB Configuration"
+  label: "URI MongoDB"
+  show_if: "mongodb.enabled=true"
+
+- variable: mongodb.autoInit
+  default: true
+  description: "Créer automatiquement la database client et générer les credentials"
+  type: boolean
+  required: false
+  group: "MongoDB Configuration"
+  label: "Initialisation Automatique"
+  show_if: "mongodb.enabled=true"
+
+- variable: mongodb.adminUri
+  default: "mongodb://root:AskMe-MongoDB-2024-Secure!@mongodb-external:27017/?authSource=admin&replicaSet=rs0"
+  description: "URI admin MongoDB pour l'initialisation (avec credentials root)"
+  type: string
+  required: false
+  group: "MongoDB Configuration"
+  label: "URI Admin MongoDB"
+  show_if: "mongodb.autoInit=true"
+
+- variable: mongodb.database
+  default: "askme_default"
+  description: "Nom de la database MongoDB (auto-généré: askme_<client_name>)"
+  type: string
+  required: false
+  group: "MongoDB Configuration"
+  label: "Database MongoDB"
+  show_if: "mongodb.enabled=true"
+
+- variable: mongodb.enableFeedback
+  default: "false"
+  description: "Activer le système de feedback dans MongoDB"
+  type: boolean
+  required: false
+  group: "MongoDB Configuration"
+  label: "Activer Feedback MongoDB"
+  show_if: "mongodb.enabled=true"
+
+- variable: mongodb.externalService.name
+  default: "mongodb-external"
+  description: "Nom du service ExternalName pour MongoDB"
+  type: string
+  required: false
+  group: "MongoDB Configuration"
+  label: "Nom Service Externe"
+  show_if: "mongodb.enabled=true"
+
+- variable: mongodb.externalService.externalName
+  default: "mongodb-shared.askme-mongodb.svc.cluster.local"
+  description: "FQDN du service MongoDB dans le cluster"
+  type: string
+  required: false
+  group: "MongoDB Configuration"
+  label: "FQDN MongoDB"
+  show_if: "mongodb.enabled=true"
+
+- variable: mongodb.externalService.port
+  default: 27017
+  description: "Port MongoDB"
+  type: int
+  required: false
+  group: "MongoDB Configuration"
+  label: "Port MongoDB"
+  show_if: "mongodb.enabled=true"
+
+- variable: mongodb.auth.rootPassword
+  default: ""
+  description: "Mot de passe root MongoDB (laissez vide pour utiliser le secret global)"
+  type: password
+  required: false
+  group: "MongoDB Configuration"
+  label: "Mot de passe Root MongoDB"
+  show_if: "mongodb.enabled=true"
+
+- variable: mongodb.auth.username
+  default: ""
+  description: "Username spécifique client MongoDB (optionnel)"
+  type: string
+  required: false
+  group: "MongoDB Configuration"
+  label: "Username Client MongoDB"
+  show_if: "mongodb.enabled=true"
+
+- variable: mongodb.auth.password
+  default: ""
+  description: "Password spécifique client MongoDB (optionnel)"
+  type: password
+  required: false
+  group: "MongoDB Configuration"
+  label: "Password Client MongoDB"
+  show_if: "mongodb.enabled=true"
+
 # ===== SEARCH CONFIGURATION =====
 - variable: search.datasourceType
   default: "AzureCognitiveSearch"

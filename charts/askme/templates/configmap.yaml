@@ -111,11 +111,25 @@ data:
   AZURE_SPEECH_VOICE_FR: {{ .Values.azure.speech.voiceFr | quote }}
   AZURE_SPEECH_VOICE_EN: {{ .Values.azure.speech.voiceEn | quote }}
 
+  # History Provider Configuration
+  HISTORY_PROVIDER: {{ .Values.config.historyProvider | quote }}
+
   # Azure CosmosDB Configuration
   AZURE_COSMOSDB_ACCOUNT: {{ .Values.azure.cosmosdb.account | quote }}
   AZURE_COSMOSDB_DATABASE: {{ .Values.azure.cosmosdb.database | quote }}
   AZURE_COSMOSDB_CONVERSATIONS_CONTAINER: {{ .Values.azure.cosmosdb.conversationsContainer | quote }}
   AZURE_COSMOSDB_ENABLE_FEEDBACK: {{ .Values.azure.cosmosdb.enableFeedback | quote }}
+
+  # MongoDB Configuration (pour historique conversations)
+  {{- if or (.Values.mongodb.enabled) (eq .Values.config.historyProvider "MONGODB") }}
+  {{- if not .Values.mongodb.autoInit }}
+  # Configuration MongoDB manuelle (quand auto-init est désactivé)
+  MONGODB_URI: {{ .Values.mongodb.uri | quote }}
+  MONGODB_DATABASE: {{ printf "askme_%s" (.Release.Name | replace "askme-" "" | replace "." "_") | quote }}
+  {{- end }}
+  MONGODB_ENABLE_FEEDBACK: {{ .Values.mongodb.enableFeedback | quote }}
+  # Note: MONGODB_URI et MONGODB_DATABASE sont injectés depuis le Secret quand autoInit=true
+  {{- end }}
 
   # Configuration des sources de données
   DATASOURCE_TYPE: {{ .Values.config.datasourceType | quote }}

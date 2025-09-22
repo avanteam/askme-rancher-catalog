@@ -2,8 +2,8 @@ apiVersion: v2
 name: askme
 description: AskMe - Assistant IA multi-LLM pour Avanteam 
 type: application
-version: 1.0.20
-appVersion: "1.0.20"
+version: 1.0.21
+appVersion: "1.0.21"
 
 # Métadonnées pour Rancher
 keywords:
@@ -35,6 +35,20 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/release-notes: |
+    v1.0.21:
+    - 🍃 NOUVEAU: Support complet MongoDB comme alternative à CosmosDB
+    - ⚙️ Configuration MongoDB: 12 nouveaux paramètres dans l'UI Rancher
+    - 🔧 Scripts de déploiement: support option --mongodb
+    - 🔐 Gestion secrets: mise à jour automatique des clés MongoDB
+    - 📦 Templates Helm: services cross-namespace et credentials par client
+    - 🔄 Migration: scripts de migration CosmosDB vers MongoDB
+    - 📋 Provider historique: sélection COSMOSDB ou MONGODB via UI
+    - 🚀 Déploiement unifié: même workflow pour CosmosDB et MongoDB
+    - 📚 Documentation: guide complet MongoDB avec troubleshooting
+    - 🎯 Multi-tenant: architecture avec databases séparées par client
+    - 🏗️ Infrastructure: MongoDB Replica Set avec répartition de charge
+    - ✅ Interface conditionnelle: champs MongoDB visibles selon sélection
+
     v1.0.10:
     - Ajout paramètres Avanteam Custom manquants (6 nouveaux)
     - Support URL Handler Licence Hub et build deployment

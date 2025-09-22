@@ -93,6 +93,32 @@ azure:
     key: ""  # Laissez vide pour utiliser AZURE_COSMOSDB_ACCOUNT_KEY du secret global askme-local-tokens
     enableFeedback: "true"
 
+# ===== MONGODB (Alternative à CosmosDB) =====
+mongodb:
+  enabled: true  # true pour utiliser MongoDB au lieu de CosmosDB
+
+  # Initialisation automatique de la database client
+  autoInit: true  # Crée automatiquement la database et génère les credentials
+  adminUri: "mongodb://root:AskMe-MongoDB-2024-Secure!@mongodb-external:27017/?authSource=admin&replicaSet=rs0"
+
+  # Configuration de connexion au MongoDB partagé
+  uri: "mongodb://root:AskMe-MongoDB-2024-Secure!@mongodb-external:27017/?replicaSet=rs0&readPreference=secondaryPreferred"
+  database: "askme_default"  # Sera remplacée par askme_<client> automatiquement
+  enableFeedback: "false"
+
+  # Configuration du service externe MongoDB (cross-namespace)
+  externalService:
+    name: "mongodb-external"
+    namespace: ""  # Sera défini automatiquement selon le client
+    externalName: "mongodb-shared.askme-mongodb.svc.cluster.local"
+    port: 27017
+
+  # Credentials MongoDB (utilisés uniquement si autoInit=false)
+  auth:
+    rootPassword: ""  # Laissez vide pour utiliser le secret global
+    username: ""      # Username spécifique client (optionnel)
+    password: ""      # Password spécifique client (optionnel)
+
   # ===== AZURE SPEECH =====
   speech:
     enabled: true
@@ -173,6 +199,7 @@ config:
   orchestrationStrategy: "openai_functions"
   scmDoBuildDuringDeployment: "true"
   azureSearchUseSemanticSearch: "true"
+  historyProvider: "MONGODB"  # MONGODB ou COSMOSDB
 
 # ===== AVANTEAM CUSTOM =====
 avanteam:

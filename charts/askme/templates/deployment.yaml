@@ -45,6 +45,11 @@ spec:
         # Global tokens from askme-platform (consolidated in askme-local-tokens)
         - secretRef:
             name: askme-local-tokens
+        {{- if or (.Values.mongodb.enabled) (eq .Values.config.historyProvider "MONGODB") }}
+        # MongoDB credentials (generated automatically or configured manually)
+        - secretRef:
+            name: {{ include "askme.fullname" . }}-mongodb-credentials
+        {{- end }}
         
         resources:
           {{- toYaml .Values.resources | nindent 10 }}

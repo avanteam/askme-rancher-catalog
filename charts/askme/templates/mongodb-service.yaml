@@ -1,0 +1,45 @@
+{{- if or (.Values.mongodb.enabled) (eq .Values.config.historyProvider "MONGODB") }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.mongodb.externalService.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "askme.labels" . | nindent 4 }}
+    askme.avanteam.com/component: "mongodb-external-service"
+  annotations:
+    askme.avanteam.com/client: {{ .Release.Name }}
+    askme.avanteam.com/mongodb-target: {{ .Values.mongodb.externalService.externalName }}
+spec:
+  type: ExternalName
+  externalName: {{ .Values.mongodb.externalService.externalName }}
+  ports:
+  - name: mongodb
+    port: {{ .Values.mongodb.externalService.port }}
+    targetPort: {{ .Values.mongodb.externalService.port }}
+    protocol: TCP
+
+{{- if not .Values.mongodb.autoInit }}
+---
+# Secret manuel pour MongoDB (quand auto-init est désactivé)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "askme.fullname" . }}-mongodb-credentials
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "askme.labels" . | nindent 4 }}
+    askme.avanteam.com/component: "mongodb-credentials"
+  annotations:
+    askme.avanteam.com/client: {{ .Release.Name }}
+    askme.avanteam.com/created-by: "manual-configuration"
+type: Opaque
+stringData:
+  MONGODB_URI: {{ .Values.mongodb.uri | quote }}
+  MONGODB_DATABASE: {{ printf "askme_%s" (.Release.Name | replace "askme-" "" | replace "." "_") | quote }}
+  MONGODB_USERNAME: {{ .Values.mongodb.auth.username | default "" | quote }}
+  MONGODB_PASSWORD: {{ .Values.mongodb.auth.password | default "" | quote }}
+  MONGODB_ROOT_PASSWORD: {{ .Values.mongodb.auth.rootPassword | default "AskMe-MongoDB-2024-Secure!" | quote }}
+{{- end }}
+{{- end }}
