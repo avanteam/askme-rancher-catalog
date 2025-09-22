@@ -189,8 +189,8 @@ spec:
           echo "💾 Création du Secret Kubernetes avec les credentials..."
 
           # Créer le fichier de credentials pour le Secret
-          MONGODB_SERVICE_NAME="{{ .Values.mongodb.externalService.name | default "mongodb-external" }}"
-          MONGODB_SERVICE_PORT="{{ .Values.mongodb.externalService.port | default 27017 }}"
+          MONGODB_SERVICE_NAME='{{ .Values.mongodb.externalService.name | default "mongodb-external" }}'
+          MONGODB_SERVICE_PORT='{{ .Values.mongodb.externalService.port | default 27017 }}'
 
           cat > /tmp/mongodb-credentials.yaml << EOF
           apiVersion: v1
