@@ -192,7 +192,7 @@ spec:
           MONGODB_SERVICE_NAME='{{ .Values.mongodb.externalService.name | default "mongodb-external" }}'
           MONGODB_SERVICE_PORT='{{ .Values.mongodb.externalService.port | default 27017 }}'
 
-          cat > /tmp/mongodb-credentials.yaml << EOF
+          cat > /tmp/mongodb-credentials.yaml << 'YAML_END'
           apiVersion: v1
           kind: Secret
           metadata:
@@ -211,7 +211,7 @@ spec:
             MONGODB_DATABASE: "${DATABASE_NAME}"
             MONGODB_USERNAME: "${USERNAME}"
             MONGODB_PASSWORD: "${PASSWORD}"
-          EOF
+          YAML_END
 
           # Appliquer le Secret via kubectl
           kubectl apply -f /tmp/mongodb-credentials.yaml
