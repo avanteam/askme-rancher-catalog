@@ -189,6 +189,9 @@ spec:
           echo "💾 Création du Secret Kubernetes avec les credentials..."
 
           # Créer le fichier de credentials pour le Secret
+          MONGODB_SERVICE_NAME="{{ .Values.mongodb.externalService.name | default "mongodb-external" }}"
+          MONGODB_SERVICE_PORT="{{ .Values.mongodb.externalService.port | default 27017 }}"
+
           cat > /tmp/mongodb-credentials.yaml << EOF
           apiVersion: v1
           kind: Secret
@@ -204,17 +207,17 @@ spec:
               askme.avanteam.com/created-by: mongodb-init-job
           type: Opaque
           stringData:
-            MONGODB_URI: "mongodb://\${USERNAME}:\${PASSWORD}@{{ .Values.mongodb.externalService.name | default \"mongodb-external\" }}:{{ .Values.mongodb.externalService.port | default 27017 }}/\${DATABASE_NAME}?replicaSet=rs0&readPreference=secondaryPreferred&authSource=\${DATABASE_NAME}"
-            MONGODB_DATABASE: "\${DATABASE_NAME}"
-            MONGODB_USERNAME: "\${USERNAME}"
-            MONGODB_PASSWORD: "\${PASSWORD}"
+            MONGODB_URI: "mongodb://${USERNAME}:${PASSWORD}@${MONGODB_SERVICE_NAME}:${MONGODB_SERVICE_PORT}/${DATABASE_NAME}?replicaSet=rs0&readPreference=secondaryPreferred&authSource=${DATABASE_NAME}"
+            MONGODB_DATABASE: "${DATABASE_NAME}"
+            MONGODB_USERNAME: "${USERNAME}"
+            MONGODB_PASSWORD: "${PASSWORD}"
           EOF
 
           # Appliquer le Secret via kubectl
           kubectl apply -f /tmp/mongodb-credentials.yaml
 
           echo "✅ Secret MongoDB créé avec succès"
-          echo "🔗 URI de connexion: mongodb://\${USERNAME}:[PASSWORD]@{{ .Values.mongodb.externalService.name | default \"mongodb-external\" }}:{{ .Values.mongodb.externalService.port | default 27017 }}/\${DATABASE_NAME}?replicaSet=rs0&readPreference=secondaryPreferred&authSource=\${DATABASE_NAME}"
+          echo "🔗 URI de connexion: mongodb://${USERNAME}:[PASSWORD]@${MONGODB_SERVICE_NAME}:${MONGODB_SERVICE_PORT}/${DATABASE_NAME}?replicaSet=rs0&readPreference=secondaryPreferred&authSource=${DATABASE_NAME}"
           echo "🎉 Initialisation MongoDB terminée pour le client {{ .Release.Name }}"
 
         env:
