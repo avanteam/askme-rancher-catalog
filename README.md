@@ -58,7 +58,8 @@ kubectl apply -f rancher-catalog-setup.yaml
 ### Fonctionnalités Avancées
 - **Reconnaissance vocale** : Mots-clés personnalisables
 - **Upload d'images** : Support multimodal
-- **Historique** : Persistance CosmosDB
+- **Historique** : Persistance CosmosDB ou MongoDB
+- **Multi-tenant MongoDB** : Base de données isolée par client
 
 ## 🔄 Workflow de Release Intégré
 
@@ -93,36 +94,101 @@ git push origin v1.2.0
 askme-rancher-catalog/
 ├── charts/askme/               # Chart Helm principal
 │   ├── Chart.yaml              # Métadonnées et version
-│   ├── values.yaml             # Configuration par défaut
+│   ├── values.yaml             # Configuration par défaut (386 lignes)
 │   ├── questions.yaml          # Interface Rancher (formulaire)
 │   ├── scripts/                # Scripts DNS OVH
-│   └── templates/              # Manifestes Kubernetes
+│   └── templates/              # Manifestes Kubernetes (9 fichiers)
 │       ├── configmap.yaml      # Configuration application
-│       ├── secret.yaml         # API keys sécurisées
 │       ├── deployment.yaml     # Déploiement principal
 │       ├── service.yaml        # Service Kubernetes
-│       ├── ingress.yaml        # Exposition HTTPS
-│       └── dns-job.yaml        # Création DNS automatique
+│       ├── ingress.yaml        # Exposition HTTPS + Let's Encrypt
+│       ├── dns-job.yaml        # Création DNS automatique OVH
+│       ├── mongodb-init-job.yaml    # Job d'initialisation MongoDB
+│       ├── mongodb-service.yaml     # Service MongoDB cross-namespace
+│       ├── global-secret-sync.yaml  # Synchronisation secrets globaux
+│       ├── global-secret-rbac.yaml  # RBAC pour accès secrets
+│       ├── rancher-project.yaml     # Projet Rancher isolation
+│       └── rancher-rbac.yaml        # Permissions Rancher RBAC
 ├── docs/                       # Documentation spécialisée
 │   └── rancher-setup.md        # Guide configuration Rancher
 ├── .github/workflows/          # Pipeline CI/CD
-├── index.yaml                  # Index catalog Helm
-└── test-catalog.sh            # Tests automatisés
+├── index.yaml                  # Index catalog Helm (auto-généré)
+├── MONGODB_MULTITENANT_GUIDE.md # Guide complet MongoDB
+├── README-MONGODB.md           # Documentation MongoDB
+├── test-catalog.sh            # Tests automatisés
+├── deploy-client.sh           # Script déploiement client
+├── migrate-client-to-mongodb.sh # Migration CosmosDB → MongoDB
+├── init-mongodb-client.sh     # Initialisation client MongoDB
+└── update-mongodb-secrets.sh  # Mise à jour secrets MongoDB
 ```
 
 ### Intégrations
-- **Harbor Registry OVH** : Images Docker privées
-- **DNS OVH** : Création automatique sous-domaines
+- **Harbor Registry OVH** : Images Docker privées (7wpjr0wh.c1.gra9.container-registry.ovh.net)
+- **DNS OVH** : Création automatique sous-domaines avec validation sécurité
 - **Let's Encrypt** : Certificats SSL automatiques
-- **Rancher RBAC** : Permissions granulaires par projet
+- **Rancher RBAC** : Permissions granulaires par projet avec isolation namespace
+- **MongoDB Multi-tenant** : Cluster partagé avec bases de données isolées par client
+- **Azure Services** : OpenAI, Cognitive Search, CosmosDB, Speech Services
+- **Global Secrets** : Synchronisation automatique des API keys depuis askme-platform
+
+## 🍃 Architecture MongoDB Multi-Tenant
+
+### Providers d'Historique Supportés
+- **COSMOSDB** : Azure CosmosDB (historique, stable)
+- **MONGODB** : MongoDB Replica Set (nouveau, recommandé pour nouveaux clients)
+
+### Architecture MongoDB
+```
+MongoDB Cluster (askme-mongodb namespace)
+├── Replica Set (rs0) : 3 nœuds pour haute disponibilité
+├── askme_avanteam/          # Database client principal
+│   ├── conversations        # Collection conversations
+│   └── messages            # Collection messages + index optimisés
+├── askme_qsaas/            # Database QSaaS
+│   ├── conversations
+│   └── messages
+└── askme_demo/             # Database demo
+    ├── conversations
+    └── messages
+```
+
+### Sécurité et Isolation
+- **Isolation complète** : Chaque client dispose de sa propre database MongoDB
+- **Credentials uniques** : Utilisateur et mot de passe générés automatiquement (32 caractères)
+- **Permissions minimales** : readWrite uniquement sur la database du client
+- **Secrets Kubernetes** : Credentials stockés sécurisément dans les secrets du namespace client
+- **Cross-namespace services** : Service mongodb-external dans chaque namespace client
+
+### Déploiement MongoDB via Rancher UI
+1. **History Configuration** → `Provider Historique` → Sélectionner **MONGODB**
+2. **MongoDB Configuration** → `Activer MongoDB` → ✅ Cocher
+3. **Initialisation automatique** → ✅ Cocher (recommandé)
+4. **Deploy** → Job d'initialisation automatique crée :
+   - Database `askme_<client_name>`
+   - Utilisateur `askme_<client_name>_user`
+   - Collections avec index optimisés
+   - Secret Kubernetes avec credentials
+
+### Scripts de Gestion MongoDB
+- `init-mongodb-client.sh` : Initialisation manuelle d'un client MongoDB
+- `migrate-client-to-mongodb.sh` : Migration CosmosDB → MongoDB
+- `update-mongodb-secrets.sh` : Mise à jour des secrets MongoDB globaux
+
+### Coexistence CosmosDB/MongoDB
+- **Clients existants** : Peuvent rester sur CosmosDB
+- **Nouveaux clients** : Recommandé d'utiliser MongoDB
+- **Migration progressive** : Possible avec scripts de migration
 
 ## 🏷️ Versions et Compatibilité
 
 | Version | Date | Features | Status |
 |---------|------|----------|--------|
+| **v1.0.25** | 2025-09-23 | MongoDB multi-tenant + corrections | ✅ Stable |
+| **v1.0.24** | 2025-09-23 | MongoDB Shell optimisé (mongo:7-jammy) | ✅ Stable |
+| **v1.0.21** | 2025-09-17 | Support complet MongoDB multi-client | ✅ Stable |
+| **v1.0.10** | 2025-09-12 | Configuration Avanteam Custom complète | ✅ Stable |
 | **v1.0.0** | 2025-07-30 | Multi-LLM support initial | ✅ Stable |
-| **v1.1.0** | TBD | RBAC + DNS automatique | 🚧 Développement |
-| **latest** | Continue | Dernières fonctionnalités | ⚠️ Dev only |
+| **latest** | Continue | Dernière version stable (v1.0.25) | ✅ Recommandé |
 
 ## 🔧 Gestion et Maintenance
 
@@ -150,18 +216,24 @@ askme-rancher-catalog/
 ## 📊 Tests et Validation
 
 ```bash
-# Tests automatisés
+# Tests automatisés complets
 ./test-catalog.sh validate
 
-# Tests d'intégration
+# Tests de déploiement avec MongoDB
 ./test-catalog.sh deploy test-client
+./deploy-client.sh test-mongodb --mongodb
+
+# Tests de migration CosmosDB → MongoDB
+./migrate-client-to-mongodb.sh test-client --dry-run
 ```
 
 ## 🆘 Support et Documentation
 
-- **Documentation détaillée** : [`docs/rancher-setup.md`](docs/rancher-setup.md)
-- **Tests de validation** : `test-catalog.sh`
-- **Repository source** : [askme-app-aoai](https://github.com/avanteam/askme-app-aoai)
+- **Setup Rancher** : [`docs/rancher-setup.md`](docs/rancher-setup.md)
+- **Guide MongoDB** : [`MONGODB_MULTITENANT_GUIDE.md`](MONGODB_MULTITENANT_GUIDE.md) - Documentation complète multi-tenant
+- **Documentation MongoDB** : [`README-MONGODB.md`](README-MONGODB.md) - Guide technique
+- **Tests de validation** : `test-catalog.sh` - Tests automatisés complets
+- **Repository source** : [askme-app-aoai](https://github.com/avanteam/askme-app-aoai) - Code application
 - **Issues** : GitHub Issues pour rapports bugs/demandes fonctionnalités
 
 ---
