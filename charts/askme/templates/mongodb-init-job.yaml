@@ -30,7 +30,7 @@ spec:
         - -c
         - |
           set -e
-          echo "🚀 Initialisation MongoDB pour client: {{ .Release.Name }}"
+          echo "Initialisation MongoDB pour client: {{ .Release.Name }}"
 
           # Variables
           CLIENT_NAME="{{ .Release.Name | replace "askme-" "" | replace "." "_" }}"
@@ -43,7 +43,7 @@ spec:
           # URI de connexion admin
           ADMIN_URI="{{ .Values.mongodb.adminUri | default "mongodb://root:AskMe-MongoDB-2024-Secure!@mongodb-external:27017/?authSource=admin&replicaSet=rs0" }}"
 
-          echo "📊 Configuration:"
+          echo "Configuration:"
           echo "  - Client: ${CLIENT_NAME}"
           echo "  - Database: ${DATABASE_NAME}"
           echo "  - Username: ${USERNAME}"
@@ -57,7 +57,7 @@ spec:
           const USERNAME = process.env.USERNAME;
           const PASSWORD = process.env.PASSWORD;
 
-          print(`🔧 Initialisation de la database: ${DATABASE_NAME}`);
+          print(`Initialisation de la database: ${DATABASE_NAME}`);
 
           // Se connecter à la database du client (elle sera créée si n'existe pas)
           use(DATABASE_NAME);
@@ -65,7 +65,7 @@ spec:
           // Vérifier si la database existe déjà
           const existingUser = db.getUser(USERNAME);
           if (existingUser) {
-              print(`⚠️  L'utilisateur ${USERNAME} existe déjà - mise à jour du mot de passe`);
+              print(`L'utilisateur ${USERNAME} existe déjà - mise à jour du mot de passe`);
               db.updateUser(USERNAME, {
                   pwd: PASSWORD,
                   roles: [
@@ -73,7 +73,7 @@ spec:
                   ]
               });
           } else {
-              print(`👤 Création de l'utilisateur ${USERNAME}`);
+              print(`Création de l'utilisateur ${USERNAME}`);
               db.createUser({
                   user: USERNAME,
                   pwd: PASSWORD,
@@ -106,12 +106,12 @@ spec:
                       }
                   }
               });
-              print("✅ Collection 'conversations' créée");
+              print("Collection 'conversations' créée");
           } catch (e) {
               if (e.codeName === "NamespaceExists") {
-                  print("ℹ️  Collection 'conversations' existe déjà");
+                  print("Collection 'conversations' existe déjà");
               } else {
-                  print("❌ Erreur création collection 'conversations':", e);
+                  print("Erreur création collection 'conversations':", e);
               }
           }
 
@@ -135,17 +135,17 @@ spec:
                       }
                   }
               });
-              print("✅ Collection 'messages' créée");
+              print("Collection 'messages' créée");
           } catch (e) {
               if (e.codeName === "NamespaceExists") {
-                  print("ℹ️  Collection 'messages' existe déjà");
+                  print("Collection 'messages' existe déjà");
               } else {
-                  print("❌ Erreur création collection 'messages':", e);
+                  print("Erreur création collection 'messages':", e);
               }
           }
 
           // Créer les index pour optimiser les performances
-          print("📊 Création des index...");
+          print("Création des index...");
 
           // Index sur conversations
           db.conversations.createIndex({userId: 1, type: 1});
@@ -156,7 +156,7 @@ spec:
           db.messages.createIndex({conversationId: 1, timestamp: 1});
           db.messages.createIndex({userId: 1, type: 1});
 
-          print("✅ Index créés");
+          print("Index créés");
 
           // Test d'écriture
           const testResult = db.conversations.insertOne({
@@ -169,12 +169,12 @@ spec:
           });
 
           if (testResult.acknowledged) {
-              print("✅ Test d'écriture réussi");
+              print("Test d'écriture réussi");
               db.conversations.deleteOne({_id: "test-conversation-init"});
-              print("✅ Nettoyage test effectué");
+              print("Nettoyage test effectué");
           }
 
-          print(`🎉 Initialisation terminée pour ${DATABASE_NAME}`);
+          print(`Initialisation terminée pour ${DATABASE_NAME}`);
           EOF
 
           # Exporter les variables d'environnement pour le script
@@ -183,26 +183,32 @@ spec:
           export USERNAME
           export PASSWORD
 
-          echo "🚀 Exécution du script d'initialisation MongoDB..."
+          echo "Exécution du script d'initialisation MongoDB..."
           mongosh "${ADMIN_URI}" --file /tmp/init-script.js
 
-          echo "💾 Création du Secret Kubernetes avec les credentials..."
+          echo "Création du Secret Kubernetes avec les credentials..."
 
           # Créer le fichier de credentials pour le Secret
           MONGODB_SERVICE_NAME='{{ .Values.mongodb.externalService.name | default "mongodb-external" }}'
           MONGODB_SERVICE_PORT='{{ .Values.mongodb.externalService.port | default 27017 }}'
 
-          cat > /tmp/mongodb-credentials.yaml << 'YAML_END'
+          # Variables pour les labels Helm
+          HELM_LABELS='{{ include "askme.labels" . | indent 14 }}'
+          RELEASE_NAME='{{ .Release.Name }}'
+          RELEASE_NAMESPACE='{{ .Release.Namespace }}'
+          CHART_FULLNAME='{{ include "askme.fullname" . }}'
+
+          cat > /tmp/mongodb-credentials.yaml << EOF
           apiVersion: v1
           kind: Secret
           metadata:
-            name: {{ include "askme.fullname" . }}-mongodb-credentials
-            namespace: {{ .Release.Namespace }}
+            name: ${CHART_FULLNAME}-mongodb-credentials
+            namespace: ${RELEASE_NAMESPACE}
             labels:
-              {{- include "askme.labels" . | nindent 6 }}
+          ${HELM_LABELS}
               askme.avanteam.com/component: mongodb-credentials
             annotations:
-              askme.avanteam.com/client: {{ .Release.Name }}
+              askme.avanteam.com/client: ${RELEASE_NAME}
               askme.avanteam.com/database: ${DATABASE_NAME}
               askme.avanteam.com/created-by: mongodb-init-job
           type: Opaque
@@ -211,14 +217,14 @@ spec:
             MONGODB_DATABASE: "${DATABASE_NAME}"
             MONGODB_USERNAME: "${USERNAME}"
             MONGODB_PASSWORD: "${PASSWORD}"
-          YAML_END
+          EOF
 
           # Appliquer le Secret via kubectl
           kubectl apply -f /tmp/mongodb-credentials.yaml
 
-          echo "✅ Secret MongoDB créé avec succès"
-          echo "🔗 URI de connexion: mongodb://${USERNAME}:[PASSWORD]@${MONGODB_SERVICE_NAME}:${MONGODB_SERVICE_PORT}/${DATABASE_NAME}?replicaSet=rs0&readPreference=secondaryPreferred&authSource=${DATABASE_NAME}"
-          echo "🎉 Initialisation MongoDB terminée pour le client {{ .Release.Name }}"
+          echo "Secret MongoDB créé avec succès"
+          echo "URI de connexion: mongodb://${USERNAME}:[PASSWORD]@${MONGODB_SERVICE_NAME}:${MONGODB_SERVICE_PORT}/${DATABASE_NAME}?replicaSet=rs0&readPreference=secondaryPreferred&authSource=${DATABASE_NAME}"
+          echo "Initialisation MongoDB terminée pour le client {{ .Release.Name }}"
 
         env:
         - name: MONGODB_ADMIN_URI
