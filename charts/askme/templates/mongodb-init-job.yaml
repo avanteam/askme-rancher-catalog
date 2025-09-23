@@ -32,7 +32,7 @@ spec:
           apk add --no-cache nodejs npm openssl
 
           # Installation de mongosh via npm
-          npm install -g @mongosh/cli
+          npm install -g mongosh
 
           # Vérifier l'installation
           mongosh --version
