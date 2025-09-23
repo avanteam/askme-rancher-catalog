@@ -2,8 +2,8 @@ apiVersion: v2
 name: askme
 description: AskMe - Assistant IA multi-LLM pour Avanteam 
 type: application
-version: 1.0.21
-appVersion: "1.0.21"
+version: 1.0.22
+appVersion: "1.0.22"
 
 # Métadonnées pour Rancher
 keywords:
@@ -35,6 +35,12 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/release-notes: |
+    v1.0.22:
+    - 🔧 CORRECTION MongoDB: Installation mongosh via npm au lieu du binaire
+    - 🐛 FIX: Résolution problème compatibilité Alpine Linux (glibc vs musl)
+    - ⚡ PERFORMANCE: Installation plus rapide et fiable de mongosh
+    - 🛠️ ROBUSTESSE: Job MongoDB init plus stable
+
     v1.0.21:
     - 🍃 NOUVEAU: Support complet MongoDB comme alternative à CosmosDB
     - ⚙️ Configuration MongoDB: 12 nouveaux paramètres dans l'UI Rancher
