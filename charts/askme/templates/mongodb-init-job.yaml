@@ -29,14 +29,13 @@ spec:
         - |
           set -e
           echo "Installation MongoDB Shell et outils..."
-          apk add --no-cache wget curl openssl
+          apk add --no-cache nodejs npm openssl
 
-          # Installation directe de mongosh
-          wget -O mongosh.tgz "https://downloads.mongodb.com/compass/mongosh-2.3.2-linux-x64.tgz"
-          tar -xzf mongosh.tgz
-          mv mongosh-*/bin/* /usr/local/bin/
-          chmod +x /usr/local/bin/mongosh
-          rm -rf mongosh*
+          # Installation de mongosh via npm
+          npm install -g @mongosh/cli
+
+          # Vérifier l'installation
+          mongosh --version
 
           echo "Initialisation MongoDB pour client: {{ .Release.Name }}"
 
