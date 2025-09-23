@@ -85,6 +85,14 @@ azure:
     strictness: "4"
     useSemanticSearch: "true"
 
+  # ===== AZURE SPEECH =====
+  speech:
+    enabled: true
+    key: "your-azure-speech-key-here"  # Laissez vide pour utiliser le secret global
+    region: "francecentral"
+    voiceFr: "fr-FR-HenriNeural"
+    voiceEn: "en-US-GuyNeural"
+
   # ===== AZURE COSMOSDB =====
   cosmosdb:
     account: "db-askme-avanteam-qualitysaas-dev-historique"
@@ -119,13 +127,6 @@ mongodb:
     username: ""      # Username spécifique client (optionnel)
     password: ""      # Password spécifique client (optionnel)
 
-  # ===== AZURE SPEECH =====
-  speech:
-    enabled: true
-    key: "your-azure-speech-key-here"  # Laissez vide pour utiliser le secret global
-    region: "francecentral"
-    voiceFr: "fr-FR-HenriNeural"
-    voiceEn: "en-US-GuyNeural"
 
 # ===== CLAUDE AI =====
 claude:

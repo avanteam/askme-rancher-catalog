@@ -1,27 +1,25 @@
 {{- if and (or (.Values.mongodb.enabled) (eq .Values.config.historyProvider "MONGODB")) .Values.mongodb.autoInit }}
----
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "askme.fullname" . }}-mongodb-init
+  name: {{ include "askme.fullname" . }}-mongodb-init-{{ .Chart.Version | replace "." "-" }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "askme.labels" . | nindent 4 }}
-    askme.avanteam.com/component: "mongodb-init-job"
+    app.kubernetes.io/component: mongodb-manager
   annotations:
-    askme.avanteam.com/client: {{ .Release.Name }}
-    "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "-5"
-    "helm.sh/hook-delete-policy": hook-succeeded
+    askme.avanteam.com/job-type: "mongodb-init"
+    askme.avanteam.com/depends-on: "secret-sync"
 spec:
-  backoffLimit: 3
+  ttlSecondsAfterFinished: 300
   template:
     metadata:
       labels:
         {{- include "askme.selectorLabels" . | nindent 8 }}
-        askme.avanteam.com/component: "mongodb-init-job"
+        app.kubernetes.io/component: mongodb-manager
     spec:
       restartPolicy: Never
+      serviceAccountName: {{ include "askme.fullname" . }}-mongodb-manager
       containers:
       - name: mongodb-init
         image: mongo:7.0
@@ -238,31 +236,24 @@ spec:
             cpu: 500m
             memory: 256Mi
 
-      serviceAccountName: {{ include "askme.fullname" . }}-mongodb-init
 
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "askme.fullname" . }}-mongodb-init
+  name: {{ include "askme.fullname" . }}-mongodb-manager
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "askme.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-weight": "-10"
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: {{ include "askme.fullname" . }}-mongodb-init
+  name: {{ include "askme.fullname" . }}-mongodb-manager
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "askme.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-weight": "-10"
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
@@ -272,19 +263,16 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ include "askme.fullname" . }}-mongodb-init
+  name: {{ include "askme.fullname" . }}-mongodb-manager
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "askme.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-weight": "-10"
 subjects:
 - kind: ServiceAccount
-  name: {{ include "askme.fullname" . }}-mongodb-init
+  name: {{ include "askme.fullname" . }}-mongodb-manager
   namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role
-  name: {{ include "askme.fullname" . }}-mongodb-init
+  name: {{ include "askme.fullname" . }}-mongodb-manager
   apiGroup: rbac.authorization.k8s.io
 {{- end }}
