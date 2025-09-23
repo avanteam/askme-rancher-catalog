@@ -212,7 +212,6 @@ spec:
             name: ${CHART_FULLNAME}-mongodb-credentials
             namespace: ${RELEASE_NAMESPACE}
             labels:
-          ${HELM_LABELS}
               askme.avanteam.com/component: mongodb-credentials
             annotations:
               askme.avanteam.com/client: ${RELEASE_NAME}
