@@ -29,7 +29,7 @@ spec:
         - |
           set -e
           echo "Installation MongoDB Shell et outils..."
-          apk add --no-cache nodejs npm openssl
+          apk add --no-cache nodejs npm openssl build-base python3 make gcc g++
 
           # Installation de mongosh via npm
           npm install -g mongosh
