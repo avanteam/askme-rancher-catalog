@@ -22,19 +22,19 @@ spec:
       serviceAccountName: {{ include "askme.fullname" . }}-mongodb-manager
       containers:
       - name: mongodb-init
-        image: alpine/k8s:1.30.0
+        image: mongo:7-jammy
         command:
         - /bin/bash
         - -c
         - |
           set -e
-          echo "Installation MongoDB Shell et outils..."
-          apk add --no-cache nodejs npm openssl build-base python3 make gcc g++
+          echo "Installation outils Kubernetes..."
+          apt-get update -qq && apt-get install -y wget openssl
+          wget -O kubectl "https://dl.k8s.io/release/v1.30.0/bin/linux/amd64/kubectl"
+          chmod +x kubectl && mv kubectl /usr/local/bin/
 
-          # Installation de mongosh via npm
-          npm install -g mongosh
-
-          # Vérifier l'installation
+          # Vérifier les installations
+          kubectl version --client
           mongosh --version
 
           echo "Initialisation MongoDB pour client: {{ .Release.Name }}"
