@@ -1,9 +1,16 @@
 # Documentation (excluding app-readme.md for Rancher)
+README.md
+CHANGELOG.md
+LICENSE.md
+CONTRIBUTING.md
+DEVELOPMENT.md
+INSTALL.md
+TODO.md
+NOTES.md
 *.MD
 README*
 CHANGELOG*
 LICENSE*
-!app-readme.md
 
 # Version control
 .git/
