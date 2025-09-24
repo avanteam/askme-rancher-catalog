@@ -28,12 +28,13 @@ jobs:
 
       - name: Package and Update Index
         run: |
-          # Packager le chart local
-          helm package charts/askme --destination ./
-          
-          # Générer l'index avec tous les packages
-          helm repo index . --url https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/
-          
+          # Packager le chart local vers releases/
+          helm package charts/askme --destination ./releases
+
+          # Générer l'index depuis releases/
+          helm repo index releases --url https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/releases
+          mv releases/index.yaml ./
+
           echo "✅ Chart packagé et index mis à jour"
 
       - name: Commit and Push Changes
@@ -42,7 +43,7 @@ jobs:
           git config user.email "actions@github.com"
           
           # Ajouter les changements s'il y en a
-          git add *.tgz index.yaml
+          git add releases/*.tgz index.yaml
           
           if git diff --staged --quiet; then
             echo "Aucun changement à committer"

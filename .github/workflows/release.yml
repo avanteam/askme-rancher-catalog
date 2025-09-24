@@ -33,14 +33,15 @@ jobs:
           sed -i "s/^version:.*/version: ${{ github.event.inputs.version }}/" charts/askme/Chart.yaml
           sed -i "s/^appVersion:.*/appVersion: \"${{ github.event.inputs.version }}\"/" charts/askme/Chart.yaml
           
-          # Package chart
-          helm package charts/askme --destination ./
-          
-          # Create index
-          helm repo index . --url https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod
+          # Package chart vers releases/
+          helm package charts/askme --destination ./releases
+
+          # Create index depuis releases/
+          helm repo index releases --url https://raw.githubusercontent.com/avanteam/askme-rancher-catalog/prod/releases
+          mv releases/index.yaml ./
           
           echo "✅ Manual package created:"
-          ls -la *.tgz
+          ls -la releases/*.tgz
 
       - name: Commit Changes
         run: |

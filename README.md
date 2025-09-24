@@ -111,9 +111,9 @@ askme-rancher-catalog/
 │       └── rancher-rbac.yaml        # Permissions Rancher RBAC
 ├── docs/                       # Documentation spécialisée
 │   └── rancher-setup.md        # Guide configuration Rancher
+│   └── MONGODB_MULTITENANT_GUIDE.md # Guide complet MongoDB
 ├── .github/workflows/          # Pipeline CI/CD
 ├── index.yaml                  # Index catalog Helm (auto-généré)
-├── MONGODB_MULTITENANT_GUIDE.md # Guide complet MongoDB
 ├── README-MONGODB.md           # Documentation MongoDB
 ├── test-catalog.sh            # Tests automatisés
 ├── deploy-client.sh           # Script déploiement client
