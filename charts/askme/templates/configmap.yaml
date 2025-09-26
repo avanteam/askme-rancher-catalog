@@ -165,6 +165,23 @@ data:
   # MS Defender Configuration
   MS_DEFENDER_ENABLED: {{ .Values.msDefender.enabled | quote }}
   MS_DEFENDER_ENDPOINT: {{ .Values.msDefender.endpoint | quote }}
+
+  # External API Configuration
+  EXTERNAL_API_ENABLED: {{ .Values.externalApi.enabled | quote }}
+  {{- if .Values.externalApi.keys }}
+  # Clés API spécifiques à ce déploiement
+  EXTERNAL_API_KEYS: {{ .Values.externalApi.keys | quote }}
+  {{- else }}
+  # Note: EXTERNAL_API_KEYS sera fournie par le secret 'askme-local-tokens'
+  {{- end }}
+  EXTERNAL_API_RATE_LIMIT_PER_MINUTE: {{ .Values.externalApi.rateLimitPerMinute | quote }}
+  EXTERNAL_API_RATE_LIMIT_PER_HOUR: {{ .Values.externalApi.rateLimitPerHour | quote }}
+  EXTERNAL_API_MAX_RESULTS: {{ .Values.externalApi.maxResults | quote }}
+  EXTERNAL_API_REQUEST_TIMEOUT: {{ .Values.externalApi.requestTimeout | quote }}
+  EXTERNAL_API_SWAGGER_ENABLED: {{ .Values.externalApi.swagger.enabled | quote }}
+  EXTERNAL_API_TITLE: {{ .Values.externalApi.title | quote }}
+  EXTERNAL_API_DESCRIPTION: {{ .Values.externalApi.description | quote }}
+  EXTERNAL_API_VERSION: {{ .Values.externalApi.version | quote }}
   
   # Autres datasources (vides mais présentes pour éviter les erreurs)
   AZURE_COSMOSDB_MONGO_VCORE_CONNECTION_STRING: {{ .Values.datasources.cosmosdbMongo.connectionString | quote }}

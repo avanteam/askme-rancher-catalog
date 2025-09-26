@@ -2,8 +2,8 @@ apiVersion: v2
 name: askme
 description: AskMe - Assistant IA multi-LLM pour Avanteam 
 type: application
-version: 1.0.31
-appVersion: "1.0.31"
+version: 1.0.32
+appVersion: "1.0.32"
 
 # Métadonnées pour Rancher
 keywords:
@@ -35,6 +35,18 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/release-notes: |
+    v1.0.32:
+    - 🔌 NOUVEAU: API Externe pour intégration externe (LightOn, etc.)
+    - 🔑 Gestion avancée des clés API avec restrictions IP
+    - ⚡ Rate limiting configurable (par minute/heure)
+    - 📊 Swagger/OpenAPI documentation intégrée
+    - 🔧 Configuration complète via interface Rancher (10 nouveaux paramètres)
+    - 🛡️ Sécurité renforcée avec authentification par clés API
+    - 📈 Limitation configurable des résultats et timeout
+    - 🎯 Support multi-clients avec clés séparées
+    - 🔗 Intégration REST API pour recherche documentaire externe
+    - ✅ Interface Rancher avec section "External API" dédiée
+
     v1.0.24:
     - ✅ SOLUTION FINALE: Image MongoDB officielle mongo:7-jammy
     - 🚀 MongoDB Shell 2.5.8 (dernière version stable)

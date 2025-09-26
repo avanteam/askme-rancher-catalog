@@ -322,6 +322,31 @@ msDefender:
   endpoint: ""
   key: ""
 
+# ===== API EXTERNE =====
+externalApi:
+  # Configuration générale de l'API externe
+  enabled: true  # Enable/Disable External API for document search
+  title: "AskMe External API - Avanteam"
+  description: "REST API for external document search integration"
+  version: "1.0.0"
+
+  # Configuration des clés API
+  # Laissez vide pour utiliser le secret global 'askme-local-tokens' (recommandé pour la sécurité)
+  # Ou remplissez pour une configuration spécifique au déploiement
+  # Format: "client_name:api_key:allowed_ips|client2:key2:ips"
+  # Use * for allowed IPs to allow any IP address
+  keys: ""  # Exemple: "lighton:sk-ext-lighton-prod-avanteam-2024:*|test_client:sk-ext-test-12345:127.0.0.1,localhost"
+
+  # Configuration des limites de taux
+  rateLimitPerMinute: 60   # Limite de requêtes par minute
+  rateLimitPerHour: 1000   # Limite de requêtes par heure
+  maxResults: 50           # Nombre maximum de résultats par requête
+  requestTimeout: 30       # Timeout des requêtes en secondes
+
+  # Configuration Swagger/OpenAPI
+  swagger:
+    enabled: true  # Activer la documentation Swagger
+
 # ===== AUTRES DATASOURCES (pour éviter erreurs de validation) =====
 datasources:
   # Azure CosmosDB Mongo vCore

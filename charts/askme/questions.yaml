@@ -1154,3 +1154,84 @@ questions:
 # Note: Clés OVH centralisées dans secret 'ovh-global-dns-keys@askme-platform'
 # Configuration automatique - aucune saisie requise
 
+# ===== API EXTERNE =====
+- variable: externalApi.enabled
+  default: true
+  description: "Activer l'API externe pour la recherche de documents"
+  type: boolean
+  required: false
+  group: "External API"
+  label: "API Externe Activée"
+
+- variable: externalApi.title
+  default: "AskMe External API - Avanteam"
+  description: "Titre de l'API externe affiché dans la documentation"
+  type: string
+  required: false
+  group: "External API"
+  label: "Titre API"
+
+- variable: externalApi.description
+  default: "REST API for external document search integration"
+  description: "Description de l'API externe affichée dans la documentation"
+  type: string
+  required: false
+  group: "External API"
+  label: "Description API"
+
+- variable: externalApi.version
+  default: "1.0.0"
+  description: "Version de l'API externe"
+  type: string
+  required: false
+  group: "External API"
+  label: "Version API"
+
+- variable: externalApi.keys
+  default: ""
+  description: "Clés API externes au format 'client:clé:ips_autorisées'. Séparer par '|' pour plusieurs clients. Utiliser '*' pour autoriser toutes les IPs. Laissez vide pour utiliser le secret global 'askme-local-tokens'."
+  type: multiline
+  required: false
+  group: "External API"
+  label: "Clés API Externes (optionnel)"
+
+- variable: externalApi.rateLimitPerMinute
+  default: 60
+  description: "Limite de requêtes par minute pour l'API externe"
+  type: int
+  required: false
+  group: "External API"
+  label: "Limite Par Minute"
+
+- variable: externalApi.rateLimitPerHour
+  default: 1000
+  description: "Limite de requêtes par heure pour l'API externe"
+  type: int
+  required: false
+  group: "External API"
+  label: "Limite Par Heure"
+
+- variable: externalApi.maxResults
+  default: 50
+  description: "Nombre maximum de résultats retournés par requête API"
+  type: int
+  required: false
+  group: "External API"
+  label: "Résultats Maximum"
+
+- variable: externalApi.requestTimeout
+  default: 30
+  description: "Timeout des requêtes API en secondes"
+  type: int
+  required: false
+  group: "External API"
+  label: "Timeout Requêtes"
+
+- variable: externalApi.swagger.enabled
+  default: true
+  description: "Activer la documentation Swagger/OpenAPI"
+  type: boolean
+  required: false
+  group: "External API"
+  label: "Documentation Swagger"
+
