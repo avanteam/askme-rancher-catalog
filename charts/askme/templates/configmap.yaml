@@ -166,6 +166,12 @@ data:
   MS_DEFENDER_ENABLED: {{ .Values.msDefender.enabled | quote }}
   MS_DEFENDER_ENDPOINT: {{ .Values.msDefender.endpoint | quote }}
 
+  # Usage Tracking Configuration
+  USAGE_TRACKER_ENABLED: {{ .Values.usageTracking.enabled | quote }}
+  USAGE_TRACKER_COSMOS_CONTAINER_NAME: {{ .Values.usageTracking.cosmosContainerName | quote }}
+  USAGE_TRACKER_STORE_DETAILED_METRICS: {{ .Values.usageTracking.storeDetailedMetrics | quote }}
+  USAGE_TRACKER_IMAGE_TOKENS_PER_BYTE: {{ .Values.usageTracking.imageTokensPerByte | quote }}
+
   # External API Configuration
   EXTERNAL_API_ENABLED: {{ .Values.externalApi.enabled | quote }}
   {{- if .Values.externalApi.keys }}

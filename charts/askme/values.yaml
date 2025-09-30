@@ -347,6 +347,13 @@ externalApi:
   swagger:
     enabled: true  # Activer la documentation Swagger
 
+# ===== SUIVI D'UTILISATION =====
+usageTracking:
+  enabled: true
+  cosmosContainerName: "token_usage"
+  storeDetailedMetrics: true
+  imageTokensPerByte: "0.01"
+
 # ===== AUTRES DATASOURCES (pour éviter erreurs de validation) =====
 datasources:
   # Azure CosmosDB Mongo vCore

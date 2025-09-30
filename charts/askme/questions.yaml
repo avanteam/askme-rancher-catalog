@@ -1154,6 +1154,39 @@ questions:
 # Note: Clés OVH centralisées dans secret 'ovh-global-dns-keys@askme-platform'
 # Configuration automatique - aucune saisie requise
 
+# ===== SUIVI D'UTILISATION =====
+- variable: usageTracking.enabled
+  default: true
+  description: "Activer le suivi d'utilisation des tokens"
+  type: boolean
+  required: false
+  group: "Tracking Usage"
+  label: "Activer Suivi Utilisation"
+
+- variable: usageTracking.cosmosContainerName
+  default: "token_usage"
+  description: "Nom du conteneur CosmosDB pour stocker les données d'utilisation"
+  type: string
+  required: false
+  group: "Tracking Usage"
+  label: "Nom Conteneur Cosmos"
+
+- variable: usageTracking.storeDetailedMetrics
+  default: true
+  description: "Stocker les métriques détaillées d'utilisation"
+  type: boolean
+  required: false
+  group: "Tracking Usage"
+  label: "Métriques Détaillées"
+
+- variable: usageTracking.imageTokensPerByte
+  default: "0.01"
+  description: "Multiplicateur pour le calcul des tokens d'image (tokens = octets × multiplicateur)"
+  type: string
+  required: false
+  group: "Tracking Usage"
+  label: "Tokens par Octet Image"
+
 # ===== API EXTERNE =====
 - variable: externalApi.enabled
   default: true
