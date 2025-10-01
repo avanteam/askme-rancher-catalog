@@ -953,8 +953,8 @@ questions:
 
 # ===== RESSOURCES =====
 - variable: resources.requests.cpu
-  default: "250m"
-  description: "CPU demandé par pod"
+  default: "100m"
+  description: "CPU demandé par pod (request = réservation, pas consommation)"
   type: string
   group: "Resources"
   label: "CPU Demandé"

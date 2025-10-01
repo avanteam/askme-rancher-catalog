@@ -227,10 +227,10 @@ replicaCount: 2
 resources:
   requests:
     memory: "512Mi"
-    cpu: "250m"
+    cpu: "100m"  # Reduit pour permettre plus de deployments (utilisation reelle ~12%)
   limits:
     memory: "1Gi"
-    cpu: "500m"
+    cpu: "500m"  # Garde la limite haute pour les pics de charge
 
 # ===== INGRESS =====
 ingress:
