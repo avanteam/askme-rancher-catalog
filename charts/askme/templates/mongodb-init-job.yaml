@@ -83,16 +83,17 @@ spec:
           const existingUser = db.getUser(USERNAME);
           if (existingUser) {
               if (PASSWORD_REUSED) {
-                  print(`L'utilisateur ${USERNAME} existe déjà avec le même mot de passe - aucune mise à jour nécessaire`);
+                  print(`L'utilisateur ${USERNAME} existe déjà - synchronisation du mot de passe avec le Secret Kubernetes`);
               } else {
                   print(`L'utilisateur ${USERNAME} existe déjà - mise à jour du mot de passe`);
-                  db.updateUser(USERNAME, {
-                      pwd: PASSWORD,
-                      roles: [
-                          {role: "readWrite", db: DATABASE_NAME}
-                      ]
-                  });
               }
+              // Toujours mettre à jour le password pour garantir la synchronisation Secret <-> MongoDB
+              db.updateUser(USERNAME, {
+                  pwd: PASSWORD,
+                  roles: [
+                      {role: "readWrite", db: DATABASE_NAME}
+                  ]
+              });
           } else {
               print(`Création de l'utilisateur ${USERNAME}`);
               db.createUser({
