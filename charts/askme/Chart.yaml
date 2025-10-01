@@ -14,7 +14,7 @@ keywords:
   - qualitysaas
 home: https://github.com/avanteam/askme-rancher-catalog
 sources:
-  - https://github.com/avanteam/askme-app
+  - https://github.com/avanteam/askme-app-aoai
 maintainers:
   - name: Avanteam DevOps
     email: info@avanteam.com

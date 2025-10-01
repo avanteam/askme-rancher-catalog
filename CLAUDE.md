@@ -34,12 +34,13 @@ askme-rancher-catalog/
 ```
 
 ### Helm Chart Templates
-The chart contains 9 Kubernetes resource templates:
-- **configmap.yaml**: Application configuration
-- **deployment.yaml**: Main application deployment
+The chart contains 10 Kubernetes resource templates:
+- **configmap.yaml**: Application configuration (non-sensitive variables only)
+- **secret.yaml**: Client-specific API tokens and sensitive keys
+- **deployment.yaml**: Main application deployment with initContainer
 - **dns-job.yaml**: Automated DNS record creation (OVH)
 - **global-secret-rbac.yaml**: RBAC for global secrets access
-- **global-secret-sync.yaml**: Synchronizes global API keys
+- **global-secret-sync.yaml**: Intelligent secret fusion (global + local)
 - **ingress.yaml**: HTTPS ingress with Let's Encrypt
 - **rancher-project.yaml**: Rancher project isolation
 - **rancher-rbac.yaml**: Rancher role-based access control
