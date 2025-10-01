@@ -157,9 +157,7 @@ data:
   AVANTEAM_LICENCEHUB_HANDLERURL: {{ .Values.avanteam.licenceHubHandlerUrl | quote }}
   AVANTEAM_LICENCEHUB_KEY: {{ .Values.avanteam.licenceHubKey | quote }}
   AUTH_ENABLED: {{ .Values.authentication.enabled | quote }}
-  {{- if .Values.avanteam.authToken }}
-  AVANTEAM_AUTH_TOKEN: {{ .Values.avanteam.authToken | quote }}
-  {{- end }}
+  # NOTE: AVANTEAM_AUTH_TOKEN est maintenant dans le Secret askme-local-tokens
   SCM_DO_BUILD_DURING_DEPLOYMENT: {{ .Values.config.scmDoBuildDuringDeployment | quote }}
 
   # MS Defender Configuration

@@ -26,10 +26,57 @@ spec:
         askme.avanteam.com/version: {{ .Values.image.tag }}
         askme.avanteam.com/display-name: {{ .Release.Name | quote }}
     spec:
+      serviceAccountName: {{ include "askme.fullname" . }}-dns-manager
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      initContainers:
+      - name: wait-for-secrets
+        image: alpine/k8s:1.30.0
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -e
+          echo "⏳ Attente de la synchronisation des secrets..."
+
+          # Attendre que le secret askme-local-tokens existe
+          max_attempts=30
+          attempt=0
+          while [ $attempt -lt $max_attempts ]; do
+            if kubectl get secret askme-local-tokens -n {{ .Release.Namespace }} >/dev/null 2>&1; then
+              echo "✅ Secret askme-local-tokens trouve"
+
+              # Verifier que les cles essentielles existent
+              secret_keys=$(kubectl get secret askme-local-tokens -n {{ .Release.Namespace }} -o jsonpath='{.data}' | jq 'keys')
+              key_count=$(echo "$secret_keys" | jq 'length')
+
+              echo "📊 Nombre de cles dans le secret: $key_count"
+
+              if [ "$key_count" -gt 0 ]; then
+                echo "🎉 Secret pret avec $key_count cles - demarrage de l'application"
+                exit 0
+              else
+                echo "⚠️  Secret existe mais aucune cle trouvee - attente..."
+              fi
+            else
+              echo "⏳ Tentative $attempt/$max_attempts - Secret non trouve, nouvelle tentative dans 2s..."
+            fi
+
+            attempt=$((attempt + 1))
+            sleep 2
+          done
+
+          echo "❌ ERREUR: Timeout - le secret askme-local-tokens n'est pas pret apres ${max_attempts} tentatives"
+          exit 1
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "50m"
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
