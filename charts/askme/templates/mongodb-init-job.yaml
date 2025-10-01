@@ -43,9 +43,18 @@ spec:
           CLIENT_NAME="{{ .Release.Name | replace "askme-" "" | replace "." "_" }}"
           DATABASE_NAME="askme_${CLIENT_NAME}"
           USERNAME="askme_${CLIENT_NAME}_user"
+          SECRET_NAME="{{ include "askme.fullname" . }}-mongodb-credentials"
 
-          # Générer un mot de passe sécurisé (32 caractères)
-          PASSWORD=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-32)
+          # Récupérer le password existant du Secret Kubernetes s'il existe
+          EXISTING_PASSWORD=$(kubectl get secret "${SECRET_NAME}" -n "{{ .Release.Namespace }}" -o jsonpath='{.data.MONGODB_PASSWORD}' 2>/dev/null | base64 -d || echo "")
+
+          if [ -n "${EXISTING_PASSWORD}" ]; then
+            echo "Utilisation du mot de passe existant du Secret Kubernetes"
+            PASSWORD="${EXISTING_PASSWORD}"
+          else
+            echo "Génération d'un nouveau mot de passe sécurisé (première installation)"
+            PASSWORD=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-32)
+          fi
 
           # URI de connexion admin
           ADMIN_URI="{{ .Values.mongodb.adminUri | default "mongodb://root:AskMe-MongoDB-2024-Secure!@mongodb-external:27017/?authSource=admin&replicaSet=rs0" }}"
@@ -63,6 +72,7 @@ spec:
           const DATABASE_NAME = process.env.DATABASE_NAME;
           const USERNAME = process.env.USERNAME;
           const PASSWORD = process.env.PASSWORD;
+          const PASSWORD_REUSED = process.env.PASSWORD_REUSED === "true";
 
           print(`Initialisation de la database: ${DATABASE_NAME}`);
 
@@ -72,13 +82,17 @@ spec:
           // Vérifier si la database existe déjà
           const existingUser = db.getUser(USERNAME);
           if (existingUser) {
-              print(`L'utilisateur ${USERNAME} existe déjà - mise à jour du mot de passe`);
-              db.updateUser(USERNAME, {
-                  pwd: PASSWORD,
-                  roles: [
-                      {role: "readWrite", db: DATABASE_NAME}
-                  ]
-              });
+              if (PASSWORD_REUSED) {
+                  print(`L'utilisateur ${USERNAME} existe déjà avec le même mot de passe - aucune mise à jour nécessaire`);
+              } else {
+                  print(`L'utilisateur ${USERNAME} existe déjà - mise à jour du mot de passe`);
+                  db.updateUser(USERNAME, {
+                      pwd: PASSWORD,
+                      roles: [
+                          {role: "readWrite", db: DATABASE_NAME}
+                      ]
+                  });
+              }
           } else {
               print(`Création de l'utilisateur ${USERNAME}`);
               db.createUser({
@@ -184,11 +198,19 @@ spec:
           print(`Initialisation terminée pour ${DATABASE_NAME}`);
           EOF
 
+          # Indiquer si le password est réutilisé
+          if [ -n "${EXISTING_PASSWORD}" ]; then
+            PASSWORD_REUSED="true"
+          else
+            PASSWORD_REUSED="false"
+          fi
+
           # Exporter les variables d'environnement pour le script
           export CLIENT_NAME
           export DATABASE_NAME
           export USERNAME
           export PASSWORD
+          export PASSWORD_REUSED
 
           echo "Exécution du script d'initialisation MongoDB..."
           mongosh "${ADMIN_URI}" --file /tmp/init-script.js
