@@ -186,6 +186,16 @@ data:
   EXTERNAL_API_TITLE: {{ .Values.externalApi.title | quote }}
   EXTERNAL_API_DESCRIPTION: {{ .Values.externalApi.description | quote }}
   EXTERNAL_API_VERSION: {{ .Values.externalApi.version | quote }}
+
+  # Configuration HTTPS pour Swagger derriere proxy
+  {{- if .Values.ingress.enabled }}
+  FORWARDED_ALLOW_IPS: "*"
+  ROOT_PATH: ""
+  SERVER_HOST: {{ .Values.client.domain | quote }}
+  {{- if .Values.ingress.tls.enabled }}
+  PREFERRED_URL_SCHEME: "https"
+  {{- end }}
+  {{- end }}
   
   # Autres datasources (vides mais présentes pour éviter les erreurs)
   AZURE_COSMOSDB_MONGO_VCORE_CONNECTION_STRING: {{ .Values.datasources.cosmosdbMongo.connectionString | quote }}
