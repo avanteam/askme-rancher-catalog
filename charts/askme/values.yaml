@@ -34,7 +34,7 @@ image:
 # ===== FOURNISSEURS LLM =====
 llm:
   defaultProvider: "CLAUDE"
-  availableProviders: "AZURE_OPENAI,CLAUDE,OPENAI_DIRECT,MISTRAL,GEMINI"
+  availableProviders: "AZURE_OPENAI,CLAUDE,OPENAI_DIRECT,MISTRAL,GEMINI,AVANTEAM_AI"
 
 # ===== AZURE OPENAI =====
 azure:
@@ -177,6 +177,24 @@ gemini:
   responseVeryShortMaxTokens: "1500"
   responseNormalMaxTokens: "8000"
   responseComprehensiveMaxTokens: "30000"
+
+# ===== AVANTEAM AI (OVH AI ENDPOINTS) =====
+avanteamAi:
+  enabled: false
+  accessToken: "your-avanteam-ai-access-token-here"  # Laissez vide pour utiliser le secret global
+  model: "gpt-oss-20b"
+  autoModelSelection: "true"
+  baseUrl: "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1"
+  temperature: "0.7"
+  topP: "1.0"
+  reasoningEffort: "medium"
+  showReasoningInUi: "true"
+  maxRequestsPerMinute: "380"
+  retryAfter429: "true"
+  systemMessage: "Tu es AskMe (Avanteam AI), l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable. Utilise EXCLUSIVEMENT les informations fournies dans les documents suivants pour répondre aux questions. Si l'information n'est pas disponible dans ces documents, indique clairement que tu ne peux pas répondre à partir des sources disponibles. Quand tu cites une information, utilise le format [doc1], [doc2], etc. pour référencer les documents. Si l'utilisateur évoque un incident (non-conformité, réclamation, panne, etc.), génère une chaîne avec ce format : [createRecord|Titre du lien|Description] où : - Titre du lien : incite clairement l'utilisateur à créer l'enregistrement dans QualitySaaS - Description : retranscris fidèlement l'incident exposé par l'UTILISATEUR, avec précision et clarté. Tu peux également voir des chaines sous la forme [iddoc|ID_DU_DOC|DESCRIPTION] qui correspondent à des références de document pour créer des liens. Tu dois les retranscrire telles quelles lorsque c'est pertinent, mais ne les modifie pas, et n'en invente surtout pas si tu n'en a pas."
+  responseVeryShortMaxTokens: "1500"
+  responseNormalMaxTokens: "8000"
+  responseComprehensiveMaxTokens: "20000"
 
 # ===== FONCTIONNALITÉS VOCALES =====
 voice:

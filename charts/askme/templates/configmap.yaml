@@ -89,6 +89,21 @@ data:
   GEMINI_RESPONSE_NORMAL_MAX_TOKENS: {{ .Values.gemini.responseNormalMaxTokens | quote }}
   GEMINI_RESPONSE_COMPREHENSIVE_MAX_TOKENS: {{ .Values.gemini.responseComprehensiveMaxTokens | quote }}
 
+  # Avanteam AI Configuration (OVH AI Endpoints)
+  AVANTEAM_AI_MODEL: {{ .Values.avanteamAi.model | quote }}
+  AVANTEAM_AI_AUTO_MODEL_SELECTION: {{ .Values.avanteamAi.autoModelSelection | quote }}
+  AVANTEAM_AI_BASE_URL: {{ .Values.avanteamAi.baseUrl | quote }}
+  AVANTEAM_AI_TEMPERATURE: {{ .Values.avanteamAi.temperature | quote }}
+  AVANTEAM_AI_TOP_P: {{ .Values.avanteamAi.topP | quote }}
+  AVANTEAM_AI_REASONING_EFFORT: {{ .Values.avanteamAi.reasoningEffort | quote }}
+  AVANTEAM_AI_SHOW_REASONING_IN_UI: {{ .Values.avanteamAi.showReasoningInUi | quote }}
+  AVANTEAM_AI_MAX_REQUESTS_PER_MINUTE: {{ .Values.avanteamAi.maxRequestsPerMinute | quote }}
+  AVANTEAM_AI_RETRY_AFTER_429: {{ .Values.avanteamAi.retryAfter429 | quote }}
+  AVANTEAM_AI_SYSTEM_MESSAGE: {{ .Values.avanteamAi.systemMessage | quote }}
+  AVANTEAM_AI_RESPONSE_VERY_SHORT_MAX_TOKENS: {{ .Values.avanteamAi.responseVeryShortMaxTokens | quote }}
+  AVANTEAM_AI_RESPONSE_NORMAL_MAX_TOKENS: {{ .Values.avanteamAi.responseNormalMaxTokens | quote }}
+  AVANTEAM_AI_RESPONSE_COMPREHENSIVE_MAX_TOKENS: {{ .Values.avanteamAi.responseComprehensiveMaxTokens | quote }}
+
   # Azure Services Configuration
   AZURE_SEARCH_SERVICE: {{ .Values.azure.search.service | quote }}
   AZURE_SEARCH_INDEX: {{ .Values.azure.search.index | quote }}

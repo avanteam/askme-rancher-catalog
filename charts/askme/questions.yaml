@@ -65,12 +65,13 @@ questions:
     - "OPENAI_DIRECT"
     - "MISTRAL"
     - "GEMINI"
+    - "AVANTEAM_AI"
   required: true
   group: "LLM Configuration"
   label: "Fournisseur LLM Par Défaut"
 
 - variable: llm.availableProviders
-  default: "AZURE_OPENAI,CLAUDE,OPENAI_DIRECT,MISTRAL,GEMINI"
+  default: "AZURE_OPENAI,CLAUDE,OPENAI_DIRECT,MISTRAL,GEMINI,AVANTEAM_AI"
   description: "Liste des fournisseurs disponibles (séparés par virgule)"
   type: string
   required: true
@@ -562,6 +563,142 @@ questions:
   type: string
   required: false
   group: "Gemini AI"
+  label: "Max Tokens Complet"
+
+# ===== AVANTEAM AI (OVH AI ENDPOINTS) =====
+- variable: avanteamAi.enabled
+  default: false
+  description: "Activer Avanteam AI (OVH AI Endpoints)"
+  type: boolean
+  group: "Avanteam AI"
+  label: "Activer Avanteam AI"
+
+- variable: avanteamAi.accessToken
+  default: "your-avanteam-ai-access-token-here"
+  description: "Token d'accès Avanteam AI (OVH AI Endpoints)"
+  type: password
+  required: true
+  group: "Avanteam AI"
+  label: "Access Token"
+
+- variable: avanteamAi.model
+  default: "gpt-oss-20b"
+  description: "Modèle Avanteam AI à utiliser"
+  type: enum
+  options:
+    - "llama-3.3-70b"
+    - "mixtral-8x7b"
+    - "qwen-3-32b"
+    - "llama-3.1-8b"
+    - "mistral-nemo"
+    - "gpt-oss-20b"
+    - "deepseek-r1-distill-llama-70b"
+    - "qwen-2.5-coder-32b"
+    - "codestral-mamba"
+    - "qwen-2.5-vl-72b"
+  group: "Avanteam AI"
+  label: "Modèle"
+
+- variable: avanteamAi.autoModelSelection
+  default: "true"
+  description: "Sélection automatique du modèle selon le contexte"
+  type: boolean
+  required: false
+  group: "Avanteam AI"
+  label: "Sélection Auto Modèle"
+
+- variable: avanteamAi.baseUrl
+  default: "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1"
+  description: "URL de base de l'API Avanteam AI"
+  type: string
+  required: false
+  group: "Avanteam AI"
+  label: "Base URL"
+
+- variable: avanteamAi.temperature
+  default: "0.7"
+  description: "Température pour Avanteam AI (0.0 = déterministe, 2.0 = créatif)"
+  type: string
+  required: false
+  group: "Avanteam AI"
+  label: "Température"
+
+- variable: avanteamAi.topP
+  default: "1.0"
+  description: "Top-P pour le nucleus sampling"
+  type: string
+  required: false
+  group: "Avanteam AI"
+  label: "Top-P"
+
+- variable: avanteamAi.reasoningEffort
+  default: "medium"
+  description: "Intensité du raisonnement pour modèles compatibles"
+  type: enum
+  options:
+    - "low"
+    - "medium"
+    - "high"
+  required: false
+  group: "Avanteam AI"
+  label: "Effort de Raisonnement"
+
+- variable: avanteamAi.showReasoningInUi
+  default: "true"
+  description: "Afficher le contenu de raisonnement dans l'interface"
+  type: boolean
+  required: false
+  group: "Avanteam AI"
+  label: "Afficher Raisonnement"
+
+- variable: avanteamAi.maxRequestsPerMinute
+  default: "380"
+  description: "Nombre maximum de requêtes par minute"
+  type: string
+  required: false
+  group: "Avanteam AI"
+  label: "Max Requêtes/Minute"
+
+- variable: avanteamAi.retryAfter429
+  default: "true"
+  description: "Réessayer automatiquement après erreurs 429"
+  type: boolean
+  required: false
+  group: "Avanteam AI"
+  label: "Réessai Auto 429"
+
+- variable: avanteamAi.systemMessage
+  default: "Tu es AskMe (Avanteam AI), l'assistant virtuel d'Avanteam dédié à l'accompagnement des utilisateurs dans l'utilisation de l'outil QualitySaaS, capable d'aider sur tous les produits de la société Avanteam, et de répondre à des questions sur la société en elle-même. Adopte un ton courtois, patient et légèrement humoristique pour une interaction agréable."
+  description: "Message système personnalisé pour Avanteam AI"
+  type: text
+  multiline: true
+  min_length: 100
+  required: false
+  group: "Avanteam AI"
+  label: "System Message"
+
+- variable: avanteamAi.maxTokensVeryShort
+  default: "1500"
+  description: "Nombre maximum de tokens pour réponses très courtes"
+  type: string
+  required: false
+  group: "Avanteam AI"
+  label: "Max Tokens Très Court"
+
+- variable: avanteamAi.maxTokensNormal
+  default: "8000"
+  description: "Nombre maximum de tokens pour réponses normales"
+  type: string
+  required: false
+  group: "Avanteam AI"
+  label: "Max Tokens Normal"
+
+- variable: avanteamAi.maxTokensComprehensive
+  default: "20000"
+  description: "Nombre maximum de tokens pour réponses complètes"
+  type: string
+  required: false
+  group: "Avanteam AI"
   label: "Max Tokens Complet"
 
 # ===== AZURE SEARCH =====
