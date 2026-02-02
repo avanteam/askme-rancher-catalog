@@ -35,6 +35,12 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/release-notes: |
+    v1.0.60:
+    - ⚙️ NOUVEAU: Configuration du nombre de documents par défaut (CUSTOMIZATION_SOURCES_NBDEFAULT)
+    - 📊 NOUVEAU: Configuration du nombre maximum de documents (CUSTOMIZATION_SOURCES_NBMAX)
+    - 🎯 Personnalisation avancée du nombre de documents consultés via UI Rancher
+    - 🔧 Nouvelle section "Customization configuration" dans l'interface Rancher
+
     v1.0.32:
     - 🔌 NOUVEAU: API Externe pour intégration externe (LightOn, etc.)
     - 🔑 Gestion avancée des clés API avec restrictions IP
@@ -81,19 +87,19 @@ annotations:
     - Configuration interface UI (boutons partage/export)
     - Paramètres authentification et SCM build
     - Section Avanteam Custom complète avec 9 paramètres
-    
+
     v1.0.9:
     - Ajout paramètres Azure CosmosDB manquants: conversations container et feedback
     - Configuration Azure CosmosDB complète avec 5 paramètres
     - Support du conteneur conversations et système de feedback
     - Correspondance parfaite avec tous les paramètres .env CosmosDB
-    
+
     v1.0.8:
     - Ajout paramètre Azure Search manquant: AZURE_SEARCH_USE_SEMANTIC_SEARCH
     - Configuration Azure Search désormais complète avec 16 paramètres
     - Paramètre recherche sémantique activé par défaut
     - Correspondance parfaite avec tous les paramètres .env Azure Search
-    
+
     v1.0.7:
     - Configuration Azure Search complète: 15 paramètres vs 3 avant
     - Nouveaux paramètres Azure Search: semantic search, colonnes, strictness
@@ -101,18 +107,18 @@ annotations:
     - Support complet des types de requête (vector_semantic_hybrid, etc.)
     - Paramètres de colonnes configurables (content, filename, title, URL, vector)
     - Correspondance parfaite avec tous les paramètres .env
-    
+
     v1.0.6:
     - Force refresh: recréation complète pour Rancher cache cleanup
     - Amélioration UX: champs System Message plus grands avec min_length=100
     - Optimisation affichage multiline dans interface Rancher
     - Meilleure lisibilité des messages système pour tous les LLM
-    
+
     v1.0.5:
     - Amélioration UX: champs System Message plus grands avec min_length=100
     - Optimisation affichage multiline dans interface Rancher
     - Meilleure lisibilité des messages système pour tous les LLM
-    
+
     v1.0.4:
     - Configuration LLM améliorée avec provider par défaut depuis backend
     - Interface Rancher complète avec 77 options (vs 51 avant)
@@ -122,20 +128,20 @@ annotations:
     - Paramètres LLM avancés (température, tokens) exposés
     - Corrections TypeScript et compilation sans erreur
     - Icône du chart ajoutée pour meilleure UX
-    
+
     v1.0.3:
     - Corrections de stabilité et robustesse
     - Amélioration de la gestion des erreurs
     - Optimisations des performances
-    
+
     v1.0.2:
     - Corrections de bugs mineurs
     - Améliorations de sécurité
-    
+
     v1.0.1:
     - Corrections post-lancement
     - Stabilisation des déploiements
-    
+
     v1.0.0:
     - Version initiale avec corrections de robustesse
     - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
