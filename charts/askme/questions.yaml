@@ -407,6 +407,23 @@ questions:
   group: "Configuration Générale"
   label: "Longueur Max Citations"
 
+# ===== CUSTOMIZATION CONFIGURATION (v1.0.60+) =====
+- variable: config.customizationSourcesNbdefault
+  default: "5"
+  description: "Nombre de documents par défaut consultés par l'assistant lors de la première utilisation (Disponible à partir de la version 1.0.60)"
+  type: string
+  required: false
+  group: "Customization configuration"
+  label: "Nombre de documents par défaut"
+
+- variable: config.customizationSourcesNbmax
+  default: "20"
+  description: "Nombre maximum de documents que l'utilisateur peut sélectionner via le slider dans l'interface (Disponible à partir de la version 1.0.60)"
+  type: string
+  required: false
+  group: "Customization configuration"
+  label: "Nombre maximum de documents"
+
 # ===== AVANTEAM CUSTOM =====
 - variable: avanteam.urlBase
   default: "https://apprec.quality-saas.com/QMDOC/"

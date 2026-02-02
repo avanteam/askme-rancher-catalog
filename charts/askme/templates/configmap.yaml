@@ -46,6 +46,11 @@ data:
   # Configuration générale
   IMAGE_MAX_SIZE_MB: {{ .Values.config.imageMaxSizeMb | quote }}
   CITATION_CONTENT_MAX_LENGTH: {{ .Values.config.citationContentMaxLength | quote }}
+
+  # Personnalisation Documents
+  CUSTOMIZATION_SOURCES_NBDEFAULT: {{ .Values.config.customizationSourcesNbdefault | quote }}
+  CUSTOMIZATION_SOURCES_NBMAX: {{ .Values.config.customizationSourcesNbmax | quote }}
+
   DEFAULT_LANGUAGE: {{ .Values.config.defaultLanguage | quote }}
   AZURE_USE_AUTHENTICATION: {{ .Values.config.azureUseAuthentication | quote }}
   CHAT_HISTORY_ENABLED: {{ .Values.config.chatHistoryEnabled | quote }}

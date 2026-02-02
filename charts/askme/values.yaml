@@ -166,6 +166,11 @@ config:
   searchEnableInDomain: "true"
   imageMaxSizeMb: "12.0"
   citationContentMaxLength: "2000"
+
+  # Personnalisation Documents (v1.0.60+)
+  customizationSourcesNbdefault: "5"
+  customizationSourcesNbmax: "20"
+
   defaultLanguage: "en"
   azureUseAuthentication: "false"
   chatHistoryEnabled: "true"

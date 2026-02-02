@@ -2,8 +2,8 @@ apiVersion: v2
 name: askme
 description: AskMe - Assistant IA multi-LLM pour Avanteam QualitySaaS
 type: application
-version: 1.0.1
-appVersion: "1.0.1"
+version: 1.0.60
+appVersion: "1.0.60"
 
 # Métadonnées pour Rancher
 keywords:
@@ -36,6 +36,11 @@ annotations:
   
   # Changements de version
   catalog.cattle.io/changes: |
+    - Version 1.0.60
+    - Ajout: Configuration du nombre de documents par défaut (CUSTOMIZATION_SOURCES_NBDEFAULT)
+    - Ajout: Configuration du nombre maximum de documents (CUSTOMIZATION_SOURCES_NBMAX)
+    - Amélioration: Personnalisation avancée du nombre de documents consultés
+    - Version 1.0.1
     - Version initiale
     - Support Azure OpenAI, Claude, OpenAI Direct, Mistral, Gemini
     - Interface vocale avec wake words
